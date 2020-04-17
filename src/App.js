@@ -1,16 +1,47 @@
 import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import NavBar from "./components/NavBar";
 import Login from "./components/Login";
-import ProductDetails from "./components/ProductDetails";
+import Register from "./components/Register";
+
+import { BrowserRouter as Router, Switch , Route } from 'react-router-dom';
+import Footer from "./components/Footer";
+import Home from "./components/Home";
+import Profile from "./components/Profile";
+import Editprofile from "./components/Editprofile";
+
 
 function App() {
     return (
         <div className="App">
-            <h1>React App</h1>
-            <h2>My Change</h2>
-            <Login/>
-            <ProductDetails/>
+
+        <NavBar/>
+
+
+            <Router>
+                <Switch>
+                    <Route path="/login">
+                        <Login/>
+                    </Route>
+                    <Route path="/register">
+                        <Register/>
+                    </Route>
+                    <Route path="/home">
+                        <Home/>
+                    </Route>
+                    <Route path="/profile">
+                        <Profile/>
+                    </Route>
+                    <Route path="/edit">
+                        <Editprofile/>
+                    </Route>
+                </Switch>
+            </Router>
+
+
+            <Footer/>
         </div>
     );
 }
