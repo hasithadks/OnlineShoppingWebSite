@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
 import Editprofile from "./components/Editprofile";
+import ProductDetails from "./components/ProductDetails";
 
 
 function App() {
@@ -36,6 +37,9 @@ function App() {
                     </Route>
                     <Route path="/edit">
                         <Editprofile/>
+                    </Route>
+                    <Route path="/product">
+                        <ProductDetails/>
                     </Route>
                 </Switch>
             </Router>
