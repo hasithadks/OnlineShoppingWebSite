@@ -13,6 +13,9 @@ import Profile from "./components/Profile";
 import Editprofile from "./components/Editprofile";
 import ProductDetails from "./components/ProductDetails";
 
+import AddItem from "./components/add-item-component";
+import EditItem from "./components/edit-item-component";
+import ItemList from "./components/item-list-component";
 
 function App() {
     return (
@@ -41,6 +44,11 @@ function App() {
                     <Route path="/product">
                         <ProductDetails/>
                     </Route>
+
+                    <Route path="/itemlist" exact component={ItemList}/>
+                    <Route path="/edititem/:id" exact component={EditItem}/>
+                    <Route path="/additem" exact component={AddItem}/>
+
                 </Switch>
             </Router>
 
