@@ -17,6 +17,7 @@ import AddItem from "./components/add-item-component";
 import EditItem from "./components/edit-item-component";
 import ItemList from "./components/item-list-component";
 
+
 function App() {
     return (
         <div className="App">
@@ -48,7 +49,6 @@ function App() {
                     <Route path="/itemlist" exact component={ItemList}/>
                     <Route path="/edititem/:id" exact component={EditItem}/>
                     <Route path="/additem" exact component={AddItem}/>
-
                 </Switch>
             </Router>
 
