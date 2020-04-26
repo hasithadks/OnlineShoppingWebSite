@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './CSS/footer.css'
+import '../CSS/footer.css'
 
 export default class Footer extends Component {
     render() {

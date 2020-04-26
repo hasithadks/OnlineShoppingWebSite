@@ -1,7 +1,31 @@
 import React, {Component} from "react";
-import './CSS/editprofile.css'
+import '../CSS/editprofile.css'
 
 export default class Editprofile extends Component {
+    constructor(props) {
+        super(props);
+
+        this.onChangeEmail = this.onChangeEmail.bind(this);
+        this.onChangeUsername = this.onChangeUsername.bind(this);
+        this.onChangePassword = this.onChangePassword.bind(this);
+        this.onChangePhone = this.onChangePhone.bind(this);
+        this.onChangeGender = this.onChangeGender.bind(this);
+        this.onChangeImage = this.onChangeImage.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+
+        this.state = {
+            user_email:'',
+            user_username:'',
+            user_password:'',
+            user_phone:0,
+            user_gender:'',
+            user_image:'',
+            users:[]
+        }
+    }
+
+
+
     render() {
         return (
 
@@ -56,7 +80,7 @@ export default class Editprofile extends Component {
 
                         <div className="imgupfield">
                             <div className="imgdiv">
-                                <img id="blah" src="http://placehold.it/180" alt="your image" className="image"/>
+                                <img id="blah" src="http://placehold.it/180" className="image"/>
                             </div>
 
                             <div className= "filebut">

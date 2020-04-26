@@ -1,16 +1,15 @@
 import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-import NavBar from "./components/NavBar";
-import Login from "./components/Login";
-import Register from "./components/Register";
-
 import { BrowserRouter as Router, Switch , Route } from 'react-router-dom';
-import Footer from "./components/Footer";
-import Home from "./components/Home";
-import Profile from "./components/Profile";
-import Editprofile from "./components/Editprofile";
+
+import NavBar from "./components/Main_components/NavBar";
+import Footer from "./components/Main_components/Footer";
+import Home from "./components/Main_components/Home";
+import Login from "./components/User_components/Login";
+import Register from "./components/User_components/Register";
+import Profile from "./components/User_components/Profile";
+import Editprofile from "./components/User_components/Editprofile";
 
 // IT18063288
 import ProductDetails from "./components/ProductDetails";
@@ -28,7 +27,6 @@ function App() {
         <div className="App">
 
         <NavBar/>
-
 
             <Router>
                 <Switch>

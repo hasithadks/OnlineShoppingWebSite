@@ -1,7 +1,30 @@
 import React, { Component } from 'react'
-import './CSS/profile.css'
+import '../CSS/profile.css'
+import {Link} from 'react-router-dom';
+import axios from 'axios';
 
 export default class Profile extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state ={
+            users:[]
+        };
+    }
+
+    componentDidMount() {
+        axios.get('http://localhost:5000/users/')
+            .then(response =>{
+                this.setState({
+                    users: response.data
+                })
+            .catch((err) => {
+                console.log(err);
+                })
+            })
+    }
+
+
     render() {
         return (
 
@@ -23,7 +46,7 @@ export default class Profile extends Component {
                                     <div className="profile-img">
                                         <img
                                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog"
-                                            alt=""/>
+                                            />
 
 
 
