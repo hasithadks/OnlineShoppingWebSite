@@ -21,6 +21,9 @@ import AddItem from "./components/add-item-component";
 import EditItem from "./components/edit-item-component";
 import ItemList from "./components/item-list-component";
 
+import ManagementStaffList from "./components/ManagementStaffComponents/managementstaff.component";
+import CreateManagementStaff from "./components/ManagementStaffComponents/create-managementstaff.component";
+import EditManagementStaff from "./components/ManagementStaffComponents/edit-managementstaff.component";
 
 function App() {
     return (
@@ -52,11 +55,13 @@ function App() {
                     <Route path="/deliveryDetails" exact component={DeliveryDetails}/>
                     <Route path="/orderSummery" exact component={OrderSummary}/>
 
-
                     <Route path="/itemlist" exact component={ItemList}/>
                     <Route path="/edititem/:id" exact component={EditItem}/>
                     <Route path="/additem" exact component={AddItem}/>
 
+                    <Route path="/mstaff" exact component={ManagementStaffList} />
+                    <Route path="/mstaff/add" component={CreateManagementStaff} />
+                    <Route path="/mstaff/edit/:id" component={EditManagementStaff} />
 
                 </Switch>
             </Router>
