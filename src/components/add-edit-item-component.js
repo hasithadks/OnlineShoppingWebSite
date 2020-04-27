@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-export default class AddItem extends Component{
+export default class AddEditItem extends Component{
 
     constructor(props) {
         super(props);
@@ -14,7 +14,8 @@ export default class AddItem extends Component{
         this.onChangeItemBrand = this.onChangeItemBrand.bind(this);
         this.onChangeItemFeatures = this.onChangeItemFeatures.bind(this);
         this.onChangeItemImage = this.onChangeItemImage.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        this.onAdd = this.onAdd.bind(this);
+        this.onEdit = this.onEdit.bind(this);
 
         this.state ={
             item_name : '',
@@ -25,9 +26,37 @@ export default class AddItem extends Component{
             item_from : '',
             item_brand :'',
             item_features: '',
-            item_image: ''
+            item_image: '',
+            editItem : false
         }
     }
+
+    componentDidMount() {
+        if(this.props.match.params.id != null){
+            axios.get('http://localhost:5000/products/'+ this.props.match.params.id)
+                .then(response =>{
+                    this.setState({
+                        item_name : response.data.item_name,
+                        item_description : response.data.item_description,
+                        item_category : response.data.item_category,
+                        item_quantity : response.data.item_quantity,
+                        item_discount : response.data.item_discount,
+                        item_from : response.data.item_from,
+                        item_brand : response.data.item_brand,
+                        item_features: response.data.item_features,
+                        editItem : true
+                    })
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+        }else{
+            this.setState({
+                editItem : false
+            });
+        }
+    }
+
 
     onChangeItemName(e){
         this.setState({
@@ -82,19 +111,20 @@ export default class AddItem extends Component{
         })
     }
 
-    onSubmit(e){
+    onAdd(e){
         e.preventDefault();
 
         console.log(`Form submitted:`);
         console.log(`item name: ${this.state.item_name}`);
         console.log(`item description: ${this.state.item_description}`);
         console.log(`item category: ${this.state.item_category}`);
-        console.log(`item quanity: ${this.state.item_quanity}`);
+        console.log(`item quanity: ${this.state.item_quantity}`);
         console.log(`item discount: ${this.state.item_discount}`);
         console.log(`item from: ${this.state.item_from}`);
         console.log(`item brand: ${this.state.item_brand}`);
         console.log(`item features: ${this.state.item_features}`);
         console.log(`item image: ${this.state.item_image}`);
+        console.log(`item image: ${this.state.editItem}`);
 
         const newItem = {
             item_name : this.state.item_name,
@@ -115,23 +145,55 @@ export default class AddItem extends Component{
             item_name : '',
             item_description : '',
             item_category : '',
-            item_quanity : '',
+            item_quantity : '',
             item_discount : '',
             item_from : '',
             item_brand :'',
             item_features: '',
-            item_image: ''
+            item_image: '',
         })
     }
 
+    onEdit(e){
+        e.preventDefault();
+
+        console.log(`Form submitted:`);
+        console.log(`edit name: ${this.state.item_name}`);
+        console.log(`edit description: ${this.state.item_description}`);
+        console.log(`edit category: ${this.state.item_category}`);
+        console.log(`edit quanity: ${this.state.item_quantity}`);
+        console.log(`edit discount: ${this.state.item_discount}`);
+        console.log(`edit from: ${this.state.item_from}`);
+        console.log(`edit brand: ${this.state.item_brand}`);
+        console.log(`edit features: ${this.state.item_features}`);
+        console.log(`edit image: ${this.state.item_image}`);
+        console.log(`edit image: ${this.state.editItem}`);
+
+        const editItem = {
+            item_name : this.state.item_name,
+            item_description : this.state.item_description,
+            item_category : this.state.item_category,
+            item_quantity : this.state.item_quantity,
+            item_discount : this.state.item_discount,
+            item_from : this.state.item_from,
+            item_brand : this.state.item_brand,
+            item_features: this.state.item_features,
+            item_image: this.state.item_image
+        };
+
+        axios.post('http://localhost:5000/products/update/'+this.props.match.params.id,editItem)
+            .then(res => console.log(res.data));
+        this.props.history.push('/');
+    }
     render(){
         return(
             <div>
                 <div className="container">
-                    <form onSubmit={this.onSubmit}>
+                    <br/>  <br/>
+                    <form>
                         <div className="list-group list-group-flush z-depth-1 rounded">
                             <div className="list-group-item bg-dark d-flex justify-content-start align-items-center py-3">
-                                <h4 style={{color:"white"}} > Add Item</h4>
+                                <h4 style={{color:"white"}} > {this.state.editItem ? "Edit Item" : "Add Item"}</h4>
                             </div>
                         </div>
                         <div className="list-group-item">
@@ -202,9 +264,21 @@ export default class AddItem extends Component{
                                 <label className="custom-file-label" htmlFor="customFileLangHTML" data-browse="Choose files" >Upload Image</label>
 
                             </div>
-                            <input style={{marginTop:10}} type ="submit" value ="Submit" className = "btn btn-primary"/>
+                            <div className="col-sm-20">
+                                    <button style={{marginTop:10}} type ="submit" value ="Submit"
+                                            className = {this.state.editItem
+                                                ? "btn btn-block btn-success mt-3"
+                                                : "btn btn-block btn-primary mt-3"}
+                                            onClick= {this.state.editItem
+                                                ? this.onEdit
+                                                : this.onSubmit}
+
+                                    > {this.state.editItem ? "Edit" : "Add"}
+                                    </button>
+                            </div>
                         </div>
                     </form>
+                    <br/> <br/>
                 </div>
             </div>
         )
