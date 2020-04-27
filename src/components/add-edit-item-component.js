@@ -265,16 +265,16 @@ export default class AddEditItem extends Component{
 
                             </div>
                             <div className="col-sm-20">
-                                    <button style={{marginTop:10}} type ="submit" value ="Submit"
-                                            className = {this.state.editItem
-                                                ? "btn btn-block btn-success mt-3"
-                                                : "btn btn-block btn-primary mt-3"}
-                                            onClick= {this.state.editItem
-                                                ? this.onEdit
-                                                : this.onSubmit}
+                                <button style={{marginTop:10}} type ="submit" value ="Submit"
+                                        className = {this.state.editItem
+                                            ? "btn btn-block btn-success mt-3"
+                                            : "btn btn-block btn-primary mt-3"}
+                                        onClick= {this.state.editItem
+                                            ? this.onEdit
+                                            : this.onSubmit}
 
-                                    > {this.state.editItem ? "Edit" : "Add"}
-                                    </button>
+                                > {this.state.editItem ? "Edit" : "Add"}
+                                </button>
                             </div>
                         </div>
                     </form>

@@ -3,8 +3,6 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Switch , Route } from 'react-router-dom';
 
-import NavBar from "./components/Main_components/NavBar";
-import Footer from "./components/Main_components/Footer";
 import Home from "./components/Main_components/Home";
 import Login from "./components/User_components/Login";
 import Register from "./components/User_components/Register";
@@ -17,9 +15,10 @@ import shoppingCart from "./components/ShoppingCart";
 import OrderSummary from "./components/OrderSummary"
 import DeliveryDetails from "./components/DeliveryDetails"
 
-import AddItem from "./components/add-item-component";
-import EditItem from "./components/edit-item-component";
+import AddEditItem from "./components/add-edit-item-component";
 import ItemList from "./components/item-list-component";
+import ItemFooter from "./components/footer-item-component"
+import ItemNav from "./components/nav-item-component"
 
 import ManagementStaffList from "./components/ManagementStaffComponents/managementstaff.component";
 import CreateManagementStaff from "./components/ManagementStaffComponents/create-managementstaff.component";
@@ -28,10 +27,8 @@ import EditManagementStaff from "./components/ManagementStaffComponents/edit-man
 function App() {
     return (
         <div className="App">
-
-        <NavBar/>
-
             <Router>
+                <ItemNav/>
                 <Switch>
                     <Route path="/login">
                         <Login/>
@@ -56,18 +53,18 @@ function App() {
                     <Route path="/orderSummery" exact component={OrderSummary}/>
 
                     <Route path="/itemlist" exact component={ItemList}/>
-                    <Route path="/edititem/:id" exact component={EditItem}/>
-                    <Route path="/additem" exact component={AddItem}/>
+                    <Route path="/additem/:id" exact component={AddEditItem}/>
+                    <Route path="/additem" exact component={AddEditItem}/>
 
                     <Route path="/mstaff" exact component={ManagementStaffList} />
                     <Route path="/mstaff/add" component={CreateManagementStaff} />
                     <Route path="/mstaff/edit/:id" component={EditManagementStaff} />
 
                 </Switch>
+                <ItemFooter/>
             </Router>
 
 
-            <Footer/>
         </div>
     );
 }
