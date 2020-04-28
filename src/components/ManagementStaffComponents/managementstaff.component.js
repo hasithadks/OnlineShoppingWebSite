@@ -54,17 +54,17 @@ export default class ManagementStaffList extends Component{
 
     render() {
         return(
-            <div className="container">
-                <div>
-                    <h3 style={{textAlign:"center"}}>Management Staff</h3>
+            <div className="container card">
+                <div className="container" style={{marginBottom:"30px",marginTop:"30px"}}>
+                    <h3 className="text-monospace">Management Staff</h3>
                 </div>
                 <div align="right">
                     <button className="btn btn-primary" style={{width:"auto", marginBottom:"20px"}}><Link style={{color:"black"}} to={"/mstaff/add"}>Add Management Staff</Link></button>
                 </div>
 
                 <div>
-                    <table className="table table-striped table-dark">
-                        <thead>
+                    <table className="table table-striped table-bordered">
+                        <thead className="thead-dark">
                         <tr>
                             <th scope="col">FirstName</th>
                             <th scope="col">Lastname</th>

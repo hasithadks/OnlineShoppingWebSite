@@ -89,17 +89,19 @@ export default class EditManagementStaff extends Component{
 
     render() {
         return(
-            <div className="container" align="center">
-                <div className="container">
-                    <h3>Edit Management Staff</h3>
+            <div className="container">
+                <div className="container card">
+                    <div className="container" style={{marginBottom:"30px",marginTop:"30px"}}>
+                        <h3 className="text-monospace">Edit Management Staff</h3>
+                    </div>
 
                     <form onSubmit={this.onSubmit}>
                         <div className="form-group">
                             <div className="row">
                                 <div className="col-md-2">
-                                    <label>First Name :</label>
+                                    <label>First Name</label>
                                 </div>
-                                <div className="col-md-6">
+                                <div className="col-md-10">
                                     <input type="text" className="form-control" value={this.state.fname} onChange={this.onChangeFname} />
                                 </div>
                             </div>
@@ -107,9 +109,9 @@ export default class EditManagementStaff extends Component{
                         <div className="form-group">
                             <div className="row">
                                 <div className="col-md-2">
-                                    <label>Last Name :</label>
+                                    <label>Last Name</label>
                                 </div>
-                                <div className="col-md-6">
+                                <div className="col-md-10">
                                     <input type="text" className="form-control" value={this.state.lname} onChange={this.onChangeLname} />
                                 </div>
                             </div>
@@ -117,9 +119,9 @@ export default class EditManagementStaff extends Component{
                         <div className="form-group">
                             <div className="row">
                                 <div className="col-md-2">
-                                    <label>User Name :</label>
+                                    <label>User Name</label>
                                 </div>
-                                <div className="col-md-6">
+                                <div className="col-md-10">
                                     <input type="text" className="form-control" value={this.state.username} onChange={this.onChangeUsername} />
                                 </div>
                             </div>
@@ -127,9 +129,9 @@ export default class EditManagementStaff extends Component{
                         <div className="form-group">
                             <div className="row">
                                 <div className="col-md-2">
-                                    <label>Password :</label>
+                                    <label>Password</label>
                                 </div>
-                                <div className="col-md-6">
+                                <div className="col-md-10">
                                     <input type="password" className="form-control" value={this.state.password} onChange={this.onChangePassword} />
                                 </div>
                             </div>
@@ -137,9 +139,9 @@ export default class EditManagementStaff extends Component{
                         <div className="form-group">
                             <div className="row">
                                 <div className="col-md-2">
-                                    <label>Role :</label>
+                                    <label>Role</label>
                                 </div>
-                                <div className="col-md-6">
+                                <div className="col-md-10">
                                     <select className="form-control" onChange={this.onChangeRole} value={this.state.role}>
                                         <option value="select">Select a Role</option>
                                         <option value="Store Manager">Store Manager</option>
@@ -150,8 +152,8 @@ export default class EditManagementStaff extends Component{
                         </div>
 
                         <div className="form-group">
-                            <div className="row">
-                                <button style={{width:"auto",marginLeft:"340px",marginRight:"20px"}} className="btn btn-warning"><Link style={{color:"black"}} to={"/mstaff/"}>Back</Link></button>
+                            <div className="row" style={{marginRight:"3px"}}>
+                                <button style={{width:"auto",marginLeft:"auto"}} className="btn btn-secondary mr-1"><Link style={{color:"black"}} to={"/mstaff/"}>Back</Link></button>
                                 <button style={{width:"auto"}} className="btn btn-primary" type="submit">Update Management Staff</button>
                             </div>
                         </div>
