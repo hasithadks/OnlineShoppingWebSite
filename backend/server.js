@@ -18,10 +18,11 @@ connection.once('open',() => {
 
 const productRouter = require('./routes/products');
 const staffRouter = require('./routes/managementstaff');
+const favouriteRouter = require('./routes/favouriteProduct');
 
 app.use('/products', productRouter);
 app.use('/mstaff', staffRouter);
-
+app.use('/favouriteProduct', favouriteRouter);
 
 const userRouter = require('./routes/user');
 app.use('/users',userRouter);

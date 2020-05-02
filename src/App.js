@@ -10,10 +10,11 @@ import Profile from "./components/User_components/Profile";
 import Editprofile from "./components/User_components/Editprofile";
 
 // IT18063288
-import ProductDetails from "./components/ProductDetails";
-import shoppingCart from "./components/ShoppingCart";
-import OrderSummary from "./components/OrderSummary"
-import DeliveryDetails from "./components/DeliveryDetails"
+import ProductDetails from "./components/Cart_and_purchasing_Components/ProductDetails";
+import shoppingCart from "./components/Cart_and_purchasing_Components/ShoppingCart";
+import OrderSummary from "./components/Cart_and_purchasing_Components/OrderSummary"
+import DeliveryDetails from "./components/Cart_and_purchasing_Components/DeliveryDetails"
+import FavoList from "./components/Cart_and_purchasing_Components/FavouriteList"
 
 import AddEditItem from "./components/add-edit-item-component";
 import ItemList from "./components/item-list-component";
@@ -45,12 +46,15 @@ function App() {
                     <Route path="/edit">
                         <Editprofile/>
                     </Route>
-                    <Route path="/product">
-                        <ProductDetails/>
-                    </Route>
+                    {/*<Route path="/productDetails">*/}
+                    {/*    <ProductDetails/>*/}
+                    {/*</Route>*/}
+
+                    <Route path="/productDetails" exact component={ProductDetails}/>
                     <Route path="/shoppingcart" exact component={shoppingCart}/>
                     <Route path="/deliveryDetails" exact component={DeliveryDetails}/>
                     <Route path="/orderSummery" exact component={OrderSummary}/>
+                    <Route path="/FavouriteList" exact component={FavoList}/>
 
                     <Route path="/itemlist" exact component={ItemList}/>
                     <Route path="/additem/:id" exact component={AddEditItem}/>

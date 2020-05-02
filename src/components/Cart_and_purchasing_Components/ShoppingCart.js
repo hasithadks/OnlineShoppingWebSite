@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import deleteIcon from "./Images/delete_icon.png";
+import deleteIcon from "../Images/delete_icon.png";
 
 
 export default class ShoppingCart extends Component {

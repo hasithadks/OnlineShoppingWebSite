@@ -1,10 +1,14 @@
 import React, {Component} from "react";
-import ProductImage from "./Images/tshirt.jpg";
-import FavouriteImageGray from "./Images/favorite_grey.png";
-import FavouriteImageRed from "./Images/favorite_red.png";
+import ProductImage from "../Images/tshirt.jpg";
+import FavouriteImageGray from "../Images/favorite_grey.png";
+import FavouriteImageRed from "../Images/favorite_red.png";
 import {Link} from "react-router-dom";
+import axios from 'axios';
 import StarRatingComponent from 'react-star-rating-component';
-import pluseImage from './Images/pluse.png';
+import pluseImage from '../Images/pluse.png';
+import minusImage from '../Images/minus.png';
+import {resolveToLocation} from "react-router-dom/modules/utils/locationUtils";
+import * as configs from "../../Config/config";
 
 export default class ProductDetails extends Component {
 
@@ -23,37 +27,85 @@ export default class ProductDetails extends Component {
             likeImage: '',
             rating: 1,
             quantity: 0,
-            discount: 40
+            discount: 40,
+            productId: 1488,
+            userID: 4787,
+            favo_ID : ""
 
         };
 
         this.onChangeIsLike = this.onChangeIsLike.bind(this);
         this.onclickShoppingCart = this.onclickShoppingCart.bind(this);
-        this.onClickPlusLeft = this.onClickPlusLeft.bind(this);
+        this.onClickMinesLeft = this.onClickMinesLeft.bind(this);
         this.onClickPlusRight = this.onClickPlusRight.bind(this);
     }
 
+    componentDidMount() {
+        axios.get(configs.BASE_URL + '/favouriteProduct/' + this.state.productId)
+            .then(response => {
+                console.log(response.data);
+                if (response.data.length > 0) {
+
+
+                    let data = response.data[0];
+                    if (data.isLiked === true) {
+                        this.setState({
+                            isLike: true,
+                            favo_ID:data._id
+                        });
+                    } else {
+                        this.setState({
+                            isLike: false,
+                            favo_ID:data._id
+                        });
+                    }
+                }
+            });
+    }
+
+
+
     onChangeIsLike() {
+
         if (this.state.isLike === false) {
             this.setState({
-                isLike: true
-            })
+                    isLike: true
+
+                },
+                () => {
+                    let {productId, userID, isLike} = this.state;
+                    let payload = {productId, userID, isLike};
+                    //console.log(payload);
+                    axios.post(configs.BASE_URL + '/favouriteProduct/add', payload)
+                        .then(() => this.componentDidMount());
+                }
+            )
+
         } else {
             this.setState({
                 isLike: false
 
-            })
+            },
+                () => {
+                axios.delete( configs.BASE_URL + '/favouriteProduct/delete/' + this.state.favo_ID)
+                    .then(() => alert("Remove from favourite List"));
+                }
+                )
         }
+
+
     }
 
     onclickShoppingCart() {
-        window.location();
+
     }
 
-    onClickPlusLeft() {
+    onClickMinesLeft() {
         let temQty = this.state.quantity;
-        temQty = temQty - 1;
-        this.setState({quantity: temQty})
+        if(temQty > 0) {
+            temQty = temQty - 1;
+            this.setState({quantity: temQty})
+        }
     }
 
     onClickPlusRight() {
@@ -171,12 +223,12 @@ export default class ProductDetails extends Component {
                                 </div>
                                 <div className="col-2" style={{padding: '0px'}}>
                                     <br/>
-                                    <img src={pluseImage} width="25" height="25"
-                                         alt="Add Favourite Image" onClick={this.onClickPlusLeft}/>
+                                    <img src={minusImage} width="25" height="25"
+                                         alt="Add Favourite Image" onClick={this.onClickMinesLeft}/>
                                 </div>
                                 <div className="col-2" style={{padding: '0px'}}>
                                     <br/>
-                                    <input type="text" style={{width: '40%'}} value={this.state.quantity}/>
+                                    <input type="text" style={{width: '40%'}} id="quetity" value={this.state.quantity}/>
                                 </div>
                                 <div className="col-2" style={{padding: '0px'}}>
                                     <br/>
@@ -194,7 +246,8 @@ export default class ProductDetails extends Component {
 
 
                                 <a href="/shoppingcart" type="submit"
-                                   className="profile-edit-btn nav-link  btn-primary rounded" name="btnAddMore">
+                                   className="profile-edit-btn nav-link  btn btn-primary" name="btnAddMore"
+                                   style={{float: 'left', marginLeft: '5px', marginTop: '30px', marginBottom: '20px'}}>
                                     Add to Cart
                                 </a>
                             </div>

@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import Cash_icon from "./Images/cash_icon.png";
-import card_icon from "./Images/credit_card.png";
-import master_card from "./Images/master_card.png";
-import visa_card from "./Images/visa_card.png";
+import Cash_icon from "../Images/cash_icon.png";
+import card_icon from "../Images/credit_card.png";
+import master_card from "../Images/master_card.png";
+import visa_card from "../Images/visa_card.png";
 
 
 export default class OrderSummary extends Component {
