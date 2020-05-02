@@ -20,14 +20,13 @@ export default class ProductDetails extends Component {
             shirtSize: ['S', 'M', 'L', 'XL', 'XXL'],
             shirtColor: [],
             productPrice: 1250,
-            productDiscount: 20,
             discountedPrice: 1000,
             isLike: false,
-            isDiscounted: true,
+            isDiscounted: false,
             likeImage: '',
             rating: 1,
             quantity: 0,
-            discount: 40,
+            discount: 25,
             productId: 1488,
             userID: 4787,
             favo_ID : ""
@@ -156,14 +155,18 @@ export default class ProductDetails extends Component {
 
                         </div>
                         <hr style={{marginTop: '2px'}}/>
-                        <div>
-                            <h2 style={{color: 'orange'}}> Rs. {this.state.productPrice}</h2>
+                        <div className="row">
+                            <div className="col-7">
+                                <h2 style={{color: 'orange', float:"right"}}> Rs. {this.state.discountedPrice}</h2>
+                            </div>
+
                             {this.state.isDiscounted !== false ?
-                                <div className="justify-content-lg-between" style={{
+                                <div className="col" style={{
                                     float: 'right',
-                                    width: '80px', marginRight: '70px', marginTop: '-40px'
+                                    width: '80px', marginRight: '70px', marginTop: '0px'
                                 }}>
                                     <h5 style={{color: 'red'}}>{this.state.discount}% Off</h5>
+                                    <span style={{textDecoration: 'line-through'}}>Rs. {this.state.productPrice}</span>
                                 </div> :
                                 <div className="justify-content-lg-between" style={{
                                     float: 'right',
@@ -180,7 +183,7 @@ export default class ProductDetails extends Component {
                                 <label>Size :</label>
                             </div>
                             <div className="col-3" style={{padding: '0px'}}>
-                                <select style={{width: '100%'}}>
+                                <select style={{width: '100%'}} className="browser-default custom-select">
                                     <option value="small">S</option>
                                     <option value="medium">M</option>
                                     <option value="large">L</option>
@@ -195,7 +198,7 @@ export default class ProductDetails extends Component {
                                 <label>Color : </label>
                             </div>
                             <div className="col-3" style={{padding: '0px'}}>
-                                <select style={{width: '100%'}}>
+                                <select style={{width: '100%'}} className="browser-default custom-select">
                                     <option value="white">White</option>
                                     <option value="black">Black</option>
                                     <option value="blue">Blue</option>
@@ -217,20 +220,20 @@ export default class ProductDetails extends Component {
                             }}>
                                 <div className="col-1" style={{padding: '0px'}}>
                                 </div>
-                                <div className="col-3" style={{padding: '0px'}}>
+                                <div className="col-3" style={{padding: '0px', float:'left', marginRight:'-50px'}}>
                                     <br/>
-                                    <span>Quantity : </span>
+                                    <span style={{marginLeft:'-50px'}}>Quantity : </span>
                                 </div>
                                 <div className="col-2" style={{padding: '0px'}}>
                                     <br/>
                                     <img src={minusImage} width="25" height="25"
                                          alt="Add Favourite Image" onClick={this.onClickMinesLeft}/>
                                 </div>
-                                <div className="col-2" style={{padding: '0px'}}>
+                                <div className="col-1" style={{padding: '0px'}}>
                                     <br/>
-                                    <input type="text" style={{width: '40%'}} id="quetity" value={this.state.quantity}/>
+                                    <input type="text" className="form-control" style={{width: '100%'}} id="quetity" value={this.state.quantity}/>
                                 </div>
-                                <div className="col-2" style={{padding: '0px'}}>
+                                <div className="col-2" style={{padding: '0px',marginLeft:'-0px'}}>
                                     <br/>
                                     <img src={pluseImage} width="25" height="25"
                                          alt="Add Favourite Image" onClick={this.onClickPlusRight}/>
