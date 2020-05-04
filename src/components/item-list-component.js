@@ -7,11 +7,9 @@ const  Product = props =>(
         <td>{props.product.item_name}</td>
         <td>{props.product.item_description}</td>
         <td>{props.product.item_category}</td>
-        <td>{props.product.item_quantity}</td>
         <td>{props.product.item_discount}</td>
         <td>{props.product.item_from}</td>
         <td>{props.product.item_brand}</td>
-        <td>{props.product.item_features}</td>
         <td>{props.product.item_image}</td>
         <td><div>
             <Link className="mx-1 text-success fas fa-pen text-decoration-none" to={"/additem/"+props.product._id}></Link><span className=" mx-1 text-danger fas fa-trash" href ='#' onClick={()=>{props.deleteProduct(props.product._id,props.product.item_id)}}></span>
@@ -77,11 +75,9 @@ export default class ItemLists extends Component{
                             <th>Name</th>
                             <th>Description</th>
                             <th>Category</th>
-                            <th>Quantity</th>
                             <th>Discount</th>
                             <th>From</th>
                             <th>Brand</th>
-                            <th>Features</th>
                             <th>Image</th>
                             <th>Action</th>
                         </tr>
