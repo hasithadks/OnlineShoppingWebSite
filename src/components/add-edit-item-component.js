@@ -9,7 +9,7 @@ const  Quantity = props =>(
         <td>{props.quantity.item_quantity}</td>
         <td>{props.quantity.item_price}</td>
         <td><div>
-            <span className=" mx-1 text-success fas fa-pen" href ='#' onClick={()=>{props.fillQuantity(props.quantity._id)}}>Edit</span><span className=" mx-1 text-danger fas fa-trash" href ='#' onClick={()=>{props.deleteQuantity(props.quantity._id)}}>Delete</span>
+            <span className=" mx-1 text-success fas fa-pen" href ='#' onClick={()=>{props.fillQuantity(props.quantity._id)}}></span><span className=" mx-1 text-danger fas fa-trash" href ='#' onClick={()=>{props.deleteQuantity(props.quantity._id)}}></span>
         </div>
         </td>
     </tr>

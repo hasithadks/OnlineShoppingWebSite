@@ -14,7 +14,7 @@ const  Product = props =>(
         <td>{props.product.item_features}</td>
         <td>{props.product.item_image}</td>
         <td><div>
-            <Link className="mx-1 text-success fas fa-pen text-decoration-none" to={"/additem/"+props.product._id}></Link><span className=" mx-1 text-danger fas fa-trash" href ='#' onClick={()=>{props.deleteProduct(props.product._id)}}></span>
+            <Link className="mx-1 text-success fas fa-pen text-decoration-none" to={"/additem/"+props.product._id}></Link><span className=" mx-1 text-danger fas fa-trash" href ='#' onClick={()=>{props.deleteProduct(props.product._id,props.product.item_id)}}></span>
             </div>
         </td>
     </tr>
@@ -47,11 +47,16 @@ export default class ItemLists extends Component{
             })
     }
 
-    deleteProduct(id){
-        axios.delete('http://localhost:5000/products/delete/'+id)
+    deleteProduct(pid,qid){
+        axios.delete('http://localhost:5000/products/delete/'+pid)
             .then(res => console.log(res.data));
         this.setState({
-            products:this.state.products.filter(el => el.id !==id)
+            products:this.state.products.filter(el => el.pid !==pid)
+        })
+        axios.delete('http://localhost:5000/quantity/delete/qty/'+qid)
+            .then(res => console.log(res.data));
+        this.setState({
+            //quantity:this.state.quantity.filter(el => el.qid !==qid)
         })
     }
 

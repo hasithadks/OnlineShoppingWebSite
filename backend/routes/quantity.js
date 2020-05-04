@@ -63,4 +63,10 @@ quantityRouter.route('/delete/:id').delete((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
+quantityRouter.route('/delete/qty/:id').delete((req, res) => {
+    Quantity.remove({"item_id" : req.params.id})
+        .then(() => res.json('Product Deleted.'))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
 module.exports = quantityRouter;
