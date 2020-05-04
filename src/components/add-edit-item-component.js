@@ -79,24 +79,7 @@ export default class AddEditItem extends Component{
         })
     }
 
-    updateQuantity(e){
-        e.preventDefault();
 
-        const editQuantity = {
-            item_id : this.state.item_id,
-            item_size : this.state.item_size,
-            item_colour : this.state.item_colour,
-            item_price : this.state.item_price,
-            item_quantity : this.state.item_quantity,
-        };
-
-        axios.post('http://localhost:5000/quantity/update/'+this.state.id,editQuantity)
-            .then(res => console.log(res.data));
-       // this.props.history.push('/');
-        this.setState({
-            quantityItem : false
-        });
-    }
 
     fillQuantity(id){
         axios.get('http://localhost:5000/quantity/qty/'+ id)
@@ -273,7 +256,6 @@ export default class AddEditItem extends Component{
             .then(res => console.log((res.data)));
 
         this.setState({
-            item_id: '',
             item_size: '',
             item_colour: '',
             item_price:'',
@@ -281,6 +263,31 @@ export default class AddEditItem extends Component{
         })
     }
 
+    updateQuantity(e){
+        e.preventDefault();
+
+        const editQuantity = {
+            item_id : this.state.item_id,
+            item_size : this.state.item_size,
+            item_colour : this.state.item_colour,
+            item_price : this.state.item_price,
+            item_quantity : this.state.item_quantity,
+        };
+
+        axios.post('http://localhost:5000/quantity/update/'+this.state.id,editQuantity)
+            .then(res => console.log(res.data));
+        // this.props.history.push('/');
+        this.setState({
+            quantityItem : false
+        });
+
+        this.setState({
+            item_size: '',
+            item_colour: '',
+            item_price:'',
+            item_quantity:'',
+        })
+    }
     onAdd(e){
         e.preventDefault();
 

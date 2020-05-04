@@ -17,11 +17,13 @@ connection.once('open',() => {
 });
 
 const productRouter = require('./routes/products');
+const quantityRouter = require('./routes/quantity');
 const staffRouter = require('./routes/managementstaff');
 const favouriteRouter = require('./routes/favouriteProduct');
 const deliveryDetailsRouter = require('./routes/deliveryDetails');
 
 app.use('/products', productRouter);
+app.use('/quantity', quantityRouter);
 app.use('/mstaff', staffRouter);
 app.use('/favouriteProduct', favouriteRouter);
 app.use('/deliveryDetails', deliveryDetailsRouter);
