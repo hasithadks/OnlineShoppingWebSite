@@ -1,5 +1,6 @@
 const productRouter = require('express').Router();
 let Product = require('../models/product.model');
+const mongoose = require('mongoose');
 
 productRouter.route('/').get(function(req, res) {
     Product.find(function(err, products) {
@@ -19,14 +20,54 @@ productRouter.route('/:id').get(function (req, res) {
 });
 
 
+// productRouter.route('/add').post(function(req, res) {
+//     let product = new Product(req.body);
+//     product.save()
+//         .then(product => {
+//             res.status(200).json({'item': 'item added successfully'});
+//         })
+//         .catch(err => {
+//             res.status(400).send('adding new item failed');
+//         });
+// });
+
 productRouter.route('/add').post(function(req, res) {
-    let product = new Product(req.body);
-    product.save()
-        .then(product => {
-            res.status(200).json({'item': 'item added successfully'});
+    const product = new Product({
+        item_id: new mongoose.Types.ObjectId(),
+        item_name : req.body.item_name,
+        item_description :req.body.item_description,
+        item_category : req.body.item_category,
+        item_discount : req.body.item_discount,
+        item_from : req.body.item_from,
+        item_brand : req.body.item_brand,
+        item_image : req.body.item_image,
+    });
+    product
+        .save()
+        .then(result => {
+            res.json(result);
+            console.log(result);
+            res.status(201).json({
+                message: "Created product successfully",
+                createdProduct: {
+                    item_name : result.item_name,
+                    item_description :result.item_description,
+                    item_category : result.item_category,
+                    item_discount : result.item_discount,
+                    item_from : result.item_from,
+                    item_brand : result.item_brand,
+                    item_image : result.item_image,
+                    item_id: result.item_id,
+                    request: {
+                        type: 'GET',
+                        url: "http://localhost:5000/products/" + result._id
+                    }
+                }
+            });
         })
         .catch(err => {
-            res.status(400).send('adding new item failed');
+            console.log(err);
+            res.status(500).json({error: err});
         });
 });
 
@@ -38,11 +79,9 @@ productRouter.route('/update/:id').post((req, res) => {
             product.item_name = req.body.item_name;
             product.item_description =req.body.item_description;
             product.item_category = req.body.item_category;
-            product.item_quantity = req.body.item_quantity;
             product.item_discount = req.body.item_discount;
             product.item_from = req.body.item_from;
             product.item_brand = req.body.item_brand;
-            product.item_features = req.body.item_features;
             product.item_image = req.body.item_image;
 
             product.save().then(product =>{
