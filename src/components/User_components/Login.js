@@ -1,11 +1,20 @@
 import React, {Component} from "react";
 import axios from "axios";
 
+const  User = props =>(
+    localStorage.clear(),
+    localStorage.setItem('user_email',props.user.user_email),
+    localStorage.setItem('user_username',props.user.user_username),
+    localStorage.setItem('user_password',props.user.user_password),
+    localStorage.setItem('user_phone',props.user.user_phone),
+    localStorage.setItem('user_gender',props.user.user_gender),
+    localStorage.setItem('user_image',props.user.user_image),
+        <span style={{color:"black"}}> </span>
+);
 export default class Login extends Component{
 
      constructor(props) {
          super(props);
-
          this.onChangeUserName = this.onChangeUserName.bind(this);
          this.onChangePassword = this.onChangePassword.bind(this);
          this.onSubmit = this.onSubmit.bind(this);
@@ -16,40 +25,35 @@ export default class Login extends Component{
              user_username : '',
              user_phone : '',
              user_gender :'',
-             user_image : ''
+             user_image : '',
+             user:[],
          }
     }
 
-     onSubmit(e){
-         e.preventDefault(e);
-
-       //  console.log(`Form submitted:`);
-       //  console.log(`email: ${this.state.user_email}`);
-       //  console.log(`password: ${this.state.user_password}`);
-
-         axios.get('http://localhost:5000/users/username/'+ this.state.user_email)
-             .then(response =>{
-                 this.setState({
-                     //_id :response.data._id,
-                     user_email : response.data.user_email,
-                     user_username : response.data.user_username,
-                     user_password : response.data.user_password,
-                     user_phone : response.data.user_phone,
-                     user_gender : response.data.user_gender,
-                     user_image : response.data.user_image,
-                 })
-             })
-             .catch(function (error) {
-                 console.log(error)
-             });
-
-         console.log(`Form submitted:`);
-         console.log(`email: ${this.state.user_email}`);
-         console.log(`username: ${this.state.user_username}`);
-         console.log(`password: ${this.state.user_password}`);
-         console.log(`phone: ${this.state.user_phone}`);
-         console.log(`gender: ${this.state.user_gender}`);
-         console.log(`image: ${this.state.user_image}`);
+    componentDidUpdate() {
+        this.productList();
+        axios.get('http://localhost:5000/users/username/'+ this.state.user_email)
+            .then(response =>{
+                this.setState({user: response.data});
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    componentDidMount() {
+        this.productList();
+        axios.get('http://localhost:5000/users/username/'+ this.state.user_email)
+            .then(response =>{
+                this.setState({user: response.data});
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    productList(){
+        return this.state.user.map(currentTodo => {
+            return <User user ={currentTodo} key={currentTodo._id}/>
+        });
     }
 
     onChangeUserName(e){
@@ -64,9 +68,34 @@ export default class Login extends Component{
         });
     }
 
+    onSubmit(e){
+        e.preventDefault(e);
+
+        if(this.state.user_email == localStorage.getItem('user_email') && this.state.user_password == localStorage.getItem('user_password')){
+                console.log("login success!")
+                console.log(localStorage.getItem('user_email'));
+                console.log(localStorage.getItem('user_username'));
+                console.log(localStorage.getItem('user_password'));
+                console.log(localStorage.getItem('user_phone'));
+                console.log(localStorage.getItem('user_gender'));
+                console.log(localStorage.getItem('user_image'));
+        }
+        else{
+            console.log("try again!")
+            console.log(localStorage.getItem('user_email'));
+            console.log(localStorage.getItem('user_username'));
+            console.log(localStorage.getItem('user_password'));
+            console.log(localStorage.getItem('user_phone'));
+            console.log(localStorage.getItem('user_gender'));
+            console.log(localStorage.getItem('user_image'));
+        }
+
+    }
     render(){
         return (
+
             <div className="container">
+                {this.productList()}
                 <div style={{width:'50%',marginLeft:'25%',marginTop:'6%',marginBottom:'83px'}}>
                 <div style={{width:'70%',marginLeft:'9%'}}>
                     <hr/>

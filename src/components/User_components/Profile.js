@@ -1,14 +1,30 @@
 import React, { Component } from 'react'
+import axios from "axios";
 
 export default class Profile extends Component {
     constructor(props) {
         super(props);
 
         this.state ={
-            users:[]
+            user_email : localStorage.getItem('user_email'),
+            user_password: localStorage.getItem('user_password'),
+            user_username : localStorage.getItem('user_username'),
+            user_phone : localStorage.getItem('user_phone'),
+            user_gender :localStorage.getItem('user_gender'),
+            user_image : localStorage.getItem('user_image'),
         };
     }
 
+    componentDidUpdate() {
+        this.state ={
+            user_email : localStorage.getItem('user_email'),
+            user_password: localStorage.getItem('user_password'),
+            user_username : localStorage.getItem('user_username'),
+            user_phone : localStorage.getItem('user_phone'),
+            user_gender :localStorage.getItem('user_gender'),
+            user_image : localStorage.getItem('user_image'),
+        };
+    }
     render() {
         return (
             <div style={{width:'100%',height:'100%'}}>
@@ -25,7 +41,7 @@ export default class Profile extends Component {
                                             <td>
                                                 <div className="profile-head" style={{float:'left', marginLeft:'14px'}}>
                                                     <h4>
-                                                        Kshiti Ghelani
+
                                                     </h4>
                                                 </div>
                                             </td>
@@ -78,7 +94,7 @@ export default class Profile extends Component {
                                                         <label>Name</label>
                                                     </div>
                                                     <div className="col-md-6">
-                                                        <p>Kshiti123</p>
+                                                        <p>{this.state.user_username}</p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -91,7 +107,7 @@ export default class Profile extends Component {
                                                         <label>Email</label>
                                                     </div>
                                                     <div className="col-md-6">
-                                                        <p>kshitighelani@gmail.com</p>
+                                                        <p>{this.state.user_email}</p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -104,7 +120,7 @@ export default class Profile extends Component {
                                                         <label>Phone</label>
                                                     </div>
                                                     <div className="col-md-6">
-                                                        <p>123 456 7890</p>
+                                                        <p>{this.state.user_phone}</p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -117,7 +133,7 @@ export default class Profile extends Component {
                                                         <label>Gender</label>
                                                     </div>
                                                     <div className="col-md-6">
-                                                        <p>Female</p>
+                                                        <p>{this.state.user_gender}</p>
                                                     </div>
                                                 </div>
                                             </td>

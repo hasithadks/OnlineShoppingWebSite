@@ -28,6 +28,12 @@ router.route('/add').post((req,res) =>{
         .catch(err =>res.status(400).json('Error: '+err));
 });
 
+router.route('/username/:email').get((req, res) => {
+    User.find({"user_email" : req.params.email})
+        .then(users => res.json(users))
+        .catch(err => res.status(400).json('Eroor: '+ err));
+});
+
 router.route('/:id').get((req,res)=>{
     User.findById(req.params.id)
         .then(user => res.json(user))
