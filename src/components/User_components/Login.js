@@ -130,7 +130,7 @@ export default class Login extends Component{
                             <a href="#" style={{fontSize:'12px', color:'blue',float: 'right'}}>Forgot password?</a>
                         </tr>
                         <tr>
-                            <button className="btn btn-primary" onClick={this.onSubmit} style={{marginTop:'20px', marginBottom:'10px',float: 'right',width:'110px'}}>Login</button>
+                            <button href="/home" className="btn btn-primary" onClick={this.onSubmit} style={{marginTop:'20px', marginBottom:'10px',float: 'right',width:'110px'}}>Login</button>
                         </tr>
                     </tbody>
                 </table>

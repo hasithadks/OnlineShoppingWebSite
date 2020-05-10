@@ -12,6 +12,9 @@ export default class Profile extends Component {
             user_phone : localStorage.getItem('user_phone'),
             user_gender :localStorage.getItem('user_gender'),
             user_image : localStorage.getItem('user_image'),
+            user_b_year: localStorage.getItem('user_b_year'),
+            user_b_month: localStorage.getItem('user_b_month'),
+            user_b_day: localStorage.getItem('user_b_day'),
         };
     }
 
@@ -23,6 +26,9 @@ export default class Profile extends Component {
             user_phone : localStorage.getItem('user_phone'),
             user_gender :localStorage.getItem('user_gender'),
             user_image : localStorage.getItem('user_image'),
+            user_b_year: localStorage.getItem('user_b_year'),
+            user_b_month: localStorage.getItem('user_b_month'),
+            user_b_day: localStorage.getItem('user_b_day'),
         };
     }
     render() {
@@ -146,7 +152,7 @@ export default class Profile extends Component {
                                                         <label>Birthday</label>
                                                     </div>
                                                     <div className="col-md-6">
-                                                        <p>1997/11/24</p>
+                                                        <p>{this.state.user_b_year}/{this.state.user_b_month}/{this.state.user_b_day}</p>
                                                     </div>
                                                 </div>
                                             </td>

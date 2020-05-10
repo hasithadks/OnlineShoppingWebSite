@@ -27,10 +27,10 @@ export default class ItemNav extends Component{
                         </li>
 
                         <li>
-                            <Link style={{color:"#f26f36"}} to ="/edit/:id" className="nav-link"> LOGIN</Link>
+                            <Link style={{color:"#f26f36"}} to ="/login" className="nav-link"> LOGIN</Link>
                         </li>
                         <li>
-                            <Link style={{color:"#f26f36"}} to ="/add" className="nav-link">SIGNUP</Link>
+                            <Link style={{color:"#f26f36"}} to ="/register" className="nav-link">SIGNUP</Link>
                         </li>
                     </ul>
                 </div>

@@ -13,7 +13,6 @@ router.route('/add').post((req,res) =>{
     const user_password = req.body.user_password;
     const user_phone = req.body.user_phone;
     const user_gender = req.body.user_gender;
-    const user_image = req.body.user_image;
 
     const newUser = new User({
         user_email,
@@ -21,7 +20,6 @@ router.route('/add').post((req,res) =>{
         user_password,
         user_phone,
         user_gender,
-        user_image,
     });
     newUser.save()
         .then(() =>res.json('User Succefully Added....'))
@@ -55,6 +53,9 @@ router.route('/update/:id').post((req,res) => {
             user.user_phone = req.body.user_phone;
             user.user_gender = req.body.user_gender;
             user.user_image = req.body.user_image;
+            user.user_b_year = req.body.user_b_year;
+            user.user_b_month = req.body.user_b_month;
+            user.user_b_day = req.body.user_b_day;
 
             user.save()
                 .then(() => res.json('User Updated....'))

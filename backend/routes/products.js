@@ -2,10 +2,11 @@ const productRouter = require('express').Router();
 let Product = require('../models/product.model');
 const mongoose = require('mongoose');
 
-productRouter.route('/').get(function(req, res) {
+productRouter.route('/').get(function(req, res, next) {
     Product.find(function(err, products) {
         if (err) {
             console.log(err);
+            res.render('index');
         } else {
             res.json(products);
         }
