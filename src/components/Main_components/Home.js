@@ -31,7 +31,8 @@ const  Product = props =>(
                             {props.product.item_brand}
                         </p>
                         {/* Button */}
-                        <a href="#" className="btn btn-primary">Add to cart</a>
+                        {/*<a href="/productDetails" className="btn btn-primary">View Product</a>*/}
+                        <Link className="btn btn-primary" to={"/productDetails/"+props.product._id}> View Product</Link>
                     </div>
                 </div>
         </div>

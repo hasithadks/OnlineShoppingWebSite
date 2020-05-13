@@ -9,6 +9,31 @@ import pluseImage from '../Images/pluse.png';
 import minusImage from '../Images/minus.png';
 import {resolveToLocation} from "react-router-dom/modules/utils/locationUtils";
 import * as configs from "../../Config/config";
+import Toast from "react-bootstrap/Toast";
+
+import {useState} from "react";
+// function Example() {
+//     const [showA, setShowA] = useState(true);
+//     const [showB, setShowB] = useState(true);
+//
+//     const toggleShowA = () => setShowA(!showA);
+//     const toggleShowB = () => setShowB(!showB);
+//
+//     return (
+//         <Toast show={showA} autohide={true}>
+//             <Toast.Header>
+//                 <img
+//                     src="holder.js/20x20?text=%20"
+//                     className="rounded mr-2"
+//                     alt=""
+//                 />
+//                 <strong className="mr-auto">Bootstrap</strong>
+//                 <small>11 mins ago</small>
+//             </Toast.Header>
+//             <Toast.Body>Woohoo, you're reading this text in a Toast!</Toast.Body>
+//         </Toast>
+//     );
+// }
 
 export default class ProductDetails extends Component {
 
@@ -17,8 +42,12 @@ export default class ProductDetails extends Component {
 
         this.state = {
             productName: 'Men T-Shirt',
+            productDiscription: "",
+            item_category: "",
+            manufacture: "",
+            item_brand: "",
             shirtSize: ['S', 'M', 'L', 'XL', 'XXL'],
-            shirtColor: [],
+            itemColor: [],
             productPrice: 1250,
             discountedPrice: 1000,
             isLike: false,
@@ -26,10 +55,15 @@ export default class ProductDetails extends Component {
             likeImage: '',
             rating: 1,
             quantity: 0,
-            discount: 25,
-            productId: 1488,
+            discount: 0,
+            productId: 0,
             userID: 4787,
-            favo_ID : ""
+            favo_ID: "",
+            allProduct: [],
+            productQuantities: [],
+            availablecount: 0,
+            selectedSize: '',
+            selectedColor: '',
 
         };
 
@@ -37,12 +71,63 @@ export default class ProductDetails extends Component {
         this.onclickShoppingCart = this.onclickShoppingCart.bind(this);
         this.onClickMinesLeft = this.onClickMinesLeft.bind(this);
         this.onClickPlusRight = this.onClickPlusRight.bind(this);
+        this.onAvailableItemCount = this.onAvailableItemCount.bind(this);
+        this.onChangeSize = this.onChangeSize.bind(this);
+        this.onChangeColor = this.onChangeColor.bind(this);
     }
 
     componentDidMount() {
+        if (this.props.match.params.id != null) {
+            axios.get('http://localhost:5000/products/' + this.props.match.params.id)
+                .then(response => {
+                    this.setState({
+                        productId: response.data.item_id,
+                        productName: response.data.item_name,
+                        productDiscription: response.data.item_description,
+                        item_category: response.data.item_category,
+                        discount: response.data.item_discount,
+                        manufacture: response.data.item_from,
+                        item_brand: response.data.item_brand,
+
+                    })
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+
+        }
+
+        if (this.state.productId != null) {
+            axios.get('http://localhost:5000/quantity/5eafe7ee3fe28f248cff1e49')
+                .then(response => {
+                    this.setState({productQuantities: response.data});
+                    let sizeList = [];
+                    let colorList = [];
+                    for (let i = 0; i < response.data.length; i++) {
+
+                        sizeList.push(response.data[i].item_size);
+                        colorList.push(response.data[i].item_colour);
+
+                    }
+                    this.setState({
+                        shirtSize: sizeList,
+                        itemColor: colorList
+                    })
+                    console.log(response.data);
+                    console.log(this.state.itemColor);
+                    console.log(this.state.shirtSize);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        } else {
+            this.setState({quantity: []});
+        }
+
+
         axios.get(configs.BASE_URL + '/favouriteProduct/' + this.state.productId)
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 if (response.data.length > 0) {
 
 
@@ -50,18 +135,17 @@ export default class ProductDetails extends Component {
                     if (data.isLiked === true) {
                         this.setState({
                             isLike: true,
-                            favo_ID:data._id
+                            favo_ID: data._id
                         });
                     } else {
                         this.setState({
                             isLike: false,
-                            favo_ID:data._id
+                            favo_ID: data._id
                         });
                     }
                 }
             });
     }
-
 
 
     onChangeIsLike() {
@@ -82,14 +166,14 @@ export default class ProductDetails extends Component {
 
         } else {
             this.setState({
-                isLike: false
+                    isLike: false
 
-            },
+                },
                 () => {
-                axios.delete( configs.BASE_URL + '/favouriteProduct/delete/' + this.state.favo_ID)
-                    .then(() => alert("Remove from favourite List"));
+                    axios.delete(configs.BASE_URL + '/favouriteProduct/delete/' + this.state.favo_ID)
+                        .then(() => alert("Remove from favourite List"));
                 }
-                )
+            )
         }
 
 
@@ -99,27 +183,109 @@ export default class ProductDetails extends Component {
 
     }
 
+    async onAvailableItemCount(size, color) {
+
+        if (size != null) {
+            //console.log("size is not null");
+            await this.setState({
+                    selectedSize: size
+                }, () => {
+                    console.log("In Method 2" + this.state.selectedSize);
+                }
+            );
+        }
+        if (color != null) {
+            //console.log("Color is not null");
+            await this.setState({
+                selectedColor: color
+            }, () => {
+                console.log("In Method 1" + this.state.selectedColor);
+            });
+        }
+        ;
+
+        let allQunttityArray = this.state.productQuantities;
+        const {selectedSize, selectedColor} = this.state;
+        if (selectedSize !== '' && selectedColor !== '') {
+            const selectedItem = allQunttityArray.filter((data) => {
+                return data.item_size === selectedSize && data.item_colour === selectedColor
+            });
+            if (typeof selectedItem[0] !== "undefined") {
+
+                this.setState({
+                    availablecount: selectedItem[0].item_quantity
+                });
+
+                //console.log("Selected Item : "+JSON.stringify(selectedItem[0].item_quantity));
+            }else {
+                this.setState({
+                    availablecount: 0
+                });
+            }
+
+        }
+
+
+        // for(let i=0; i<allQunttityArray.length; i++){
+        //     if(allQunttityArray[i].item_size === this.state.selectedSize && allQunttityArray[i].item_colour === this.state.selectedColor){
+        //         console.log("Inside IF");
+        //         this.setState({
+        //             availablecount : allQunttityArray[i].item_quantity
+        //         });
+        //     }
+        // }
+
+        // for(let all in allQunttityArray){
+        //
+        //     if(all.shirtSize === selectedSize && all.itemColor === selectedColor){
+        //         this.setState({
+        //             availablecount : all.item_quantity
+        //         });
+        //     }
+        // }
+
+        //console.log(this.state.availablecount);
+    }
+
+    onChangeSize(e) {
+        let selectedSize = e.target.value;
+
+        this.onAvailableItemCount(selectedSize, null);
+    }
+
+    onChangeColor(e) {
+        let selectedColor = e.target.value;
+
+        this.onAvailableItemCount(null, selectedColor);
+    }
+
     onClickMinesLeft() {
         let temQty = this.state.quantity;
-        if(temQty > 0) {
+        if (temQty > 0) {
             temQty = temQty - 1;
-            this.setState({quantity: temQty})
+            this.setState({quantity: temQty});
         }
     }
 
     onClickPlusRight() {
         let temQty = this.state.quantity;
-        temQty = temQty + 1;
-        this.setState({quantity: temQty})
+        if(temQty < this.state.availablecount) {
+            temQty = temQty + 1;
+            this.setState({quantity: temQty});
+        }
     }
 
     onStarClick(nextValue, prevValue, name) {
         this.setState({rating: nextValue});
     }
 
+
     render() {
         return (
             <div className="container" style={{width: '100%'}}>
+                {/*<div>*/}
+                {/*   <Example/>*/}
+                {/*</div>*/}
                 <div className="row" style={{width: '100%'}}>
                     <div className="row-cols-1">
                         <img src={ProductImage} width="300" height="320" alt="Product Image"/>
@@ -157,7 +323,7 @@ export default class ProductDetails extends Component {
                         <hr style={{marginTop: '2px'}}/>
                         <div className="row">
                             <div className="col-7">
-                                <h2 style={{color: 'orange', float:"right"}}> Rs. {this.state.discountedPrice}</h2>
+                                <h2 style={{color: 'orange', float: "right"}}> Rs. {this.state.discountedPrice}</h2>
                             </div>
 
                             {this.state.isDiscounted !== false ?
@@ -183,12 +349,12 @@ export default class ProductDetails extends Component {
                                 <label>Size :</label>
                             </div>
                             <div className="col-3" style={{padding: '0px'}}>
-                                <select style={{width: '100%'}} className="browser-default custom-select">
-                                    <option value="small">S</option>
-                                    <option value="medium">M</option>
-                                    <option value="large">L</option>
-                                    <option value="xLarge">XL</option>
-                                    <option value="xxLarge">XXL</option>
+                                <select style={{width: '100%'}} className="browser-default custom-select"
+                                        onChange={(e) => this.onChangeSize(e)}>
+                                    <option value="" disabled selected>Select Size</option>
+                                    {this.state.shirtSize.map((size) => <option key={size}
+                                                                                value={size}>{size}</option>)}
+
 
                                 </select>
                             </div>
@@ -198,11 +364,11 @@ export default class ProductDetails extends Component {
                                 <label>Color : </label>
                             </div>
                             <div className="col-3" style={{padding: '0px'}}>
-                                <select style={{width: '100%'}} className="browser-default custom-select">
-                                    <option value="white">White</option>
-                                    <option value="black">Black</option>
-                                    <option value="blue">Blue</option>
-                                    <option value="red">Red</option>
+                                <select style={{width: '100%'}} className="browser-default custom-select"
+                                        onChange={(e) => this.onChangeColor(e)}>
+                                    <option value="" disabled selected>Select Color</option>
+                                    {this.state.itemColor.map((color) => <option key={color}
+                                                                                 value={color}>{color}</option>)}
                                 </select>
                             </div>
 
@@ -220,9 +386,9 @@ export default class ProductDetails extends Component {
                             }}>
                                 <div className="col-1" style={{padding: '0px'}}>
                                 </div>
-                                <div className="col-3" style={{padding: '0px', float:'left', marginRight:'-50px'}}>
+                                <div className="col-3" style={{padding: '0px', float: 'left', marginRight: '-50px'}}>
                                     <br/>
-                                    <span style={{marginLeft:'-50px'}}>Quantity : </span>
+                                    <span style={{marginLeft: '-50px'}}>Quantity : </span>
                                 </div>
                                 <div className="col-2" style={{padding: '0px'}}>
                                     <br/>
@@ -231,9 +397,10 @@ export default class ProductDetails extends Component {
                                 </div>
                                 <div className="col-1" style={{padding: '0px'}}>
                                     <br/>
-                                    <input type="text" className="form-control" style={{width: '100%'}} id="quetity" value={this.state.quantity}/>
+                                    <input type="text" className="form-control" style={{width: '100%'}} id="quetity"
+                                           value={this.state.quantity}/>
                                 </div>
-                                <div className="col-2" style={{padding: '0px',marginLeft:'-0px'}}>
+                                <div className="col-2" style={{padding: '0px', marginLeft: '-0px'}}>
                                     <br/>
                                     <img src={pluseImage} width="25" height="25"
                                          alt="Add Favourite Image" onClick={this.onClickPlusRight}/>
@@ -241,6 +408,12 @@ export default class ProductDetails extends Component {
                                 <div className="col-2" style={{padding: '0px'}}>
                                 </div>
 
+                            </div>
+                            <div className="row">
+                                <div>
+                                    <label>Available Quantity : </label>
+                                    <span>{this.state.availablecount}</span>
+                                </div>
                             </div>
                         </div>
 

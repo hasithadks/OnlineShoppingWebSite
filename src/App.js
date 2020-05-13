@@ -51,6 +51,7 @@ function App() {
                     {/*</Route>*/}
 
                     <Route path="/productDetails" exact component={ProductDetails}/>
+                    <Route path="/productDetails/:id" exact component={ProductDetails}/>
                     <Route path="/shoppingcart" exact component={shoppingCart}/>
                     <Route path="/deliveryDetails" exact component={DeliveryDetails}/>
                     <Route path="/orderSummery" exact component={OrderSummary}/>
