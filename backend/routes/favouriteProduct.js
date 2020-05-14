@@ -10,7 +10,7 @@ router.route('/').get((req, res) => {
 
 router.route('/:id').get((req, res) => {
     let id = req.params.id;
-   // console.log("Product ID" +id);
+    console.log("Product ID" +id);
     productFavo.find({productID: id}, function (err, products) {
        // res.json(products);
     })

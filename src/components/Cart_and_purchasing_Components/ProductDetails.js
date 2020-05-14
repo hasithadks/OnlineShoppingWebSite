@@ -77,9 +77,12 @@ export default class ProductDetails extends Component {
     }
 
     componentDidMount() {
+        let pID = 0;
         if (this.props.match.params.id != null) {
             axios.get('http://localhost:5000/products/' + this.props.match.params.id)
                 .then(response => {
+                    pID = response.data.item_id;
+                    //console.log("PID:" + pID);
                     this.setState({
                         productId: response.data.item_id,
                         productName: response.data.item_name,
@@ -88,6 +91,38 @@ export default class ProductDetails extends Component {
                         discount: response.data.item_discount,
                         manufacture: response.data.item_from,
                         item_brand: response.data.item_brand,
+
+                    }, () => {
+
+                        axios.get(configs.BASE_URL + '/favouriteProduct/' + pID)
+                            .then(response => {
+                                // console.log("Product ID :"+this.state.productId);
+                                // console.log(JSON.stringify(response.data) );
+
+                                if (response.data.length > 0) {
+                                    console.log(response.data);
+                                    console.log(this.state.userID);
+                                    const selectedItem = response.data.filter((dt) => {
+                                        return dt.userID === this.state.userID
+                                    });
+                                    console.log("Selected Item:"+selectedItem);
+                                    if (typeof selectedItem[0] !== "undefined") {
+                                        let data = selectedItem[0];
+                                        if (data.isLiked === true) {
+                                            this.setState({
+                                                isLike: true,
+                                                favo_ID: data._id
+                                            });
+                                        } else {
+                                            this.setState({
+                                                isLike: false,
+                                                favo_ID: data._id
+                                            });
+                                        }
+                                    }
+                                }
+                            });
+
 
                     })
                 })
@@ -113,9 +148,9 @@ export default class ProductDetails extends Component {
                         shirtSize: sizeList,
                         itemColor: colorList
                     })
-                    console.log(response.data);
-                    console.log(this.state.itemColor);
-                    console.log(this.state.shirtSize);
+                    //  console.log(response.data);
+                    //   console.log(this.state.itemColor);
+                    // console.log(this.state.shirtSize);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -125,26 +160,6 @@ export default class ProductDetails extends Component {
         }
 
 
-        axios.get(configs.BASE_URL + '/favouriteProduct/' + this.state.productId)
-            .then(response => {
-                //console.log(response.data);
-                if (response.data.length > 0) {
-
-
-                    let data = response.data[0];
-                    if (data.isLiked === true) {
-                        this.setState({
-                            isLike: true,
-                            favo_ID: data._id
-                        });
-                    } else {
-                        this.setState({
-                            isLike: false,
-                            favo_ID: data._id
-                        });
-                    }
-                }
-            });
     }
 
 
@@ -181,6 +196,43 @@ export default class ProductDetails extends Component {
 
     onclickShoppingCart() {
 
+        if (this.state.shirtSize === "") {
+            alert("Please Select Size");
+        } else if (this.state.itemColor === "") {
+            alert("Please Select Color");
+        } else if (this.state.quantity === 0) {
+            alert("Please Select Quantity");
+        }
+
+        if (this.state.shirtSize !== "" && this.state.itemColor !== "" && this.state.quantity > 0) {
+            //  let {productId, userID, productPrice, discount, discountedPrice, selectedSize, selectedColor, quantity} = this.state;
+
+            let productID = this.state.productId;
+            let userID = this.state.userID;
+            let item_price = this.state.productPrice;
+            let item_discount = this.state.discount;
+            let discounted_price = this.state.discountedPrice;
+            let item_size = this.state.selectedSize;
+            let item_color = this.state.selectedColor;
+            let requested_qty = this.state.quantity;
+
+
+            let payload = {
+                productID,
+                userID,
+                item_price,
+                item_discount,
+                discounted_price,
+                item_size,
+                item_color,
+                requested_qty
+            };
+
+
+            axios.post(configs.BASE_URL + '/cart/add', payload)
+                .then(() => alert("Add to Cart"));
+        }
+
     }
 
     async onAvailableItemCount(size, color) {
@@ -202,7 +254,6 @@ export default class ProductDetails extends Component {
                 console.log("In Method 1" + this.state.selectedColor);
             });
         }
-        ;
 
         let allQunttityArray = this.state.productQuantities;
         const {selectedSize, selectedColor} = this.state;
@@ -217,34 +268,12 @@ export default class ProductDetails extends Component {
                 });
 
                 //console.log("Selected Item : "+JSON.stringify(selectedItem[0].item_quantity));
-            }else {
+            } else {
                 this.setState({
                     availablecount: 0
                 });
             }
-
         }
-
-
-        // for(let i=0; i<allQunttityArray.length; i++){
-        //     if(allQunttityArray[i].item_size === this.state.selectedSize && allQunttityArray[i].item_colour === this.state.selectedColor){
-        //         console.log("Inside IF");
-        //         this.setState({
-        //             availablecount : allQunttityArray[i].item_quantity
-        //         });
-        //     }
-        // }
-
-        // for(let all in allQunttityArray){
-        //
-        //     if(all.shirtSize === selectedSize && all.itemColor === selectedColor){
-        //         this.setState({
-        //             availablecount : all.item_quantity
-        //         });
-        //     }
-        // }
-
-        //console.log(this.state.availablecount);
     }
 
     onChangeSize(e) {
@@ -269,7 +298,7 @@ export default class ProductDetails extends Component {
 
     onClickPlusRight() {
         let temQty = this.state.quantity;
-        if(temQty < this.state.availablecount) {
+        if (temQty < this.state.availablecount) {
             temQty = temQty + 1;
             this.setState({quantity: temQty});
         }
@@ -410,7 +439,7 @@ export default class ProductDetails extends Component {
 
                             </div>
                             <div className="row">
-                                <div>
+                                <div className="col-11">
                                     <label>Available Quantity : </label>
                                     <span>{this.state.availablecount}</span>
                                 </div>
@@ -418,12 +447,15 @@ export default class ProductDetails extends Component {
                         </div>
 
                         <div className="row" style={{marginLeft: '0px'}}>
-                            <div className="col">
+                            <div className="col-10">
 
 
-                                <a href="/shoppingcart" type="submit"
+                                <a href="#" type="submit" onClick={this.onclickShoppingCart}
                                    className="profile-edit-btn nav-link  btn btn-primary" name="btnAddMore"
-                                   style={{float: 'left', marginLeft: '5px', marginTop: '30px', marginBottom: '20px'}}>
+                                   style={{
+                                       float: 'center', marginLeft: '5px', marginTop: '30px', marginBottom: '20px',
+                                       backgroundColor: 'orange', borderColor: 'orange', fontSize: '20px'
+                                   }}>
                                     Add to Cart
                                 </a>
                             </div>
