@@ -45,6 +45,7 @@ quantityRouter.route('/update/:id').post((req, res) => {
             quantity.item_size = req.body.item_size;
             quantity.item_colour =req.body.item_colour;
             quantity.item_price = req.body.item_price;
+            quantity.item_discount = req.body.item_discount;
             quantity.item_quantity = req.body.item_quantity;
 
 

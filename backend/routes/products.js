@@ -38,7 +38,6 @@ productRouter.route('/add').post(function(req, res) {
         item_name : req.body.item_name,
         item_description :req.body.item_description,
         item_category : req.body.item_category,
-        item_discount : req.body.item_discount,
         item_from : req.body.item_from,
         item_brand : req.body.item_brand,
         item_image : req.body.item_image,
@@ -54,7 +53,6 @@ productRouter.route('/add').post(function(req, res) {
                     item_name : result.item_name,
                     item_description :result.item_description,
                     item_category : result.item_category,
-                    item_discount : result.item_discount,
                     item_from : result.item_from,
                     item_brand : result.item_brand,
                     item_image : result.item_image,
@@ -80,7 +78,6 @@ productRouter.route('/update/:id').post((req, res) => {
             product.item_name = req.body.item_name;
             product.item_description =req.body.item_description;
             product.item_category = req.body.item_category;
-            product.item_discount = req.body.item_discount;
             product.item_from = req.body.item_from;
             product.item_brand = req.body.item_brand;
             product.item_image = req.body.item_image;

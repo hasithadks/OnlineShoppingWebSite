@@ -14,6 +14,9 @@ let Quantity = new Schema({
     item_price:{
         type: Number
     },
+    item_discount:{
+        type: Number
+    },
     item_quantity:{
         type: Number
     }
