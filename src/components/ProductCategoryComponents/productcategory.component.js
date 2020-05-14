@@ -7,7 +7,7 @@ const PCategory = props => (
     <tr>
         <td>{props.pcategory.categoryname}</td>
         <td>
-            <button style={{paddingRight:"20px;",width:"auto"}} className="btn btn-warning"><Link style={{color:"black"}} to={"/pcategory/edit/"+props.pcategory._id}>Edit</Link></button>
+            <button style={{paddingRight:"20px;",width:"auto"}} className="btn btn-warning mr-1"><Link style={{color:"black"}} to={"/admin/pcategory/edit/"+props.pcategory._id}>Edit</Link></button>
             <button style={{width:"auto"}} className="btn btn-danger" onClick={() => {props.deletePcategory(props.pcategory._id)}}>Delete</button>
         </td>
     </tr>
@@ -57,7 +57,7 @@ export default class ProductCategoryList extends Component{
                     <h3 className="text-monospace">Product Category</h3>
                 </div>
                 <div align="right">
-                    <button className="btn btn-primary" style={{width:"auto", marginBottom:"20px"}}><Link style={{color:"black"}} to={"/pcategory/add"}>Add Product Category</Link></button>
+                    <button className="btn btn-primary" style={{width:"auto", marginBottom:"20px"}}><Link style={{color:"black"}} to={"/admin/pcategory/add"}>Add Product Category</Link></button>
                 </div>
 
                 <div>

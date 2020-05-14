@@ -12,22 +12,16 @@ import Editprofile from "./components/User_components/Editprofile";
 // IT18063288
 import ProductDetails from "./components/Cart_and_purchasing_Components/ProductDetails";
 import shoppingCart from "./components/Cart_and_purchasing_Components/ShoppingCart";
-import OrderSummary from "./components/Cart_and_purchasing_Components/OrderSummary"
-import DeliveryDetails from "./components/Cart_and_purchasing_Components/DeliveryDetails"
-import FavoList from "./components/Cart_and_purchasing_Components/FavouriteList"
+import OrderSummary from "./components/Cart_and_purchasing_Components/OrderSummary";
+import DeliveryDetails from "./components/Cart_and_purchasing_Components/DeliveryDetails";
+import FavoList from "./components/Cart_and_purchasing_Components/FavouriteList";
 
 import AddEditItem from "./components/add-edit-item-component";
 import ItemList from "./components/item-list-component";
-import ItemFooter from "./components/footer-item-component"
-import ItemNav from "./components/nav-item-component"
+import ItemFooter from "./components/footer-item-component";
+import ItemNav from "./components/nav-item-component";
 
-import ManagementStaffList from "./components/ManagementStaffComponents/managementstaff.component";
-import CreateManagementStaff from "./components/ManagementStaffComponents/create-managementstaff.component";
-import EditManagementStaff from "./components/ManagementStaffComponents/edit-managementstaff.component";
-
-import ProductCategoryList from "./components/ProductCategoryComponents/productcategory.component";
-import CreateProductCategory from "./components/ProductCategoryComponents/create-productcategory.component";
-import EditProductCategory from "./components/ProductCategoryComponents/edit-productcategory.component";
+import DashboardIndex from "./components/DashboardComponents/index.component";
 
 function App() {
     return (
@@ -50,12 +44,7 @@ function App() {
                     <Route path="/itemlist" exact component={ItemList}/>
                     <Route path="/additem/:id" exact component={AddEditItem}/>
                     <Route path="/additem" exact component={AddEditItem}/>
-                    <Route path="/mstaff" exact component={ManagementStaffList} />
-                    <Route path="/mstaff/add" component={CreateManagementStaff} />
-                    <Route path="/mstaff/edit/:id" component={EditManagementStaff} />
-                    <Route path="/pcategory" exact component={ProductCategoryList} />
-                    <Route path="/pcategory/add" component={CreateProductCategory} />
-                    <Route path="/pcategory/edit/:id" component={EditProductCategory} />
+                    <Route path="/admin"><DashboardIndex/></Route>
                 </Switch>
                 <ItemFooter/>
             </Router>

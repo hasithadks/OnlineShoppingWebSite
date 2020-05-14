@@ -84,7 +84,7 @@ export default class EditManagementStaff extends Component{
         axios.post('http://localhost:5000/mstaff/update/'+this.props.match.params.id, managementstaff)
             .then(res => console.log(res.data));
 
-        window.location = '/mstaff';
+        window.location = '/admin/mstaff';
     }
 
     render() {
@@ -153,7 +153,7 @@ export default class EditManagementStaff extends Component{
 
                         <div className="form-group">
                             <div className="row" style={{marginRight:"3px"}}>
-                                <button style={{width:"auto",marginLeft:"auto"}} className="btn btn-secondary mr-1"><Link style={{color:"black"}} to={"/mstaff/"}>Back</Link></button>
+                                <button style={{width:"auto",marginLeft:"auto"}} className="btn btn-secondary mr-1"><Link style={{color:"black"}} to={"/admin/mstaff/"}>Back</Link></button>
                                 <button style={{width:"auto"}} className="btn btn-primary" type="submit">Update Management Staff</button>
                             </div>
                         </div>
