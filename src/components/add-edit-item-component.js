@@ -8,6 +8,7 @@ const  Quantity = props =>(
         <td>{props.quantity.item_colour}</td>
         <td>{props.quantity.item_quantity}</td>
         <td>{props.quantity.item_price}</td>
+        <td>{props.quantity.item_discount}</td>
         <td><div>
             <span className=" mx-1 text-success fas fa-pen" href ='#' onClick={()=>{props.fillQuantity(props.quantity._id)}}></span><span className=" mx-1 text-danger fas fa-trash" href ='#' onClick={()=>{props.deleteQuantity(props.quantity._id)}}></span>
         </div>
@@ -88,6 +89,7 @@ export default class AddEditItem extends Component{
                     id :response.data._id,
                     item_quantity : response.data.item_quantity,
                     item_price : response.data.item_price,
+                    item_discount : response.data.item_discount,
                 })
             })
             .catch(function (error) {
@@ -249,6 +251,7 @@ export default class AddEditItem extends Component{
             item_size : this.state.item_size,
             item_colour : this.state.item_colour,
             item_price : this.state.item_price,
+            item_discount : this.state.item_discount,
             item_quantity : this.state.item_quantity,
         };
 
@@ -259,6 +262,7 @@ export default class AddEditItem extends Component{
             item_size: '',
             item_colour: '',
             item_price:'',
+            item_discount: '',
             item_quantity:'',
         })
     }
@@ -271,6 +275,7 @@ export default class AddEditItem extends Component{
             item_size : this.state.item_size,
             item_colour : this.state.item_colour,
             item_price : this.state.item_price,
+            item_discount : this.state.item_discount,
             item_quantity : this.state.item_quantity,
         };
 
@@ -285,6 +290,7 @@ export default class AddEditItem extends Component{
             item_size: '',
             item_colour: '',
             item_price:'',
+            item_discount:'',
             item_quantity:'',
         })
     }
@@ -308,7 +314,6 @@ export default class AddEditItem extends Component{
             item_description : this.state.item_description,
             item_category : this.state.item_category,
             item_quantity : this.state.item_quantity,
-            item_discount : this.state.item_discount,
             item_from : this.state.item_from,
             item_brand : this.state.item_brand,
             item_features: this.state.item_features,
@@ -345,7 +350,6 @@ export default class AddEditItem extends Component{
             item_name : this.state.item_name,
             item_description : this.state.item_description,
             item_category : this.state.item_category,
-            item_discount : this.state.item_discount,
             item_from : this.state.item_from,
             item_brand : this.state.item_brand,
             item_image: this.state.item_image
@@ -387,13 +391,6 @@ export default class AddEditItem extends Component{
                                    className="form-control"
                                    value ={this.state.item_category}
                                    onChange={this.onChangeItemCategory}
-                            />
-
-                            <label>Product Discount: </label>
-                            <input type="text"
-                                   className="form-control"
-                                   value ={this.state.item_discount}
-                                   onChange={this.onChangeItemDiscount}
                             />
                         </div>
                         <br/>
@@ -482,7 +479,7 @@ export default class AddEditItem extends Component{
                                             </select>
                                         </div>
                                     </div>
-                                    <div className="col-sm-2">
+                                    <div className="col-sm-1">
                                         <label>Quantity: </label>
                                         <input type="text"
                                                className="form-control"
@@ -497,6 +494,14 @@ export default class AddEditItem extends Component{
                                                onChange={this.onChangeItemPrice}/>
                                     </div>
                                     <div className="col-sm-2">
+                                        <label>Product Discount: </label>
+                                        <input type="text"
+                                               className="form-control"
+                                               value ={this.state.item_discount}
+                                               onChange={this.onChangeItemDiscount}
+                                        />
+                                    </div>
+                                    <div className="col-sm-1">
                                         <button style={{marginTop:30}} type ="submit" value ="Submit"
                                                 className = {this.state.quantityItem
                                                     ? "btn btn-block btn-success"
@@ -519,6 +524,7 @@ export default class AddEditItem extends Component{
                                                 <th>Color</th>
                                                 <th>Quantity</th>
                                                 <th>Price</th>
+                                                <th>Discount</th>
                                                 <th>Action</th>
                                             </tr>
                                             </thead>

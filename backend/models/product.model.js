@@ -13,9 +13,6 @@ let Product = new Schema({
     item_category:{
         type:String
     },
-    item_discount:{
-        type: Number
-    },
     item_from:{
         type: String
     },

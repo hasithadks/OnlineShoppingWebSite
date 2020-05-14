@@ -10,7 +10,8 @@ const MStaff = props => (
         <td>{props.mstaff.username}</td>
         <td>{props.mstaff.role}</td>
         <td>
-            <button style={{paddingRight:"20px;",width:"auto"}} className="btn btn-warning"><Link style={{color:"black"}} to={"/mstaff/edit/"+props.mstaff._id}>Edit</Link></button> <button style={{width:"auto"}} className="btn btn-danger" onClick={() => {props.deleteMstaff(props.mstaff._id)}}>Delete</button>
+            <button style={{paddingRight:"20px;",width:"auto"}} className="btn btn-warning"><Link style={{color:"black"}} to={"/mstaff/edit/"+props.mstaff._id}>Edit</Link></button>
+            <button style={{width:"auto"}} className="btn btn-danger" onClick={() => {props.deleteMstaff(props.mstaff._id)}}>Delete</button>
         </td>
     </tr>
 )
@@ -22,7 +23,7 @@ export default class ManagementStaffList extends Component{
         this.deleteMstaff = this.deleteMstaff.bind(this);
 
         this.state = {
-          mstaff : []
+            mstaff : []
         };
     }
 
