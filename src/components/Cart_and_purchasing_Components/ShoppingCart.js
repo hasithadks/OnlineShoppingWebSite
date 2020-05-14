@@ -68,9 +68,7 @@ export default class ShoppingCart extends Component {
                                 {this.state.cartList.map((data, index) => {
                                     return (
                                         <div className="row">
-                                            <div className="col">
-                                                <span>{data.productID}</span>
-                                            </div>
+
                                         </div>
                                     )
                                 })}
