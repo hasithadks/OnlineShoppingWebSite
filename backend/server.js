@@ -24,12 +24,14 @@ const quantityRouter = require('./routes/quantity');
 const staffRouter = require('./routes/managementstaff');
 const favouriteRouter = require('./routes/favouriteProduct');
 const deliveryDetailsRouter = require('./routes/deliveryDetails');
+const productCategoryRouter = require('./routes/productcategory');
 
 app.use('/products', productRouter);
 app.use('/quantity', quantityRouter);
 app.use('/mstaff', staffRouter);
 app.use('/favouriteProduct', favouriteRouter);
 app.use('/deliveryDetails', deliveryDetailsRouter);
+app.use('/pcategory',productCategoryRouter);
 
 const userRouter = require('./routes/user');
 app.use('/users',userRouter);

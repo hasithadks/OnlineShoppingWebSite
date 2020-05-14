@@ -25,51 +25,40 @@ import ManagementStaffList from "./components/ManagementStaffComponents/manageme
 import CreateManagementStaff from "./components/ManagementStaffComponents/create-managementstaff.component";
 import EditManagementStaff from "./components/ManagementStaffComponents/edit-managementstaff.component";
 
+import ProductCategoryList from "./components/ProductCategoryComponents/productcategory.component";
+import CreateProductCategory from "./components/ProductCategoryComponents/create-productcategory.component";
+import EditProductCategory from "./components/ProductCategoryComponents/edit-productcategory.component";
+
 function App() {
     return (
         <div className="App">
             <Router>
                 <ItemNav/>
                 <Switch>
-                    <Route path="/login">
-                        <Login/>
-                    </Route>
-                    <Route path="/register">
-                        <Register/>
-                    </Route>
-                    <Route path="/home">
-                        <Home/>
-                    </Route>
-                    <Route path="/profile">
-                        <Profile/>
-                    </Route>
-                    <Route path="/edit">
-                        <Editprofile/>
-                    </Route>
-                    {/*<Route path="/productDetails">*/}
-                    {/*    <ProductDetails/>*/}
-                    {/*</Route>*/}
-
+                    <Route path="/login"><Login/></Route>
+                    <Route path="/register"><Register/></Route>
+                    <Route path="/home"><Home/></Route>
+                    <Route path="/profile"><Profile/></Route>
+                    <Route path="/edit"><Editprofile/></Route>
+                    {/*<Route path="/productDetails"><ProductDetails/></Route>*/}
                     <Route path="/productDetails" exact component={ProductDetails}/>
                     <Route path="/productDetails/:id" exact component={ProductDetails}/>
                     <Route path="/shoppingcart" exact component={shoppingCart}/>
                     <Route path="/deliveryDetails" exact component={DeliveryDetails}/>
                     <Route path="/orderSummery" exact component={OrderSummary}/>
                     <Route path="/FavouriteList" exact component={FavoList}/>
-
                     <Route path="/itemlist" exact component={ItemList}/>
                     <Route path="/additem/:id" exact component={AddEditItem}/>
                     <Route path="/additem" exact component={AddEditItem}/>
-
                     <Route path="/mstaff" exact component={ManagementStaffList} />
                     <Route path="/mstaff/add" component={CreateManagementStaff} />
                     <Route path="/mstaff/edit/:id" component={EditManagementStaff} />
-
+                    <Route path="/pcategory" exact component={ProductCategoryList} />
+                    <Route path="/pcategory/add" component={CreateProductCategory} />
+                    <Route path="/pcategory/edit/:id" component={EditProductCategory} />
                 </Switch>
                 <ItemFooter/>
             </Router>
-
-
         </div>
     );
 }
