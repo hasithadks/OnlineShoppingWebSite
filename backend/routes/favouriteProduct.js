@@ -18,6 +18,19 @@ router.route('/:id').get((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/uid/:uId/pid/:pId').get((req, res) => {
+   // /pid/:pId/uid/:uId
+    let productID = req.params.pId;
+    let UserID = req.params.uId;
+    console.log("Product ID :" +productID);
+    console.log("User ID :" +UserID);
+    productFavo.find({productID: productID, userID: UserID}, function (err, products) {
+
+    })
+        .then(products => res.json(products))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
 router.route("/add").post((req, res) => {
 
     let {productId : productID, userID : userID, isLike : isLiked} = req.body;
