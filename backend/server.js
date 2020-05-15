@@ -11,13 +11,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
 
-const uri = process.env.ATLAS_URI;
-mongoose.connect(uri,{useNewUrlParser:true, useUnifiedTopology: true, useCreateIndex:true, useFindAndModify: false });
+try{
+    const uri = process.env.ATLAS_URI;
+    mongoose.connect(uri,{useNewUrlParser:true, useUnifiedTopology: true, useCreateIndex:true, useFindAndModify: false });
 
-const connection = mongoose.connection;
-connection.once('open',() => {
-    console.log("MongoDB database connection established successfully");
-});
+    const connection = mongoose.connection;
+    connection.once('open',() => {
+        console.log("MongoDB database connection established successfully");
+    });
+}
+catch (exception) {
+    console.log("Database Connection Error : " + exception);
+}
+
 
 const productRouter = require('./routes/products');
 const quantityRouter = require('./routes/quantity');

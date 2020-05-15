@@ -46,7 +46,7 @@ router.route("/add").post((req, res) => {
 
 router.route("/delete/:id").delete((req, res) => {
     let id = req.params.id;
-    console.log("Product ID" +id);
+    //console.log("Product ID" +id);
     productFavo.findByIdAndDelete({_id : id})
         .then(() => res.json('Remove form Favourite List'))
         .catch(err => res.status(400).json('Error: ' + err));
