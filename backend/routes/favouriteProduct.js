@@ -12,7 +12,8 @@ router.route('/:id').get((req, res) => {
     let id = req.params.id;
     console.log("Product ID" +id);
     productFavo.find({productID: id}, function (err, products) {
-       // res.json(products);
+        if(!products)
+            req.status(404).send("data is not found");
     })
         .then(products => res.json(products))
         .catch(err => res.status(400).json('Error: ' + err));
@@ -25,7 +26,8 @@ router.route('/uid/:uId/pid/:pId').get((req, res) => {
     console.log("Product ID :" +productID);
     console.log("User ID :" +UserID);
     productFavo.find({productID: productID, userID: UserID}, function (err, products) {
-
+        if(!products)
+            req.status(404).send("data is not found");
     })
         .then(products => res.json(products))
         .catch(err => res.status(400).json('Error: ' + err));
