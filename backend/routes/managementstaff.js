@@ -1,6 +1,27 @@
 const router = require('express').Router();
 const ManagementStaff = require('../models/managementstaff.model');
 
+const nodemailer = require('nodemailer');
+const cred = require('../email-config/config');
+
+var transport = {
+    host : 'smtp.gmail.com',
+    auth : {
+        user : cred.USER,
+        pass : cred.PASS
+    }
+}
+
+var transporter = nodemailer.createTransport(transport);
+
+transporter.verify((error, success) => {
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Server is ready to take messages');
+    }
+});
+
 router.route('/').get((req ,res) => {
    ManagementStaff.find()
        .then( managementstaff => res.json(managementstaff))
@@ -21,6 +42,27 @@ router.route('/add').post((req ,res) =>{
        lname,
        role
    });
+
+    const content = `username: ${username} \n password: ${password}`;
+
+    var mail = {
+        from: fname,
+        to: 'gihantharaka76@gmail.com',
+        subject: 'Admin User Credentials',
+        text: content
+    }
+
+    transporter.sendMail(mail, (err, data) => {
+        if (err) {
+            res.json({
+                msg: 'fail'
+            })
+        } else {
+            res.json({
+                msg: 'success'
+            })
+        }
+    })
 
    newManagementStaff.save()
        .then(()=> res.json('Management Staff Added!'))
