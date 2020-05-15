@@ -17,7 +17,7 @@ router.route('/:id').get((req, res)=>{
             res.status(400).json('Error: ' + err);
         }
         res.json(details);
-    })
+    }).catch(err => res.status(400).json('Error: ' + err));
 
 
 });
