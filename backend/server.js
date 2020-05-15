@@ -18,7 +18,11 @@ try{
     const connection = mongoose.connection;
     connection.once('open',() => {
         console.log("MongoDB database connection established successfully");
+    }).catch(err => {
+        console.error('App starting error:', err.stack);
+        process.exit(1);
     });
+
 }
 catch (exception) {
     console.log("Database Connection Error : " + exception);
