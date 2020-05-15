@@ -49,7 +49,7 @@ export default class ProductDetails extends Component {
             shirtSize: ['S', 'M', 'L', 'XL', 'XXL'],
             itemColor: [],
             productPrice: 1250,
-            discountedPrice: 1000,
+            discountedPrice: 1700,
             isLike: false,
             isDiscounted: false,
             likeImage: '',
@@ -78,10 +78,12 @@ export default class ProductDetails extends Component {
 
     componentDidMount() {
         let pID = 0;
+        let uID = 0;
         if (this.props.match.params.id != null) {
             axios.get('http://localhost:5000/products/' + this.props.match.params.id)
                 .then(response => {
                     pID = response.data.item_id;
+                    uID = this.state.userID;
                     //console.log("PID:" + pID);
                     this.setState({
                         productId: response.data.item_id,
@@ -94,32 +96,29 @@ export default class ProductDetails extends Component {
 
                     }, () => {
 
-                        axios.get(configs.BASE_URL + '/favouriteProduct/' + pID)
+                        //let ids = {pID, uID}
+                        pID = this.state.productId;
+                        console.log("Product ID : "+pID)
+                        axios.get(configs.BASE_URL + '/favouriteProduct/uid/' + uID + '/pid/' + pID)
                             .then(response => {
                                 // console.log("Product ID :"+this.state.productId);
                                 // console.log(JSON.stringify(response.data) );
 
                                 if (response.data.length > 0) {
                                     console.log(response.data);
-                                    console.log(this.state.userID);
-                                    const selectedItem = response.data.filter((dt) => {
-                                        return dt.userID === this.state.userID
-                                    });
-                                    console.log("Selected Item:"+selectedItem);
-                                    if (typeof selectedItem[0] !== "undefined") {
-                                        let data = selectedItem[0];
-                                        if (data.isLiked === true) {
+                                    console.log("Is Like : "+response.data[0].isLiked);
+                                    // const selectedItem = response.data.filter((dt) => {
+                                    //     return dt.userID === this.state.userID
+                                    //console.log("Selected Item:" + selectedItem);
+
+                                        let data = response.data;
+                                        if (data[0].isLiked === true) {
                                             this.setState({
                                                 isLike: true,
-                                                favo_ID: data._id
-                                            });
-                                        } else {
-                                            this.setState({
-                                                isLike: false,
-                                                favo_ID: data._id
+                                                favo_ID: data[0]._id
                                             });
                                         }
-                                    }
+                                    console.log("Favo ID : "+this.state.favo_ID);
                                 }
                             });
 
@@ -133,7 +132,7 @@ export default class ProductDetails extends Component {
         }
 
         if (this.state.productId != null) {
-            axios.get('http://localhost:5000/quantity/5eafe7ee3fe28f248cff1e49')
+            axios.get('http://localhost:5000/quantity/5ebcbb0f5197cf361c4e32be')
                 .then(response => {
                     this.setState({productQuantities: response.data});
                     let sizeList = [];
@@ -203,7 +202,7 @@ export default class ProductDetails extends Component {
         } else if (this.state.quantity === 0) {
             alert("Please Select Quantity");
         }
-
+        console.log("size : " + this.state.shirtSize);
         if (this.state.shirtSize !== "" && this.state.itemColor !== "" && this.state.quantity > 0) {
             //  let {productId, userID, productPrice, discount, discountedPrice, selectedSize, selectedColor, quantity} = this.state;
 
@@ -236,44 +235,49 @@ export default class ProductDetails extends Component {
     }
 
     async onAvailableItemCount(size, color) {
-
-        if (size != null) {
-            //console.log("size is not null");
-            await this.setState({
-                    selectedSize: size
+        try {
+            if (size != null) {
+                //console.log("size is not null");
+                await this.setState({
+                        selectedSize: size
+                    }, () => {
+                        console.log("In Method 2" + this.state.selectedSize);
+                    }
+                );
+            }
+            if (color != null) {
+                //console.log("Color is not null");
+                await this.setState({
+                    selectedColor: color
                 }, () => {
-                    console.log("In Method 2" + this.state.selectedSize);
-                }
-            );
-        }
-        if (color != null) {
-            //console.log("Color is not null");
-            await this.setState({
-                selectedColor: color
-            }, () => {
-                console.log("In Method 1" + this.state.selectedColor);
-            });
-        }
-
-        let allQunttityArray = this.state.productQuantities;
-        const {selectedSize, selectedColor} = this.state;
-        if (selectedSize !== '' && selectedColor !== '') {
-            const selectedItem = allQunttityArray.filter((data) => {
-                return data.item_size === selectedSize && data.item_colour === selectedColor
-            });
-            if (typeof selectedItem[0] !== "undefined") {
-
-                this.setState({
-                    availablecount: selectedItem[0].item_quantity
-                });
-
-                //console.log("Selected Item : "+JSON.stringify(selectedItem[0].item_quantity));
-            } else {
-                this.setState({
-                    availablecount: 0
+                    console.log("In Method 1" + this.state.selectedColor);
                 });
             }
+
+            let allQunttityArray = this.state.productQuantities;
+            const {selectedSize, selectedColor} = this.state;
+            if (selectedSize !== '' && selectedColor !== '') {
+                const selectedItem = allQunttityArray.filter((data) => {
+                    return data.item_size === selectedSize && data.item_colour === selectedColor
+                });
+                if (typeof selectedItem[0] !== "undefined") {
+
+                    this.setState({
+                        availablecount: selectedItem[0].item_quantity
+                    });
+
+                    //console.log("Selected Item : "+JSON.stringify(selectedItem[0].item_quantity));
+                } else {
+                    this.setState({
+                        availablecount: 0
+                    });
+                }
+            }
         }
+        catch (exception) {
+            console.log(exception);
+        }
+
     }
 
     onChangeSize(e) {
@@ -440,8 +444,8 @@ export default class ProductDetails extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-11">
-                                    <label>Available Quantity : </label>
-                                    <span>{this.state.availablecount}</span>
+
+                                    <span>Only {this.state.availablecount} Items Left </span>
                                 </div>
                             </div>
                         </div>
@@ -451,7 +455,8 @@ export default class ProductDetails extends Component {
 
 
                                 <a href="#" type="submit" onClick={this.onclickShoppingCart}
-                                   className="profile-edit-btn nav-link  btn btn-primary" name="btnAddMore"
+                                   className="profile-edit-btn nav-link  btn btn-primary stop-color-final"
+                                   name="btnAddMore"
                                    style={{
                                        float: 'center', marginLeft: '5px', marginTop: '30px', marginBottom: '20px',
                                        backgroundColor: 'orange', borderColor: 'orange', fontSize: '20px'
