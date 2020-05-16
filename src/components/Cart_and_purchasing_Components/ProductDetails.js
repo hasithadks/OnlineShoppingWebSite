@@ -339,7 +339,7 @@ export default class ProductDetails extends Component {
                                 <div className="col-lg-9" style={{paddingBottom: '0px'}}>
                                     <StarRatingComponent
                                         name="rate1"
-                                        starCount={6}
+                                        starCount={5}
                                         value={this.rating}
                                         onStarClick={this.onStarClick.bind(this)}
                                         editing={false}
