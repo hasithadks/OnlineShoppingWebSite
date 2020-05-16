@@ -30,5 +30,13 @@ router.route("/add").post((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route("/delete/:id").delete((req, res) => {
+    let id = req.params.id;
+    //console.log("Product ID" +id);
+    userCart.findByIdAndDelete({_id : id})
+        .then(() => res.json('Remove form Cart'))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
 
 module.exports = router;

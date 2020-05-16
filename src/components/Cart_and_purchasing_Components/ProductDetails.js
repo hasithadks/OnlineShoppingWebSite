@@ -51,7 +51,7 @@ export default class ProductDetails extends Component {
             productPrice: 1250,
             discountedPrice: 1700,
             isLike: false,
-            isDiscounted: false,
+            isDiscounted: true,
             likeImage: '',
             rating: 1,
             quantity: 0,
@@ -264,6 +264,8 @@ export default class ProductDetails extends Component {
 
                     this.setState({
                         availablecount: selectedItem[0].item_quantity
+
+
                     });
 
                     //console.log("Selected Item : "+JSON.stringify(selectedItem[0].item_quantity));
@@ -451,7 +453,7 @@ export default class ProductDetails extends Component {
                         </div>
 
                         <div className="row" style={{marginLeft: '0px'}}>
-                            <div className="col-10">
+                            <div className="col-12">
 
 
                                 <a href="#" type="submit" onClick={this.onclickShoppingCart}

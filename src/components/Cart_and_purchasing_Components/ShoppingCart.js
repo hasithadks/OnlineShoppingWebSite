@@ -10,17 +10,20 @@ export default class ShoppingCart extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            delivery: 150,
-            subtotal: 0,
+            delivery: 220,
             total: 0,
             userID: "4787",
             cartList: [],
             selectedItem: 0,
             is_item_checkbox: false,
+            subTotal: 0,
+            itemCount: 0,
+            isDiscount: false,
+
         };
         // this.calculateTotal = this.calculateTotal.bind(this);
         this.onSelectItem = this.onSelectItem.bind(this);
-        this.handleAllItems = this.handleAllItems.bind(this);
+        this.onClickDelete = this.onClickDelete.bind(this);
 
     }
 
@@ -30,35 +33,65 @@ export default class ShoppingCart extends Component {
                 this.setState({
                     cartList: response.data
                 })
+
             });
 
     }
 
     onSelectItem(e) {
 
-        let selectedName = e.target.name;
+        let selecteID = e.target.id;
         let isChecked = e.target.checked;
-        let value = e.target.value;
-        console.log("Selected Name :" + selectedName);
-        console.log("IsChecked :" + isChecked);
-        console.log("value :" + value);
+        let value = Number(e.target.value);
+        let qty = Number(e.target.name);
+        //  console.log("Selected Name :" + selectedName);
+        console.log("Index :" + selecteID);
+        console.log("Qty :" + qty);
 
+        let itemCount = this.state.itemCount;
+        let Total = this.state.total;
+        let Delivery = this.state.delivery;
+        let qtyPrice = Number(value * qty);
+        let subTotal = Number(this.state.subTotal);
 
-        this.setState({
-            is_item_checkbox: isChecked
-        });
+        if (isChecked === true) {
+
+            subTotal = Number(subTotal + qtyPrice);
+            Total = Number(subTotal + Delivery);
+            itemCount = Number(itemCount + 1);
+            this.setState({
+                subTotal: subTotal,
+                total: Total,
+                itemCount: itemCount
+            })
+
+        } else {
+            // let subTotal = this.state.subTotal;
+            subTotal = Number(subTotal - qtyPrice);
+            Total = Number(subTotal + Delivery);
+            itemCount = Number(itemCount - 1);
+            this.setState({
+                subTotal: subTotal,
+                total: Total,
+                itemCount: itemCount
+            })
+
+        }
+
     }
 
-    handleAllItems(){
+    onClickDelete(e) {
+        let Id = e.target.id;
+        console.log("index :" + Id);
 
+        axios.delete(configs.BASE_URL + '/cart/delete/' + Id)
+            .then(response => {
+                alert(response.data);
+                this.componentDidMount();
 
+            });
     }
-// calculateTotal(){
-//         let totalcal = this.state.delivery + this.state.subtotal;
-//         this.setState({
-//             total : totalcal
-//         })
-// }
+
     render() {
         return (
 
@@ -84,7 +117,7 @@ export default class ShoppingCart extends Component {
                                 <div className="row">
                                     <div className="col-1">
                                         <input type="checkbox" className="form-check" value={data.discounted_price}
-                                               checked={this.state.is_item_checkbox.name} name={index}
+                                               name={data.requested_qty} id={index}
                                                style={{float: 'left', marginTop: '25px'}}
                                                onClick={this.onSelectItem}/>
                                     </div>
@@ -117,10 +150,27 @@ export default class ShoppingCart extends Component {
                                                 fontSize: '25px',
                                                 color: 'orange'
                                             }}><b>Rs. {data.discounted_price}</b></span>
+                                            {data.item_discount > 0 ?
+                                                <div>
+                                                    <label style={{
+                                                        fontSize: '14px',
+                                                        textDecoration: 'line-through'
+                                                    }}><span>Rs. {data.item_price}</span></label>
+                                                    <span style={{
+                                                        marginLeft: '20px',
+                                                        fontSize: '18px',
+                                                        color: "red"
+                                                    }}><b>{data.item_discount}%</b></span>
+                                                </div> :
+                                                <div>
+                                                </div>
+                                            }
+
                                         </div>
                                     </div>
                                     <div className="col-1">
-                                        <span className="mx-1 text-danger fas fa-trash text-black-50"> </span>
+                                        <span className="mx-1 text-danger fas fa-trash text-black-50" id={data._id}
+                                              style={{marginTop: '10px'}} onClick={this.onClickDelete}> </span>
                                     </div>
                                 </div>
                             )
@@ -133,10 +183,13 @@ export default class ShoppingCart extends Component {
                         </div>
                         <div className="row">
                             <div className="col">
-                                <span style={{float: "left", marginLeft: '0px'}}>SubTotal (1 item/s)</span>
+                                <span style={{
+                                    float: "left",
+                                    marginLeft: '0px'
+                                }}>SubTotal ({this.state.itemCount} item/s)</span>
                             </div>
                             <div className="col">
-                                <span style={{float: "right", marginRight: '5px'}}>Rs. 2000</span>
+                                <span style={{float: "right", marginRight: '5px'}}>Rs. {this.state.subTotal}</span>
                             </div>
                         </div>
                         <div className="row">
@@ -144,7 +197,7 @@ export default class ShoppingCart extends Component {
                                 <span style={{float: "left", marginLeft: '0px'}}>Delivery Fee</span>
                             </div>
                             <div className="col">
-                                <span style={{float: "right", marginRight: '5px'}}>Rs. 200</span>
+                                <span style={{float: "right", marginRight: '5px'}}>Rs. {this.state.delivery}</span>
                             </div>
                         </div>
                         <div className="row">
@@ -152,7 +205,10 @@ export default class ShoppingCart extends Component {
                                 <span style={{float: "left", marginLeft: '0px'}}>Total</span>
                             </div>
                             <div className="col">
-                                <span style={{float: "right", marginRight: '5px'}}>Rs. 2200</span>
+                                <span style={{
+                                    float: "right",
+                                    marginRight: '5px'
+                                }}>Rs.{this.state.subTotal === 0 ? 0 : this.state.total} </span>
                             </div>
                         </div>
                         <div className="row">
