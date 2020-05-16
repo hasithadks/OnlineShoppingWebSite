@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const ManagementStaff = require('../models/managementstaff.model');
-
 const nodemailer = require('nodemailer');
 const cred = require('../email-config/config');
 
@@ -43,7 +42,18 @@ router.route('/add').post((req ,res) =>{
        role
    });
 
-    const content = `username: ${username} \n password: ${password}`;
+    const content = `
+                        Hey ${fname} ${lname},\n
+                        Your user credentials for Online Fashion Store is given below. \n
+                        Please use these username and password to login to the system. \n
+                        Dont share these credentials with anyone. \n\n
+                        username : ${username} \n 
+                        password : ${password} \n\n
+                        Please use your credentials to Login from here- http://localhost:3000/admin \n
+                        To Visit Online Shopping store- http://localhost:3000/ \n
+                        Thanks,
+                        Online Fashion Store Team.   
+                    `;
 
     var mail = {
         from: fname,
