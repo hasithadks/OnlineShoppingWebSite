@@ -52,7 +52,7 @@ router.route('/add').post((req ,res) =>{
                         Please use your credentials to Login from here- http://localhost:3000/admin \n
                         To Visit Online Shopping store- http://localhost:3000/ \n
                         Thanks,
-                        Online Fashion Store Team.   
+                        Online Fashion Store Team.
                     `;
 
     var mail = {
