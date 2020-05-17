@@ -17,6 +17,7 @@ export default class OrderSummary extends Component {
 
         this.onChangeCash = this.onChangeCash.bind(this);
         this.onChangeCard = this.onChangeCard.bind(this);
+        this.onChangeCardNumber = this.onChangeCardNumber.bind(this);
     }
 
     onChangeCash() {
@@ -30,6 +31,13 @@ export default class OrderSummary extends Component {
         this.setState({
             isCash: false,
             isCard: true,
+        })
+    }
+
+    onChangeCardNumber(e){
+        console.log("Card No : " + e.target.value)
+        this.setState({
+            cardNumber : e.target.value
         })
     }
 
@@ -87,7 +95,8 @@ export default class OrderSummary extends Component {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input type="text" className="form-control" required
+                                        <input type="text" className="form-control" required onChange={this.onChangeCardNumber}
+                                               pattern="[]"
                                                style={{marginLeft: '20px', float: 'left', width:'95%'}}/>
                                     </td>
                                 </tr>
@@ -111,7 +120,7 @@ export default class OrderSummary extends Component {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input type="text" className="form-control" required
+                                        <input type="date" className="form-control" required
                                                style={{marginLeft: '20px', float: 'left', width:'95%'}}/>
                                     </td>
                                 </tr>
