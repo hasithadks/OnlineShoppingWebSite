@@ -4,7 +4,7 @@ let User = require('../models/user.model');
 router.route('/').get((req,res) =>{
     User.find()
         .then(users => res.json(users))
-        .catch(err => res.status(400).json('Eroor: '+ err));
+        .catch(err => res.status(400).json('Error: '+ err));
 });
 
 router.route('/add').post((req,res) =>{
@@ -13,6 +13,10 @@ router.route('/add').post((req,res) =>{
     const user_password = req.body.user_password;
     const user_phone = req.body.user_phone;
     const user_gender = req.body.user_gender;
+    const user_image = req.body.user_image;
+    const user_b_year = req.body.user_b_year;
+    const user_b_month = req.body.user_b_month;
+    const user_b_day = req.body.user_b_day;
 
     const newUser = new User({
         user_email,
@@ -20,10 +24,14 @@ router.route('/add').post((req,res) =>{
         user_password,
         user_phone,
         user_gender,
+        user_image,
+        user_b_year,
+        user_b_month,
+        user_b_day,
     });
     newUser.save()
         .then(() =>res.json('User Succefully Added....'))
-        .catch(err =>res.status(400).json('Error: '+err));
+        .catch(err =>res.status(400).json('Error: '+ err));
 });
 
 router.route('/username/:email').get((req, res) => {

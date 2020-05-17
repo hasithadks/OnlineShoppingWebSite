@@ -80,6 +80,11 @@ export default class Profile extends Component {
                                                         Edit Profile
                                                     </a>
                                                 </div>
+                                                <div className="col-md-12 " style={{marginTop:'1px'}}>
+                                                    <a href="/passwordchange" type="submit" className="btn-primary nav-link" name="edit" value="password change">
+                                                        Change password
+                                                    </a>
+                                                </div>
                                             </td>
 
                                             <td>
@@ -100,7 +105,7 @@ export default class Profile extends Component {
                                                         <label>Name</label>
                                                     </div>
                                                     <div className="col-md-6">
-                                                        <p>{this.state.user_username}</p>
+                                                        <p style={{float:'left'}}>{this.state.user_username}</p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -113,7 +118,7 @@ export default class Profile extends Component {
                                                         <label>Email</label>
                                                     </div>
                                                     <div className="col-md-6">
-                                                        <p>{this.state.user_email}</p>
+                                                        <p style={{float:'left'}}>{this.state.user_email}</p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -126,7 +131,7 @@ export default class Profile extends Component {
                                                         <label>Phone</label>
                                                     </div>
                                                     <div className="col-md-6">
-                                                        <p>{this.state.user_phone}</p>
+                                                        <p style={{float:'left'}}>{this.state.user_phone}</p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -139,7 +144,7 @@ export default class Profile extends Component {
                                                         <label>Gender</label>
                                                     </div>
                                                     <div className="col-md-6">
-                                                        <p>{this.state.user_gender}</p>
+                                                        <p style={{float:'left'}}>{this.state.user_gender}</p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -152,7 +157,7 @@ export default class Profile extends Component {
                                                         <label>Birthday</label>
                                                     </div>
                                                     <div className="col-md-6">
-                                                        <p>{this.state.user_b_year}/{this.state.user_b_month}/{this.state.user_b_day}</p>
+                                                        <p style={{float:'left'}}>{this.state.user_b_year}/{this.state.user_b_month}/{this.state.user_b_day}</p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -164,83 +169,6 @@ export default class Profile extends Component {
                         </tbody>
                     </table>
                     <hr/>
-
-
-
-
-
-
-
-                    {/*<div className="row">*/}
-                    {/*    <div className="col-md-4">*/}
-                    {/*        <div className="row">*/}
-                    {/*            <div className="profile-head">*/}
-                    {/*                <h4>*/}
-                    {/*                    Kshiti Ghelani*/}
-                    {/*                </h4>*/}
-                    {/*            </div>*/}
-
-                    {/*            <div className="col-md-4">*/}
-                    {/*                <div className="profile-img">*/}
-                    {/*                    <img*/}
-                    {/*                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog"*/}
-                    {/*                        />*/}
-                    {/*                </div>*/}
-                    {/*            </div>*/}
-
-                    {/*            <div className="col-md-2 ">*/}
-                    {/*                <a href="/edit" type="submit" className="profile-edit-btn nav-link  btn-primary" name="btnAddMore" value="Edit Profile">*/}
-                    {/*                Edit Profile*/}
-                    {/*                </a>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-
-
-                    {/*    </div>*/}
-                    {/*    <div className="col-md-7 detail">*/}
-                    {/*        <div className="tab-content profile-tab" id="myTabContent">*/}
-                    {/*            <div className="tab-pane fade show active" id="home" role="tabpanel"*/}
-                    {/*                 aria-labelledby="home-tab">*/}
-                    {/*                <div className="row">*/}
-                    {/*                    <div className="col-md-6">*/}
-                    {/*                        <label>Name</label>*/}
-                    {/*                    </div>*/}
-                    {/*                    <div className="col-md-6">*/}
-                    {/*                        <p>Kshiti123</p>*/}
-                    {/*                    </div>*/}
-                    {/*                </div>*/}
-
-                    {/*                <div className="row">*/}
-                    {/*                    <div className="col-md-6">*/}
-                    {/*                        <label>Email</label>*/}
-                    {/*                    </div>*/}
-                    {/*                    <div className="col-md-6">*/}
-                    {/*                        <p>kshitighelani@gmail.com</p>*/}
-                    {/*                    </div>*/}
-                    {/*                </div>*/}
-
-                    {/*                <div className="row">*/}
-                    {/*                    <div className="col-md-6">*/}
-                    {/*                        <label>Phone</label>*/}
-                    {/*                    </div>*/}
-                    {/*                    <div className="col-md-6">*/}
-                    {/*                        <p>123 456 7890</p>*/}
-                    {/*                    </div>*/}
-                    {/*                </div>*/}
-
-                    {/*                <div className="row">*/}
-                    {/*                    <div className="col-md-6">*/}
-                    {/*                        <label>Gender</label>*/}
-                    {/*                    </div>*/}
-                    {/*                    <div className="col-md-6">*/}
-                    {/*                        <p>Female</p>*/}
-                    {/*                    </div>*/}
-                    {/*                </div>*/}
-
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
                 </form>
             </div>
             </div>
