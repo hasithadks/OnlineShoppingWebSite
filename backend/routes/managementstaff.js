@@ -17,7 +17,7 @@ transporter.verify((error, success) => {
     if (error) {
         console.log(error);
     } else {
-        console.log('Server is ready to take messages');
+        console.log('Server is ready to take messages of management staff');
     }
 });
 
@@ -33,13 +33,15 @@ router.route('/add').post((req ,res) =>{
    const fname = req.body.fname;
    const lname = req.body.lname;
    const role = req.body.role;
+   const email = req.body.email;
 
    const newManagementStaff = new ManagementStaff({
        username,
        password,
        fname,
        lname,
-       role
+       role,
+       email
    });
 
     const content = `
@@ -50,15 +52,14 @@ router.route('/add').post((req ,res) =>{
                         username : ${username} \n 
                         password : ${password} \n\n
                         Please use your credentials to Login from here- http://localhost:3000/admin \n
-                        To Visit Online Shopping store- http://localhost:3000/ \n
+                        To Visit Online Shopping store- http://localhost:3000/home \n
                         Thanks,
                         Online Fashion Store Team.    
                     `;
 
-    ////////////
     var mail = {
         from: fname,
-        to: 'gihantharaka76@gmail.com',
+        to: email,
         subject: 'Admin User Credentials',
         text: content
     }
@@ -100,6 +101,7 @@ router.route('/update/:id').post((req , res) =>{
             managementstaff.fname = req.body.fname;
             managementstaff.lname = req.body.lname;
             managementstaff.role = req.body.role;
+            managementstaff.email = req.body.email;
 
             managementstaff.save()
                 .then(()=> res.json('Management Staff Updated!'))

@@ -7,7 +7,7 @@ const MStaff = props => (
     <tr>
         <td>{props.mstaff.fname}</td>
         <td>{props.mstaff.lname}</td>
-        <td>{props.mstaff.username}</td>
+        <td>{props.mstaff.email}</td>
         <td>{props.mstaff.role}</td>
         <td>
             <button style={{paddingRight:"20px;",width:"auto"}} className="btn btn-warning mr-1"><Link style={{color:"black"}} to={"/admin/mstaff/edit/"+props.mstaff._id}>Edit</Link></button>
@@ -69,7 +69,7 @@ export default class ManagementStaffList extends Component{
                         <tr>
                             <th scope="col">FirstName</th>
                             <th scope="col">Lastname</th>
-                            <th scope="col">Username</th>
+                            <th scope="col">Email</th>
                             <th scope="col">Role</th>
                             <th scope="col">Actions</th>
                         </tr>
