@@ -65,7 +65,7 @@ export default class OrderSummary extends Component {
                 <div className="container">
                     {this.state.isCard === true ?
                         <form>
-                            <table style={{background: '#EDE7E7', padding: '20px', width: '85%'}}>
+                            <table style={{background: '#EDE7E7', padding: '20px', width: '85.2%'}}>
                                 <tbody>
                                 <tr>
                                     <td>
@@ -88,7 +88,7 @@ export default class OrderSummary extends Component {
                                 <tr>
                                     <td>
                                         <input type="text" className="form-control" required
-                                               style={{marginLeft: '20px', float: 'left'}}/>
+                                               style={{marginLeft: '20px', float: 'left', width:'95%'}}/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -100,7 +100,7 @@ export default class OrderSummary extends Component {
                                 <tr>
                                     <td>
                                         <input type="text" className="form-control" required
-                                               style={{marginLeft: '20px', float: 'left'}}/>
+                                               style={{marginLeft: '20px', float: 'left', width:'95%'}}/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -112,7 +112,7 @@ export default class OrderSummary extends Component {
                                 <tr>
                                     <td>
                                         <input type="text" className="form-control" required
-                                               style={{marginLeft: '20px', float: 'left'}}/>
+                                               style={{marginLeft: '20px', float: 'left', width:'95%'}}/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -124,7 +124,7 @@ export default class OrderSummary extends Component {
                                 <tr>
                                     <td>
                                         <input type="text" className="form-control" required
-                                               style={{marginLeft: '20px', float: 'left'}}/>
+                                               style={{marginLeft: '20px', float: 'left', width:'95%'}}/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -134,7 +134,9 @@ export default class OrderSummary extends Component {
                                             marginTop: '20px',
                                             float: 'left',
                                             marginLeft: '20px',
-                                            marginBottom: '20px'
+                                            marginBottom: '20px',
+                                            width:'95%'
+
                                         }}/>
                                     </td>
                                 </tr>
@@ -142,7 +144,7 @@ export default class OrderSummary extends Component {
                             </table>
                         </form> :
 
-                        <table style={{background: '#EDE7E7', padding: '20px', width: '85%'}}>
+                        <table style={{background: '#EDE7E7', padding: '20px', width: '85.2%'}}>
                             <tbody>
                             <tr>
                                 <td>

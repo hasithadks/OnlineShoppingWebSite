@@ -12,13 +12,15 @@ export default class CreateManagementStaff extends Component{
         this.onChangeLname = this.onChangeLname.bind(this);
         this.onChangeRole = this.onChangeRole.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.onChangeEmail = this.onChangeEmail.bind(this);
 
         this.state = {
             username : '',
             password : '',
             fname : '',
             lname : '',
-            role : ''
+            role : '',
+            email : ''
         }
     }
 
@@ -46,6 +48,12 @@ export default class CreateManagementStaff extends Component{
         });
     }
 
+    onChangeEmail(e){
+        this.setState({
+            email : e.target.value
+        });
+    }
+
     onChangeRole(e){
         this.setState({
             role : e.target.value
@@ -60,7 +68,8 @@ export default class CreateManagementStaff extends Component{
             password : this.state.password,
             fname : this.state.fname,
             lname : this.state.lname,
-            role : this.state.role
+            role : this.state.role,
+            email : this.state.email
         }
 
         console.log(managementstaff);
@@ -97,6 +106,16 @@ export default class CreateManagementStaff extends Component{
                                 </div>
                                 <div className="col-md-10">
                                     <input type="text" className="form-control" value={this.state.lname} onChange={this.onChangeLname} />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <div className="row">
+                                <div className="col-md-2">
+                                    <label>Email</label>
+                                </div>
+                                <div className="col-md-10">
+                                    <input type="email" className="form-control" value={this.state.email} onChange={this.onChangeEmail} />
                                 </div>
                             </div>
                         </div>

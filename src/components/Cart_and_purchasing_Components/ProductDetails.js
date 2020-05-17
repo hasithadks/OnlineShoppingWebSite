@@ -51,7 +51,7 @@ export default class ProductDetails extends Component {
             productPrice: 1250,
             discountedPrice: 1700,
             isLike: false,
-            isDiscounted: false,
+            isDiscounted: true,
             likeImage: '',
             rating: 1,
             quantity: 0,
@@ -64,6 +64,8 @@ export default class ProductDetails extends Component {
             availablecount: 0,
             selectedSize: '',
             selectedColor: '',
+            quantitiesTableID : '',
+
 
         };
 
@@ -130,9 +132,9 @@ export default class ProductDetails extends Component {
                 })
 
         }
-
+        //+ this.props.match.params.id
         if (this.state.productId != null) {
-            axios.get('http://localhost:5000/quantity/5ebcbb0f5197cf361c4e32be')
+            axios.get('http://localhost:5000/quantity/5ebfda913fd9a64774105de7')
                 .then(response => {
                     this.setState({productQuantities: response.data});
                     let sizeList = [];
@@ -214,7 +216,7 @@ export default class ProductDetails extends Component {
             let item_size = this.state.selectedSize;
             let item_color = this.state.selectedColor;
             let requested_qty = this.state.quantity;
-
+            let quantities_id = this.state.quantitiesTableID;
 
             let payload = {
                 productID,
@@ -224,7 +226,8 @@ export default class ProductDetails extends Component {
                 discounted_price,
                 item_size,
                 item_color,
-                requested_qty
+                requested_qty,
+                quantities_id
             };
 
 
@@ -263,13 +266,16 @@ export default class ProductDetails extends Component {
                 if (typeof selectedItem[0] !== "undefined") {
 
                     this.setState({
-                        availablecount: selectedItem[0].item_quantity
+                        availablecount: selectedItem[0].item_quantity,
+                        quantitiesTableID : selectedItem[0]._id
+
                     });
 
-                    //console.log("Selected Item : "+JSON.stringify(selectedItem[0].item_quantity));
+                    console.log("Selected Item Id: "+JSON.stringify(selectedItem[0]._id));
                 } else {
                     this.setState({
-                        availablecount: 0
+                        availablecount: 0,
+                        quantitiesTableID : ''
                     });
                 }
             }
@@ -337,7 +343,7 @@ export default class ProductDetails extends Component {
                                 <div className="col-lg-9" style={{paddingBottom: '0px'}}>
                                     <StarRatingComponent
                                         name="rate1"
-                                        starCount={6}
+                                        starCount={5}
                                         value={this.rating}
                                         onStarClick={this.onStarClick.bind(this)}
                                         editing={false}
@@ -451,7 +457,7 @@ export default class ProductDetails extends Component {
                         </div>
 
                         <div className="row" style={{marginLeft: '0px'}}>
-                            <div className="col-10">
+                            <div className="col-12">
 
 
                                 <a href="#" type="submit" onClick={this.onclickShoppingCart}

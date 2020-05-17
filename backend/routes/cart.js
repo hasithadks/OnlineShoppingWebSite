@@ -19,14 +19,23 @@ router.route("/add").post((req, res) => {
         discounted_price : discounted_price,
         item_size : item_size,
         item_color : item_color,
-        requested_qty : requested_qty} = req.body;
+        requested_qty : requested_qty,
+        quantities_id : quantities_id} = req.body;
 
   //  productId, userID, productPrice, discount, discountedPrice, selectedSize, selectedColor, quantity
 
-    let all = new userCart({productID , userID , item_price, item_discount, discounted_price, item_size, item_color, requested_qty});
+    let all = new userCart({productID , userID , item_price, item_discount, discounted_price, item_size, item_color, requested_qty,quantities_id});
 
     all.save()
-        .then(() => res.json('Add to Favourite List'))
+        .then(() => res.json('Add to Cart'))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route("/delete/:id").delete((req, res) => {
+    let id = req.params.id;
+    //console.log("Product ID" +id);
+    userCart.findByIdAndDelete({_id : id})
+        .then(() => res.json('Remove form Cart'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 

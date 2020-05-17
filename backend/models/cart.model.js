@@ -10,6 +10,7 @@ const CartSchema = new Schema({
     item_size: {type:String},
     item_color: {type:String},
     requested_qty: {type: Number},
+    quantities_id : {type:String}
 });
 
 const userCart = mongoose.model('userCart', CartSchema);

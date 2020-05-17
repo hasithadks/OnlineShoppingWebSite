@@ -266,7 +266,8 @@ export default class DeliveryDetails extends Component {
                                         float: 'Right',
                                         marginRight: '25px',
                                         marginTop: '30px',
-                                        marginBottom: '20px'
+                                        marginBottom: '20px',
+                                        width : '100%'
                                     }}>
                                         Save & Proceed Order
                                     </a>
