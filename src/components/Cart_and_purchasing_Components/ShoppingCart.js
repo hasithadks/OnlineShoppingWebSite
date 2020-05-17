@@ -50,7 +50,7 @@ export default class ShoppingCart extends Component {
         //  console.log("Selected Name :" + selectedName);
       //  console.log("Index :" + selecteID);
       //  console.log("Qty :" + qty);
-        console.log("Data :" + data);
+        console.log(data);
         let table_id = data._id;
         console.log("Table ID :" + table_id);
 
@@ -104,14 +104,38 @@ export default class ShoppingCart extends Component {
     onClickProceedOrder() {
 
         let tempArray = this.state.selectedItems;
+        console.log("tempArray : Item :");
         console.log(tempArray);
         if(tempArray.length > 0 ){
             tempArray.forEach(item => {
 
-                axios.post(configs.BASE_URL + '/add', item)
-                    .then(() => alert("Add to Cart"));
+                axios.post(configs.BASE_URL + '/soldProduct/add', item)
+                    .then(console.log("Add to DB!!!"));
 
+                axios.delete(configs.BASE_URL + '/cart/delete/' + item._id)
+                    .then(response => {
+                        console.log("Delete From DB!!!")
+                    });
+
+                axios.get('http://localhost:5000/quantity/qty/' + item.quantities_id)
+                    .then(response => {
+                        console.log("Quantities id send and get Data");
+                        console.log(response.data);
+                        console.log(response.data.item_quantity);
+                        let item_quantity = response.data.item_quantity;
+                        console.log("Item qty : " + item_quantity);
+                        item_quantity = item_quantity - item.requested_qty;
+                        console.log("Updated qty : " + item_quantity);
+                        let payload = {
+                            item_quantity : item_quantity
+                        }
+
+                         axios.put('http://localhost:5000/quantity/update/itemQuantity/'+item.quantities_id,payload)
+                             .then(res => console.log(res.data));
+                    });
+                this.componentDidMount();
             })
+
 
         }
 
