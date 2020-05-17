@@ -103,6 +103,39 @@ router.route('/update/:id').post((req , res) =>{
             managementstaff.role = req.body.role;
             managementstaff.email = req.body.email;
 
+            const content = `
+                        Hey ${managementstaff.fname} ${managementstaff.lname},\n
+                        You have recently changed your user credentials for Online Fashion Store \n
+                        Your NEW user credentials for Online Fashion Store is given below. \n
+                        Please use these username and password to login to the system. \n
+                        Dont share these credentials with anyone. \n\n
+                        username : ${managementstaff.username} \n 
+                        password : ${managementstaff.password} \n\n
+                        Please use your credentials to Login from here- http://localhost:3000/admin \n
+                        To Visit Online Shopping store- http://localhost:3000/home \n
+                        Thanks,
+                        Online Fashion Store Team.    
+                    `;
+
+            var mail = {
+                from: managementstaff.fname,
+                to: managementstaff.email,
+                subject: 'Admin User Credentials-Updated',
+                text: content
+            }
+
+            transporter.sendMail(mail, (err, data) => {
+                if (err) {
+                    res.json({
+                        msg: 'fail'
+                    })
+                } else {
+                    res.json({
+                        msg: 'success'
+                    })
+                }
+            })
+
             managementstaff.save()
                 .then(()=> res.json('Management Staff Updated!'))
                 .catch(err => res.status(400).json('Error :'+err));
