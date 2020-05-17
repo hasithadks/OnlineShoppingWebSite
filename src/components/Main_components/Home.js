@@ -16,7 +16,8 @@ const  Product = props =>(
                         <h4 >{props.product.item_brand}</h4>
                         <h4 >{props.product.item_size}</h4>
                         <h4 >{props.product.item_colour}</h4>
-                        <a style={{width:'150px'}} href="#" className="btn btn-primary">Add to cart</a>
+                        {/*<a style={{width:'150px'}} href="#" className="btn btn-primary">Add to cart</a>*/}
+                        <Link className="btn btn-primary" to={"/productDetails/"+props.product._id}>View Details</Link>
                     </tr>
                 </td>
                 <td style={{width:'80px'}}>
