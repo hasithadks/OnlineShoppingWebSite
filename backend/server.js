@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
 
-try{
+
     const uri = process.env.ATLAS_URI;
     mongoose.connect(uri,{useNewUrlParser:true, useUnifiedTopology: true, useCreateIndex:true, useFindAndModify: false });
 
@@ -23,10 +23,7 @@ try{
         process.exit(1);
     });
 
-}
-catch (exception) {
-    console.log("Database Connection Error : " + exception);
-}
+
 
 
 const productRouter = require('./routes/products');
