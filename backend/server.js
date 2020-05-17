@@ -36,7 +36,7 @@ const favouriteRouter = require('./routes/favouriteProduct');
 const deliveryDetailsRouter = require('./routes/deliveryDetails');
 const productCategoryRouter = require('./routes/productcategory');
 const cartRouter = require('./routes/cart');
-const soldProductRouter = require('./routes/soldProducts');
+const userRouter = require('./routes/user');
 
 app.use('/products', productRouter);
 app.use('/quantity', quantityRouter);
@@ -45,9 +45,6 @@ app.use('/favouriteProduct', favouriteRouter);
 app.use('/deliveryDetails', deliveryDetailsRouter);
 app.use('/pcategory',productCategoryRouter);
 app.use('/cart',cartRouter);
-app.use('/soldProduct',soldProductRouter);
-
-const userRouter = require('./routes/user');
 app.use('/users',userRouter);
 
 app.listen(port, () => {
