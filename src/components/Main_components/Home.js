@@ -5,37 +5,26 @@ import {Link} from "react-router-dom";
 
 const  Product = props =>(
 
-    // <tr>
-    //     <td>{props.product.item_name}</td>
-    //     <td>{props.product.item_description}</td>
-    //     <td>{props.product.item_category}</td>
-    //     <td>{props.product.item_quanity}</td>
-    //     <td>{props.product.item_discount}</td>
-    //     <td>{props.product.item_from}</td>
-    //     <td>{props.product.item_brand}</td>
-    //     <td>{props.product.item_features}</td>
-    //     <td>{props.product.item_image}</td>
-    // </tr>
-
     <div className="row">
-        <div className="col-sm-3">
-                <div className="card">
-                    {/* Card image */}
-                    <img className="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/43.jpg" alt="Card image cap" />
-                    {/* Card content */}
-                    <div className="card-body">
-                        {/* Title */}
-                        <h4 className="card-title"><a>{props.product.item_name}</a></h4>
-                        {/* Text */}
-                        <p className="card-text">
-                            {props.product.item_brand}
-                        </p>
-                        {/* Button */}
-                        {/*<a href="/productDetails" className="btn btn-primary">View Product</a>*/}
-                        <Link className="btn btn-primary" to={"/productDetails/"+props.product._id}> View Product</Link>
-                    </div>
-                </div>
-        </div>
+        <br/>
+        <table>
+            <tr className="col-12">
+                <td className="card col-lg-11" style={{marginLeft:'43px', marginTop:'30px'}}>
+                    <tr>
+                        <img style={{width:'255px'}}  src="https://mdbootstrap.com/img/Photos/Others/images/43.jpg" alt="Card image cap" />
+                        <h4 >{props.product.item_name}</h4>
+                        <h4 >{props.product.item_brand}</h4>
+                        <h4 >{props.product.item_size}</h4>
+                        <h4 >{props.product.item_colour}</h4>
+                        <a style={{width:'150px'}} href="#" className="btn btn-primary">Add to cart</a>
+                    </tr>
+                </td>
+                <td style={{width:'80px'}}>
+
+                </td>
+            </tr>
+        </table>
+        <br/>
     </div>
 
 
@@ -63,12 +52,6 @@ export default class Home extends Component {
     }
 
     productsList(){
-        // return this.state.products.map(currentproduct =>{
-        //     return currentproduct;
-        // })
-        // return this.state.products.forEach(value => {
-        //     this.item_name = value.item_name;
-        // });
         return this.state.products.map(function (currentpro,i) {
             return <Product product = {currentpro} key={i}/>
         });
@@ -80,7 +63,63 @@ export default class Home extends Component {
             <div className="container">
 
                 <div>
-                    <h1>HOME</h1>
+
+
+                    <div id="carousel-example-2" className="carousel slide carousel-fade" data-ride="carousel">
+                        <ol className="carousel-indicators">
+                            <li data-target="#carousel-example-2" data-slide-to="0" className="active"></li>
+                            <li data-target="#carousel-example-2" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-2" data-slide-to="2"></li>
+                        </ol>
+                        <div className="carousel-inner" role="listbox">
+                            <div className="carousel-item active">
+                                <div className="view" style={{width:'100%',height:'500px'}}>
+                                    <img className="d-block w-100"
+                                         src="https://mdbootstrap.com/img/Photos/Slides/img%20(68).jpg"
+                                         alt="First slide"/>
+                                    <div className="mask rgba-black-light"></div>
+                                </div>
+                                <div className="carousel-caption">
+                                    <h3 className="h3-responsive">Light mask</h3>
+                                    <p>First text</p>
+                                </div>
+                            </div>
+                            <div className="carousel-item">
+                                <div className="view">
+                                    <img className="d-block w-100"
+                                         src="https://mdbootstrap.com/img/Photos/Slides/img%20(6).jpg"
+                                         alt="Second slide"/>
+                                    <div className="mask rgba-black-strong"></div>
+                                </div>
+                                <div className="carousel-caption">
+                                    <h3 className="h3-responsive">Strong mask</h3>
+                                    <p>Secondary text</p>
+                                </div>
+                            </div>
+                            <div className="carousel-item">
+                                <div className="view">
+                                    <img className="d-block w-100"
+                                         src="https://mdbootstrap.com/img/Photos/Slides/img%20(9).jpg"
+                                         alt="Third slide"/>
+                                    <div className="mask rgba-black-slight"></div>
+                                </div>
+                                <div className="carousel-caption">
+                                    <h3 className="h3-responsive">Slight mask</h3>
+                                    <p>Third text</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a className="carousel-control-prev" href="#carousel-example-2" role="button" data-slide="prev">
+                            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span className="sr-only">Previous</span>
+                        </a>
+                        <a className="carousel-control-next" href="#carousel-example-2" role="button" data-slide="next">
+                            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span className="sr-only">Next</span>
+                        </a>
+                    </div>
+
+
                         <div className="row">
                             {this.productsList()}
                         </div>

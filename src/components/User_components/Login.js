@@ -3,16 +3,20 @@ import axios from "axios";
 
 const  User = props =>(
     localStorage.clear(),
+    localStorage.setItem('user_id',props.user._id),
     localStorage.setItem('user_email',props.user.user_email),
     localStorage.setItem('user_username',props.user.user_username),
     localStorage.setItem('user_password',props.user.user_password),
     localStorage.setItem('user_phone',props.user.user_phone),
     localStorage.setItem('user_gender',props.user.user_gender),
     localStorage.setItem('user_image',props.user.user_image),
-        <span style={{color:"black"}}> </span>
+    localStorage.setItem('user_b_year',props.user.user_b_year),
+    localStorage.setItem('user_b_month',props.user.user_b_month),
+    localStorage.setItem('user_b_day',props.user.user_b_day),
+    <span style={{color:"black"}}> </span>
 );
-export default class Login extends Component{
 
+export default class Login extends Component{
      constructor(props) {
          super(props);
          this.onChangeUserName = this.onChangeUserName.bind(this);
@@ -20,12 +24,16 @@ export default class Login extends Component{
          this.onSubmit = this.onSubmit.bind(this);
 
          this.state ={
+             user_id:'',
              user_email : '',
              user_password:'',
              user_username : '',
              user_phone : '',
              user_gender :'',
              user_image : '',
+             user_b_year:'',
+             user_b_month:'',
+             user_b_day:'',
              user:[],
          }
     }
@@ -40,6 +48,7 @@ export default class Login extends Component{
                 console.log(error);
             });
     }
+
     componentDidMount() {
         this.productList();
         axios.get('http://localhost:5000/users/username/'+ this.state.user_email)
@@ -50,6 +59,7 @@ export default class Login extends Component{
                 console.log(error);
             });
     }
+
     productList(){
         return this.state.user.map(currentTodo => {
             return <User user ={currentTodo} key={currentTodo._id}/>
@@ -70,15 +80,18 @@ export default class Login extends Component{
 
     onSubmit(e){
         e.preventDefault(e);
-
+        // this.props.history.push('/');
         if(this.state.user_email == localStorage.getItem('user_email') && this.state.user_password == localStorage.getItem('user_password')){
                 console.log("login success!")
+                console.log(localStorage.getItem('user_id'));
                 console.log(localStorage.getItem('user_email'));
                 console.log(localStorage.getItem('user_username'));
                 console.log(localStorage.getItem('user_password'));
                 console.log(localStorage.getItem('user_phone'));
                 console.log(localStorage.getItem('user_gender'));
                 console.log(localStorage.getItem('user_image'));
+
+                alert("Successfully login!");
         }
         else{
             console.log("try again!")
@@ -88,12 +101,13 @@ export default class Login extends Component{
             console.log(localStorage.getItem('user_phone'));
             console.log(localStorage.getItem('user_gender'));
             console.log(localStorage.getItem('user_image'));
-        }
 
+            alert("Login fail!!!! try again later..");
+        }
     }
+
     render(){
         return (
-
             <div className="container">
                 {this.productList()}
                 <div style={{width:'50%',marginLeft:'25%',marginTop:'6%',marginBottom:'83px'}}>
@@ -106,7 +120,7 @@ export default class Login extends Component{
                     <tbody>
                         <tr>
                             <div className="form-group">
-                                <label style={{float: 'left',  marginTop: '20px'}}>User Name</label>
+                                <label style={{float: 'left',  marginTop: '20px'}}>Email</label>
                                 <input required className="form-control"
                                        type="text"
                                        placeholder="User Name"
@@ -127,7 +141,7 @@ export default class Login extends Component{
                             </div>
                         </tr>
                         <tr>
-                            <a href="#" style={{fontSize:'12px', color:'blue',float: 'right'}}>Forgot password?</a>
+                            <a href="/forgotpassword" style={{fontSize:'12px', color:'blue',float: 'right'}}>Forgot password?</a>
                         </tr>
                         <tr>
                             <button href="/home" className="btn btn-primary" onClick={this.onSubmit} style={{marginTop:'20px', marginBottom:'10px',float: 'right',width:'110px'}}>Login</button>

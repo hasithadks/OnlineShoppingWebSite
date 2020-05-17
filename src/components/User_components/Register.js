@@ -11,15 +11,23 @@ constructor(props) {
     this.onChangePhone = this.onChangePhone.bind(this);
     this.onChangeGender = this.onChangeGender.bind(this);
     this.onChangeImage = this.onChangeImage.bind(this);
+    this.onChangeBYear = this.onChangeBYear.bind(this);
+    this.onChangeBMonth = this.onChangeBMonth.bind(this);
+    this.onChangeBDay = this.onChangeBDay.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
         user_email:'',
         user_username:'',
         user_password:'',
-        user_phone:0,
+        user_phone:'',
         user_gender:'',
         user_image:'',
+        user_b_year:'',
+        user_b_month:'',
+        user_b_day:'',
+
+        user_role:'',
         users:[]
     }
 }
@@ -60,6 +68,24 @@ constructor(props) {
         });
     }
 
+    onChangeBYear(){
+        this.setState({
+            user_b_year: null
+        });
+    }
+
+    onChangeBMonth(){
+        this.setState({
+            user_b_month: null
+        });
+    }
+
+    onChangeBDay(){
+        this.setState({
+            user_b_day: null
+        });
+    }
+
     onSubmit(e){
         e.preventDefault();
 
@@ -69,7 +95,16 @@ constructor(props) {
             user_password: this.state.user_password,
             user_phone: this.state.user_phone,
             user_gender: this.state.user_gender,
-            user_image: this.state.user_image
+            user_image: this.state.user_image,
+            user_b_year: this.state.user_b_year,
+            user_b_month: this.state.user_b_month,
+            user_b_day: this.state.user_b_day
+        }
+
+        const account = {
+            user_username: this.state.user_email,
+            user_password: this.state.user_password,
+            user_role: 'Customer'
         }
 
         console.log(`email:${this.state.user_email}`);
@@ -80,7 +115,11 @@ constructor(props) {
         console.log(`image:${this.state.user_image}`);
 
         axios.post('http://localhost:5000/users/add',user)
-            .then(res => console.log((res.data)));
+            .then(res => console.log((res.data)) && alert("Successfully registered!"));
+
+        axios.post('http://localhost:5000/userAccounts/add',account)
+            .then(res => console.log((res.data))&& console.log("Account details added!"));
+
     }
 
     render() {
@@ -151,45 +190,14 @@ constructor(props) {
                                 <div className="form-group">
                                     <label htmlFor="inputEmail3" className="col-sm-2 col-form-label" style={{float: 'left'}}>Gender</label>
                                     <div className="col-sm-12">
-                                    <select className="browser-default custom-select">
-                                        <option value="male"
-                                                checked={this.state.user_gender === 'Male'}
-                                                onChange={this.onChangeGender}
-                                        >Male</option>
-                                        <option value="female"
-                                                checked={this.state.user_gender === 'Female'}
-                                                onChange={this.onChangeGender}>Female</option>
+                                    <select className="browser-default custom-select"
+                                            value={this.state.user_gender}
+                                            onChange={this.onChangeGender}>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
                                     </select>
                                     </div>
                                 </div>
-
-
-
-                                {/*<fieldset className="form-group">*/}
-                                {/*    <div className="row">*/}
-                                {/*        <legend className="col-form-label col-sm-2 pt-0">Gender</legend>*/}
-                                {/*        <div className="col-sm-12">*/}
-                                {/*            <div className="form-check">*/}
-                                {/*                <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="Male" defaultChecked*/}
-                                {/*                       checked={this.state.user_gender === 'Male'}*/}
-                                {/*                       onChange={this.onChangeGender}*/}
-                                {/*                />*/}
-                                {/*                <label className="form-check-label" htmlFor="gridRadios1">*/}
-                                {/*                    Male*/}
-                                {/*                </label>*/}
-                                {/*            </div>*/}
-                                {/*            <div className="form-check">*/}
-                                {/*                <input  className="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="Female"*/}
-                                {/*                        checked={this.state.user_gender === 'Female'}*/}
-                                {/*                        onChange={this.onChangeGender}*/}
-                                {/*                />*/}
-                                {/*                <label className="form-check-label" htmlFor="gridRadios2">*/}
-                                {/*                    Female*/}
-                                {/*                </label>*/}
-                                {/*            </div>*/}
-                                {/*        </div>*/}
-                                {/*    </div>*/}
-                                {/*</fieldset>*/}
                             </td>
 
                             <td style={{width:'60%'}}>
@@ -205,22 +213,8 @@ constructor(props) {
                         </tr>
                     </tbody>
                 </table>
-
-                {/*<div>*/}
-                {/*    <div>*/}
-                {/*        <img id="blah" src="http://placehold.it/180" className="image"*/}
-                {/*        value={this.state.user_image}*/}
-                {/*        onChange={this.onChangeImage}*/}
-                {/*        />*/}
-                {/*    </div>*/}
-
-                {/*    <div>*/}
-                {/*        <input type="file" name="file" className="file"/>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
-
             </form>
-                </div>
+            </div>
             </div>
 
 
