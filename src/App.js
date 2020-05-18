@@ -18,6 +18,8 @@ import OrderSummary from "./components/Cart_and_purchasing_Components/OrderSumma
 import DeliveryDetails from "./components/Cart_and_purchasing_Components/DeliveryDetails";
 import FavoList from "./components/Cart_and_purchasing_Components/FavouriteList";
 import ProductRatings from "./components/Cart_and_purchasing_Components/ProductRatings";
+import shoppingCartProcess from "./components/Cart_and_purchasing_Components/ShoppingCartProcess";
+import SuccessMessage from "./components/Cart_and_purchasing_Components/SuccessMessage";
 
 import AddEditItem from "./components/add-edit-item-component";
 import ItemList from "./components/item-list-component";
@@ -51,6 +53,8 @@ function App() {
                     <Route path="/additem/:id" exact component={AddEditItem}/>
                     <Route path="/additem" exact component={AddEditItem}/>
                     <Route path="/admin"><DashboardIndex/></Route>
+                    <Route path="/shoppingCartProcess" exact component={shoppingCartProcess}/>
+                    <Route path="/SuccessMessage" exact component={SuccessMessage}/>
                 </Switch>
                 <ItemFooter/>
             </Router>
