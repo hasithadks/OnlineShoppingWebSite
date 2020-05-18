@@ -2,7 +2,7 @@ const productRouter = require('express').Router();
 let Product = require('../models/product.model');
 const mongoose = require('mongoose');
 
-productRouter.route('/').get(function(req, res, next) {
+productRouter.route('/').get(function(req, res) {
     Product.find(function(err, products) {
         if (err) {
             console.log(err);
@@ -40,7 +40,8 @@ productRouter.route('/add').post(function(req, res) {
         item_category : req.body.item_category,
         item_from : req.body.item_from,
         item_brand : req.body.item_brand,
-        item_image : req.body.item_image,
+        item_price : req.body.item_price,
+        item_discount : req.body.item_discount,
     });
     product
         .save()
@@ -55,7 +56,8 @@ productRouter.route('/add').post(function(req, res) {
                     item_category : result.item_category,
                     item_from : result.item_from,
                     item_brand : result.item_brand,
-                    item_image : result.item_image,
+                    item_price : req.body.item_price,
+                    item_discount : req.body.item_discount,
                     item_id: result.item_id,
                     request: {
                         type: 'GET',
@@ -76,11 +78,13 @@ productRouter.route('/update/:id').post((req, res) => {
             req.status(404).send("data is not found");
         else
             product.item_name = req.body.item_name;
-            product.item_description =req.body.item_description;
-            product.item_category = req.body.item_category;
-            product.item_from = req.body.item_from;
-            product.item_brand = req.body.item_brand;
-            product.item_image = req.body.item_image;
+        product.item_description =req.body.item_description;
+        product.item_category = req.body.item_category;
+        product.item_from = req.body.item_from;
+        product.item_brand = req.body.item_brand;
+        product.item_price = req.body.item_price;
+        product.item_discount = req.body.item_discount;
+
 
             product.save().then(product =>{
                 res.json('Item update!');

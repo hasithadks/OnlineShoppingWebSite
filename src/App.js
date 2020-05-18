@@ -21,10 +21,9 @@ import ProductRatings from "./components/Cart_and_purchasing_Components/ProductR
 import shoppingCartProcess from "./components/Cart_and_purchasing_Components/ShoppingCartProcess";
 import SuccessMessage from "./components/Cart_and_purchasing_Components/SuccessMessage";
 
-import AddEditItem from "./components/add-edit-item-component";
-import ItemList from "./components/item-list-component";
-import ItemFooter from "./components/footer-item-component";
-import ItemNav from "./components/nav-item-component";
+
+import ItemFooter from "./components/ProductAddComponent/footer-item-component";
+import ItemNav from "./components/ProductAddComponent/nav-item-component";
 
 import DashboardIndex from "./components/DashboardComponents/index.component";
 
@@ -49,9 +48,6 @@ function App() {
                     <Route path="/deliveryDetails" exact component={DeliveryDetails}/>
                     <Route path="/orderSummery" exact component={OrderSummary}/>
                     <Route path="/FavouriteList" exact component={FavoList}/>
-                    <Route path="/itemlist" exact component={ItemList}/>
-                    <Route path="/additem/:id" exact component={AddEditItem}/>
-                    <Route path="/additem" exact component={AddEditItem}/>
                     <Route path="/admin"><DashboardIndex/></Route>
                     <Route path="/shoppingCartProcess" exact component={shoppingCartProcess}/>
                     <Route path="/SuccessMessage" exact component={SuccessMessage}/>

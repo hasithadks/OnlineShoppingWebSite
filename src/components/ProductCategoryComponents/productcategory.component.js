@@ -11,7 +11,7 @@ const PCategory = props => (
             <button style={{width:"auto"}} className="btn btn-danger" onClick={() => {props.deletePcategory(props.pcategory._id)}}>Delete</button>
         </td>
     </tr>
-)
+);
 
 export default class ProductCategoryList extends Component{
     constructor(props) {
@@ -36,7 +36,7 @@ export default class ProductCategoryList extends Component{
 
     deletePcategory(id){
         axios.delete('http://localhost:5000/pcategory/'+id)
-            .then(res => console.log(res.date))
+            .then(res => console.log(res.date));
 
         this.setState({
             pcategory : this.state.pcategory.filter(el => el._id !== id)
@@ -57,15 +57,16 @@ export default class ProductCategoryList extends Component{
                     <h3 className="text-monospace">Product Category</h3>
                 </div>
                 <div align="right">
-                    <button className="btn btn-primary" style={{width:"auto", marginBottom:"20px"}}><Link style={{color:"black"}} to={"/admin/pcategory/add"}>Add Product Category</Link></button>
+                    <Link style={{color:"black", textDecoration:"none"}} to={"/admin/pcategory/add"}><button className="btn btn-block btn-warning">Add Product Category</button></Link>
+                    <br/>
                 </div>
 
                 <div>
-                    <table className="table table-striped table-bordered">
-                        <thead className="thead-dark">
+                    <table className="table table-striped">
+                        <thead >
                         <tr>
-                            <th scope="col">Category Name</th>
-                            <th scope="col">Actions</th>
+                            <th>Category Name</th>
+                            <th >Actions</th>
                         </tr>
                         </thead>
                         <tbody>

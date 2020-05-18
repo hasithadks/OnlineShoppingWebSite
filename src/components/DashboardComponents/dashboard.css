@@ -4,7 +4,7 @@
 }
 #sidebar-container {
     min-height: 100vh;
-    background-color: #333;
+    background-color: white;
     padding: 0;
 }
 
@@ -19,7 +19,7 @@
 /* Menu item*/
 #sidebar-container .list-group a {
     height: 50px;
-    color: white;
+    color: #333;
 }
 
 /* Submenu item*/

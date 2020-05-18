@@ -14,7 +14,7 @@ const MStaff = props => (
             <button style={{width:"auto"}} className="btn btn-danger" onClick={() => {props.deleteMstaff(props.mstaff._id)}}>Delete</button>
         </td>
     </tr>
-)
+);
 
 export default class ManagementStaffList extends Component{
     constructor(props) {
@@ -39,7 +39,7 @@ export default class ManagementStaffList extends Component{
 
     deleteMstaff(id){
         axios.delete('http://localhost:5000/mstaff/'+id)
-            .then(res => console.log(res.date))
+            .then(res => console.log(res.date));
 
         this.setState({
             mstaff : this.state.mstaff.filter(el => el._id !== id)
@@ -60,18 +60,19 @@ export default class ManagementStaffList extends Component{
                     <h3 className="text-monospace">Management Staff</h3>
                 </div>
                 <div align="right">
-                    <button className="btn btn-primary" style={{width:"auto", marginBottom:"20px"}}><Link style={{color:"black"}} to={"/admin/mstaff/add"}>Add Management Staff</Link></button>
+                    <Link style={{color:"black", textDecoration:"none"}} to={"/admin/mstaff/add"}><button className="btn btn-block btn-warning">Add Product Category</button></Link>
+                    <br/>
                 </div>
 
                 <div>
-                    <table className="table table-striped table-bordered">
-                        <thead className="thead-dark">
+                    <table className="table table-striped">
+                        <thead>
                         <tr>
-                            <th scope="col">FirstName</th>
-                            <th scope="col">Lastname</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Role</th>
-                            <th scope="col">Actions</th>
+                            <th>FirstName</th>
+                            <th>Lastname</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
