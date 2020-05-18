@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const ManagementStaff = require('../models/managementstaff.model');
+const multer = require('multer');
 const nodemailer = require('nodemailer');
 const cred = require('../email-config/config');
 
@@ -21,19 +22,44 @@ transporter.verify((error, success) => {
     }
 });
 
+const x = multer
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/mstaff/profilePic');
+    },
+    filename: function (req, file, cb) {
+        cb(null, new Date().toISOString().replace(':', '-') + file.originalname);
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+};
+
+const upload = multer({
+    storage: storage,
+    fileFilter: fileFilter
+});
+
 router.route('/').get((req ,res) => {
    ManagementStaff.find()
        .then( managementstaff => res.json(managementstaff))
        .catch(err => res.status(400).json('Error :'+err));
 });
 
-router.route('/add').post((req ,res) =>{
+router.route('/add').post(upload.single('profilePic'),(req ,res) =>{
    const username = req.body.username;
    const password = req.body.password;
    const fname = req.body.fname;
    const lname = req.body.lname;
    const role = req.body.role;
    const email = req.body.email;
+   const profilePic = req.file.path;
 
    const newManagementStaff = new ManagementStaff({
        username,
@@ -41,7 +67,8 @@ router.route('/add').post((req ,res) =>{
        fname,
        lname,
        role,
-       email
+       email,
+       profilePic
    });
 
     const content = `
