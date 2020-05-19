@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import axios from "axios";
+import defaultimg from '../Images/default-img.jpg';
 
 export default class CreateManagementStaff extends Component{
     constructor(props) {
@@ -13,12 +14,11 @@ export default class CreateManagementStaff extends Component{
             lname : '',
             role : '',
             email : '',
-            profilePic : null,
+            profilePic : defaultimg,
         }
     }
 
     onChangeHandler = e => {
-
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -135,6 +135,7 @@ export default class CreateManagementStaff extends Component{
                                 </div>
                                 <div className="col-md-10">
                                     <input type="file" className="form-control" onChange={this.fileUploadHandler} />
+                                    <img src={this.state.profilePic} style={{width:"100px",height:"100px"}} className="form-control img-thumbnail" alt="Profile Picture"></img>
                                 </div>
                             </div>
                         </div>
@@ -142,7 +143,7 @@ export default class CreateManagementStaff extends Component{
 
                         <div className="form-group">
                             <div className="row" style={{marginRight:"3px"}}>
-                                <button style={{width:"auto",marginLeft:"auto"}} className="btn btn-secondary mr-1"><Link style={{color:"black"}} to={"/admin/mstaff/"}>Back</Link></button>
+                                <Link style={{marginLeft:"auto"}} to={"/admin/mstaff/"}><button style={{width:"auto",color:"black"}} className="btn btn-secondary mr-1">Back</button></Link>
                                 <button style={{width:"auto"}} className="btn btn-primary" type="submit">Create Management Staff</button>
                             </div>
                         </div>

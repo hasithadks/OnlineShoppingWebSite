@@ -22,14 +22,12 @@ transporter.verify((error, success) => {
     }
 });
 
-const x = multer
-
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/mstaff/profilePic');
+        cb(null, './uploads/mstaff/');
     },
     filename: function (req, file, cb) {
-        cb(null, new Date().toISOString().replace(':', '-') + file.originalname);
+        cb(null, Date.now() + file.originalname);
     }
 });
 
@@ -43,6 +41,9 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
     storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
     fileFilter: fileFilter
 });
 
@@ -120,7 +121,7 @@ router.route('/:id').delete((req ,res) =>{
         .catch(err => res.status(400).json('Error :'+err));
 });
 
-router.route('/update/:id').post((req , res) =>{
+router.route('/update/:id').post(upload.single('profilePic'),(req , res) =>{
     ManagementStaff.findById(req.params.id)
         .then(managementstaff =>{
             managementstaff.username = req.body.username;
@@ -129,6 +130,7 @@ router.route('/update/:id').post((req , res) =>{
             managementstaff.lname = req.body.lname;
             managementstaff.role = req.body.role;
             managementstaff.email = req.body.email;
+            managementstaff.profilePic = req.file.path;
 
             const content = `
                         Hey ${managementstaff.fname} ${managementstaff.lname},\n

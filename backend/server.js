@@ -22,9 +22,6 @@ app.use(express.json());
         process.exit(1);
     });
 
-
-
-
 const productRouter = require('./routes/products');
 const quantityRouter = require('./routes/quantity');
 const staffRouter = require('./routes/managementstaff');
@@ -46,7 +43,7 @@ app.use('/cart',cartRouter);
 app.use('/users',userRouter);
 app.use('/soldProducts',soldRouter);
 app.use('/userAccounts',accountRouter);
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static('uploads/mstaff'));
 
 app.listen(port, () => {
     console.log(`Server is running on Port: ${port}`);

@@ -10,7 +10,7 @@ const MStaff = props => (
         <td>{props.mstaff.email}</td>
         <td>{props.mstaff.role}</td>
         <td>
-            <button style={{paddingRight:"20px;",width:"auto"}} className="btn btn-warning mr-1"><Link style={{color:"black"}} to={"/admin/mstaff/edit/"+props.mstaff._id}>Edit</Link></button>
+            <Link style={{color:"black"}} to={"/admin/mstaff/edit/"+props.mstaff._id}><button style={{paddingRight:"20px;",width:"auto"}} className="btn btn-warning mr-1">Edit</button></Link>
             <button style={{width:"auto"}} className="btn btn-danger" onClick={() => {props.deleteMstaff(props.mstaff._id)}}>Delete</button>
         </td>
     </tr>
@@ -60,7 +60,7 @@ export default class ManagementStaffList extends Component{
                     <h3 className="text-monospace">Management Staff</h3>
                 </div>
                 <div align="right">
-                    <Link style={{color:"black", textDecoration:"none"}} to={"/admin/mstaff/add"}><button className="btn btn-block btn-warning">Add Product Category</button></Link>
+                    <Link to={"/admin/mstaff/add"}><button className="btn btn-primary" style={{width:"auto", marginBottom:"20px"}}>Add Management Staff</button></Link>
                     <br/>
                 </div>
 
