@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
-import logo from "./Images/logo.png";
-import advertisement from "./Images/advertisement.png";
+import logo from "../Images/logo.png";
+import advertisement from "../Images/advertisement.png";
 
 export default class ItemNav extends Component{
     render(){

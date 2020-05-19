@@ -1,18 +1,19 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
-import '../App.css';
+
 const  Product = props =>(
     <tr>
         <td>{props.product.item_name}</td>
         <td>{props.product.item_description}</td>
         <td>{props.product.item_category}</td>
         <td>{props.product.item_discount}</td>
+        <td>{props.product.item_price}</td>
         <td>{props.product.item_from}</td>
         <td>{props.product.item_brand}</td>
-        <td>{props.product.item_image}</td>
-        <td><div>
-            <Link className="mx-1 text-success fas fa-pen text-decoration-none" to={"/additem/"+props.product._id}></Link><span className=" mx-1 text-danger fas fa-trash" href ='#' onClick={()=>{props.deleteProduct(props.product._id,props.product.item_id)}}></span>
+        <td>
+            <div>
+                <Link className="mx-1 text-success fas fa-pen text-decoration-none" to={"/admin/additem/"+props.product._id}></Link><span className=" mx-1 text-danger fas fa-trash" href ='#' onClick={()=>{props.deleteProduct(props.product._id,props.product.item_id)}}></span>
             </div>
         </td>
     </tr>
@@ -50,7 +51,7 @@ export default class ItemLists extends Component{
             .then(res => console.log(res.data));
         this.setState({
             products:this.state.products.filter(el => el.pid !==pid)
-        })
+        });
         axios.delete('http://localhost:5000/quantity/delete/qty/'+qid)
             .then(res => console.log(res.data));
         this.setState({
@@ -65,27 +66,31 @@ export default class ItemLists extends Component{
     }
     render(){
         return(
-            <div className="App-center">
-                <div className="container">
-                    <br/><br/>
-                    <h3>Items List</h3>
-                    <table className="table table-striped" style={{marginTop :20}}>
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th>Discount</th>
-                            <th>From</th>
-                            <th>Brand</th>
-                            <th>Image</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {this.productList()}
-                        </tbody>
-                    </table>
+            <div className="container card">
+                <div className="App-center">
+                    <div className="container">
+                        <br/>
+                        <h3 className="text-monospace">Item List</h3>
+                        <br/>
+                        <Link style={{color:"black", textDecoration:"none"}} to={"/admin/additem"}><button className="btn btn-block btn-warning">Add Item</button></Link>
+                        <table className="table table-striped" style={{marginTop :20}}>
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Discount</th>
+                                <th>Price</th>
+                                <th>From</th>
+                                <th>Brand</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {this.productList()}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         )

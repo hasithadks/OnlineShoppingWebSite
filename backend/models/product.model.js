@@ -19,8 +19,11 @@ let Product = new Schema({
     item_brand:{
         type: String
     },
-    item_image:{
-        type: String
+    item_price:{
+        type: Number
+    },
+    item_discount:{
+        type: Number
     }
 });
 

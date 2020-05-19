@@ -56,7 +56,7 @@ export default class CreateProductCategory extends Component{
                         </div>
                         <div className="form-group">
                             <div className="row" style={{marginRight:"3px"}}>
-                                <button style={{width:"auto",marginLeft:"auto"}} className="btn btn-secondary mr-1"><Link style={{color:"black"}} to={"/admin/pcategory/"}>Back</Link></button>
+                                <Link style={{marginLeft:"auto"}} to={"/admin/pcategory/"}><button style={{width:"auto",color:"black"}} className="btn btn-secondary mr-1">Back</button></Link>
                                 <button style={{width:"auto"}} className="btn btn-primary" type="submit">Create Product Category</button>
                             </div>
                         </div>

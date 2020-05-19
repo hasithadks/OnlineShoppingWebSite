@@ -24,7 +24,7 @@ export default class DeliveryDetails extends Component {
             Southern: ['Galle', 'Matara', 'Hambantota'],
             isProvinceSelected: false,
             districtsList: [],
-            userId: '147',
+            userID: '147',
             fullName: '',
             phoneNo: '',
             province: '',
@@ -49,13 +49,11 @@ export default class DeliveryDetails extends Component {
         this.onChangeCity = this.onChangeCity.bind(this);
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangeProvince = this.onChangeProvince.bind(this);
-        //this.onChangeIsSelectAddress = this.onChangeIsSelectAddress.bind(this);
-        // this.onChangeDetails = this.onChangeDetails.bind(this);
         this.updateDeliveryDetails = this.updateDeliveryDetails.bind(this);
     }
 
     componentDidMount() {
-        axios.get(configs.BASE_URL + '/deliveryDetails/' + this.state.userId)
+        axios.get(configs.BASE_URL + '/deliveryDetails/' + this.state.userID)
             .then(response => {
 
                 if (response.data.length > 0) {
@@ -81,31 +79,11 @@ export default class DeliveryDetails extends Component {
 
     }
 
-    // onChangeIsSelectAddress(key) {
-    //
-    //     if (this.state.isSelectAddress === false) {
-    //         this.setState({
-    //                 isSelectAddress: true,
-    //                 SelectAddressKey: key
-    //
-    //             }
-    //         )
-    //
-    //     } else {
-    //         this.setState({
-    //                 isSelectAddress: false,
-    //                 SelectAddressKey: key
-    //             }
-    //         )
-    //     }
-    //
-    //
-    // }
 
     SaveDeliveryDetails() {
-        let {userId, fullName, phoneNo, province, district, city, address} = this.state;
+        let {userID, fullName, phoneNo, province, district, city, address} = this.state;
 
-        let payload = {userId, fullName, phoneNo, province, district, city, address};
+        let payload = {userID, fullName, phoneNo, province, district, city, address};
 
         axios.post(configs.BASE_URL + '/deliveryDetails/add', payload)
             .then(() => alert("Data Save"));
@@ -132,19 +110,14 @@ export default class DeliveryDetails extends Component {
 
     updateDeliveryDetails() {
         alert("Update Method call");
-        let {userId, fullName, phoneNo, updateProvince, district, city, address} = this.state;
-        let payload = {userId, fullName, phoneNo, updateProvince, district, city, address};
+        let {userID, fullName, phoneNo, updateProvince, district, city, address} = this.state;
+        let payload = {userID, fullName, phoneNo, updateProvince, district, city, address};
 
         axios.post('http://localhost:5000/deliveryDetails/update/' + this.state.detailsID, payload)
             .then(res => console.log(res.data));
 
     }
 
-    // onChangeDetails(){
-    //     this.setState({
-    //         inputfields: true
-    //     });
-    // }
     onChangeName(e) {
         this.setState({
             fullName: e.target.value

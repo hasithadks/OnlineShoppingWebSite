@@ -10,8 +10,8 @@ router.route('/').get((req, res)=>{
 
 router.route('/:id').get((req, res)=>{
     let id = req.params.id;
-    deliveryDetail.find({userId: id}, function (err, details){
-        console.log(details);
+    deliveryDetail.find({userID: id}, function (err, details){
+       // console.log(details);
         if (err) {
             console.log(err);
             res.status(400).json('Error: ' + err);
@@ -27,7 +27,7 @@ router.route("/add").post((req, res) => {
 
    // let jsonContent =  JSON.parse(req.body);
 
-    let {userId : userId,
+    let {userID : userID,
         fullName : fullName,
         phoneNo : phoneNo,
         province : province,
@@ -36,7 +36,7 @@ router.route("/add").post((req, res) => {
         address : address
     } = req.body;
 
-    let allDetails = new deliveryDetail({userId, fullName, phoneNo, province, district, city, address});
+    let allDetails = new deliveryDetail({userID, fullName, phoneNo, province, district, city, address});
 
     allDetails.save()
         .then(() => res.json('Add deliveryDetails'))
@@ -49,7 +49,7 @@ router.route('/update/:id').post((req, res) => {
         if(!details)
             req.status(404).send("data is not found");
         else {
-            details.userId = req.body.userId;
+            details.userID = req.body.userID;
             details.fullName = req.body.fullName;
             details.phoneNo = req.body.phoneNo;
             details.province = req.body.updateProvince;

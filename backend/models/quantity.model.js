@@ -11,14 +11,11 @@ let Quantity = new Schema({
     item_colour:{
         type:String
     },
-    item_price:{
-        type: Number
-    },
-    item_discount:{
-        type: Number
-    },
     item_quantity:{
         type: Number
+    },
+    item_productImage: {
+        type: String
     }
 });
 
