@@ -1,6 +1,21 @@
 import React, { Component } from 'react'
 import axios from "axios";
 
+const  User = props =>(
+    localStorage.clear(),
+        localStorage.setItem('user_id',props.user._id),
+        localStorage.setItem('user_username',props.user.user_username),
+        localStorage.setItem('user_email',props.user.user_email),
+        localStorage.setItem('user_password',props.user.user_password),
+        localStorage.setItem('user_phone', props.user.user_phone),
+        localStorage.setItem('user_gender', props.user.user_gender),
+        localStorage.setItem('user_b_year', props.user.user_b_year),
+        localStorage.setItem('user_b_month', props.user.user_b_month),
+        localStorage.setItem('user_b_day', props.user.user_b_day),
+
+        <span style={{color:"black"}}> </span>
+);
+
 export default class Profile extends Component {
     constructor(props) {
         super(props);
@@ -15,6 +30,8 @@ export default class Profile extends Component {
             user_b_year: localStorage.getItem('user_b_year'),
             user_b_month: localStorage.getItem('user_b_month'),
             user_b_day: localStorage.getItem('user_b_day'),
+
+            user:[],
         };
     }
 
@@ -31,9 +48,30 @@ export default class Profile extends Component {
             user_b_day: localStorage.getItem('user_b_day'),
         };
     }
+
+    componentDidMount() {
+        this.productList();
+        axios.get('http://localhost:5000/users/username/'+ localStorage.getItem('user_username'))
+            .then(response =>{
+                this.setState({user: response.data});
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    productList(){
+        return this.state.user.map(currentTodo => {
+            return <User user ={currentTodo} key={currentTodo._id}/>
+        });
+    }
+
+
     render() {
         return (
+
             <div style={{width:'100%',height:'100%'}}>
+                <div>{this.productList()}</div>
             <div className="container">
                 <form style={{width:'100%', marginTop:'30px', marginBottom:'32px'}}>
                     <hr/>

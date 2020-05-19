@@ -4,15 +4,8 @@ import axios from "axios";
 const  User = props =>(
     localStorage.clear(),
     localStorage.setItem('user_id',props.user._id),
-    localStorage.setItem('user_email',props.user.user_email),
     localStorage.setItem('user_username',props.user.user_username),
     localStorage.setItem('user_password',props.user.user_password),
-    localStorage.setItem('user_phone',props.user.user_phone),
-    localStorage.setItem('user_gender',props.user.user_gender),
-    localStorage.setItem('user_image',props.user.user_image),
-    localStorage.setItem('user_b_year',props.user.user_b_year),
-    localStorage.setItem('user_b_month',props.user.user_b_month),
-    localStorage.setItem('user_b_day',props.user.user_b_day),
     <span style={{color:"black"}}> </span>
 );
 
@@ -25,22 +18,15 @@ export default class Login extends Component{
 
          this.state ={
              user_id:'',
-             user_email : '',
              user_password:'',
              user_username : '',
-             user_phone : '',
-             user_gender :'',
-             user_image : '',
-             user_b_year:'',
-             user_b_month:'',
-             user_b_day:'',
              user:[],
          }
     }
 
     componentDidUpdate() {
         this.productList();
-        axios.get('http://localhost:5000/users/username/'+ this.state.user_email)
+        axios.get('http://localhost:5000/userAccounts/username/'+ this.state.user_username)
             .then(response =>{
                 this.setState({user: response.data});
             })
@@ -51,7 +37,7 @@ export default class Login extends Component{
 
     componentDidMount() {
         this.productList();
-        axios.get('http://localhost:5000/users/username/'+ this.state.user_email)
+        axios.get('http://localhost:5000/userAccounts/username/'+ this.state.user_username)
             .then(response =>{
                 this.setState({user: response.data});
             })
@@ -68,7 +54,7 @@ export default class Login extends Component{
 
     onChangeUserName(e){
         this.setState({
-            user_email :e.target.value
+            user_username :e.target.value
         });
     }
 
@@ -81,26 +67,18 @@ export default class Login extends Component{
     onSubmit(e){
         e.preventDefault(e);
         // this.props.history.push('/');
-        if(this.state.user_email == localStorage.getItem('user_email') && this.state.user_password == localStorage.getItem('user_password')){
+        if(this.state.user_username == localStorage.getItem('user_username') && this.state.user_password == localStorage.getItem('user_password')){
                 console.log("login success!")
                 console.log(localStorage.getItem('user_id'));
-                console.log(localStorage.getItem('user_email'));
                 console.log(localStorage.getItem('user_username'));
                 console.log(localStorage.getItem('user_password'));
-                console.log(localStorage.getItem('user_phone'));
-                console.log(localStorage.getItem('user_gender'));
-                console.log(localStorage.getItem('user_image'));
 
                 alert("Successfully login!");
         }
         else{
             console.log("try again!")
-            console.log(localStorage.getItem('user_email'));
             console.log(localStorage.getItem('user_username'));
             console.log(localStorage.getItem('user_password'));
-            console.log(localStorage.getItem('user_phone'));
-            console.log(localStorage.getItem('user_gender'));
-            console.log(localStorage.getItem('user_image'));
 
             alert("Login fail!!!! try again later..");
         }
@@ -124,7 +102,7 @@ export default class Login extends Component{
                                 <input required className="form-control"
                                        type="text"
                                        placeholder="User Name"
-                                       value = {this.state.user_email}
+                                       value = {this.state.user_username}
                                        onChange={this.onChangeUserName}
                                 />
                             </div>
@@ -145,6 +123,9 @@ export default class Login extends Component{
                         </tr>
                         <tr>
                             <button href="/home" className="btn btn-primary" onClick={this.onSubmit} style={{marginTop:'20px', marginBottom:'10px',float: 'right',width:'110px'}}>Login</button>
+                        </tr>
+                        <tr>
+                            <a href="/register" style={{fontSize:'12px', color:'blue',float: 'right'}}>Register</a>
                         </tr>
                     </tbody>
                 </table>
