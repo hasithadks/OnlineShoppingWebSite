@@ -1,18 +1,10 @@
 import React, {Component} from "react";
-import axios from "axios";
 import {Link} from "react-router-dom";
+import axios from "axios";
 
 export default class EditManagementStaff extends Component{
     constructor(props) {
         super(props);
-
-        this.onChangeUsername = this.onChangeUsername.bind(this);
-        this.onChangePassword = this.onChangePassword.bind(this);
-        this.onChangeFname = this.onChangeFname.bind(this);
-        this.onChangeLname = this.onChangeLname.bind(this);
-        this.onChangeRole = this.onChangeRole.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.onChangeEmail = this.onChangeEmail.bind(this);
 
         this.state = {
             username : '',
@@ -20,7 +12,8 @@ export default class EditManagementStaff extends Component{
             fname : '',
             lname : '',
             role : '',
-            email : ''
+            email : '',
+            profilePic : null,
         }
     }
 
@@ -33,66 +26,49 @@ export default class EditManagementStaff extends Component{
                     fname : response.data.fname,
                     lname : response.data.lname,
                     role : response.data.role,
-                    email : response.data.email
+                    email : response.data.email,
+                    profilePic : response.data.profilePic
                 })
+                console.log(response);
             })
             .catch(function (error) {
                 console.log(error);
             })
     }
 
-    onChangeUsername(e){
+    onChangeHandler = e => {
         this.setState({
-            username : e.target.value
-        });
+            [e.target.name]: e.target.value
+        })
     }
 
-    onChangePassword(e){
+    fileUploadHandler = e => {
         this.setState({
-            password : e.target.value
-        });
+            profilePic: e.target.files[0]
+        })
     }
 
-    onChangeFname(e){
-        this.setState({
-            fname : e.target.value
-        });
-    }
-
-    onChangeLname(e){
-        this.setState({
-            lname : e.target.value
-        });
-    }
-
-    onChangeEmail(e){
-        this.setState({
-            email : e.target.value
-        });
-    }
-
-    onChangeRole(e){
-        this.setState({
-            role : e.target.value
-        });
-    }
-
-    onSubmit(e){
+    onSubmitHandler = e => {
         e.preventDefault();
 
-        const managementstaff = {
-            username : this.state.username,
-            password : this.state.password,
-            fname : this.state.fname,
-            lname : this.state.lname,
-            role : this.state.role,
-            email : this.state.email
-        }
+        const managementstaff = new FormData();
+
+        managementstaff.set("fname",this.state.fname);
+        managementstaff.set("lname",this.state.lname);
+        managementstaff.set("username",this.state.username);
+        managementstaff.set("password",this.state.password);
+        managementstaff.set("email",this.state.email);
+        managementstaff.set("role",this.state.role);
+        managementstaff.append('profilePic',this.state.profilePic);
 
         console.log(managementstaff);
 
-        axios.post('http://localhost:5000/mstaff/update/'+this.props.match.params.id, managementstaff)
-            .then(res => console.log(res.data));
+        axios({
+            method: 'post',
+            url: 'http://localhost:5000/mstaff/update/'+this.props.match.params.id,
+            headers: {},
+            data: managementstaff,
+        }).then(res => console.log(res.data));
 
         window.location = '/admin/mstaff';
     }
@@ -105,14 +81,14 @@ export default class EditManagementStaff extends Component{
                         <h3 className="text-monospace">Edit Management Staff</h3>
                     </div>
 
-                    <form onSubmit={this.onSubmit}>
+                    <form onSubmit={this.onSubmitHandler}>
                         <div className="form-group">
                             <div className="row">
                                 <div className="col-md-2">
                                     <label>First Name</label>
                                 </div>
                                 <div className="col-md-10">
-                                    <input type="text" className="form-control" value={this.state.fname} onChange={this.onChangeFname} />
+                                    <input type="text" className="form-control" name="fname" value={this.state.fname} onChange={this.onChangeHandler} />
                                 </div>
                             </div>
                         </div>
@@ -122,7 +98,7 @@ export default class EditManagementStaff extends Component{
                                     <label>Last Name</label>
                                 </div>
                                 <div className="col-md-10">
-                                    <input type="text" className="form-control" value={this.state.lname} onChange={this.onChangeLname} />
+                                    <input type="text" className="form-control" name="lname" value={this.state.lname} onChange={this.onChangeHandler} />
                                 </div>
                             </div>
                         </div>
@@ -132,7 +108,7 @@ export default class EditManagementStaff extends Component{
                                     <label>Email</label>
                                 </div>
                                 <div className="col-md-10">
-                                    <input type="email" className="form-control" value={this.state.email} onChange={this.onChangeEmail} />
+                                    <input type="email" className="form-control" name="email" value={this.state.email} onChange={this.onChangeHandler} />
                                 </div>
                             </div>
                         </div>
@@ -142,7 +118,7 @@ export default class EditManagementStaff extends Component{
                                     <label>User Name</label>
                                 </div>
                                 <div className="col-md-10">
-                                    <input type="text" className="form-control" value={this.state.username} onChange={this.onChangeUsername} />
+                                    <input type="text" className="form-control" name="username" value={this.state.username} onChange={this.onChangeHandler} />
                                 </div>
                             </div>
                         </div>
@@ -152,7 +128,7 @@ export default class EditManagementStaff extends Component{
                                     <label>Password</label>
                                 </div>
                                 <div className="col-md-10">
-                                    <input type="password" className="form-control" value={this.state.password} onChange={this.onChangePassword} />
+                                    <input type="password" className="form-control" name="password" value={this.state.password} onChange={this.onChangeHandler} />
                                 </div>
                             </div>
                         </div>
@@ -162,7 +138,7 @@ export default class EditManagementStaff extends Component{
                                     <label>Role</label>
                                 </div>
                                 <div className="col-md-10">
-                                    <select className="form-control" onChange={this.onChangeRole} value={this.state.role}>
+                                    <select className="form-control" name="role" value={this.state.role} onChange={this.onChangeHandler}>
                                         <option value="select">Select a Role</option>
                                         <option value="Store Manager">Store Manager</option>
                                         <option value="Admin">Admin</option>
@@ -170,10 +146,21 @@ export default class EditManagementStaff extends Component{
                                 </div>
                             </div>
                         </div>
+                        <div className="form-group">
+                            <div className="row">
+                                <div className="col-md-2">
+                                    <label>Image</label>
+                                </div>
+                                <div className="col-md-10">
+                                    <input type="file" className="form-control" onChange={this.fileUploadHandler} />
+                                    <img src={this.state.profilePic} style={{width:"100px",height:"100px"}} className="form-control img-thumbnail" alt="Profile Picture"></img>
+                                </div>
+                            </div>
+                        </div>
 
                         <div className="form-group">
                             <div className="row" style={{marginRight:"3px"}}>
-                                <button style={{width:"auto",marginLeft:"auto"}} className="btn btn-secondary mr-1"><Link style={{color:"black"}} to={"/admin/mstaff/"}>Back</Link></button>
+                                <Link style={{marginLeft:"auto"}} to={"/admin/mstaff/"}><button style={{width:"auto",color:"black"}} className="btn btn-secondary mr-1">Back</button></Link>
                                 <button style={{width:"auto"}} className="btn btn-primary" type="submit">Update Management Staff</button>
                             </div>
                         </div>

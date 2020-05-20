@@ -1,7 +1,37 @@
 import React, { Component } from 'react'
+import axios from "axios";
 
 
 export default class NavBar extends Component {
+    constructor(props) {
+        super(props);
+        this.onChangeUserName = this.onChangeUserName.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+
+        this.state ={
+            user_username : '',
+
+        }
+    }
+
+    onChangeUserName(e){
+        this.setState({
+            user_username :e.target.value
+        });
+    }
+
+    onSubmit(e){
+        e.preventDefault(e);
+
+        const user = {
+            user_username: this.state.user_username,
+        };
+
+        axios.get('http://localhost:5000/userAccounts/forgot/'+ this.state.user_username)
+            .then(res => console.log((res.data)));
+    }
+
+
     render() {
         return (
 
@@ -12,7 +42,7 @@ export default class NavBar extends Component {
                     <hr/>
                 </div>
 
-                <form>
+                <form onSubmit={this.onSubmit}>
                     <table style={{width:'100%', marginLeft:'30%'}} className="col-12">
                         <tr>
                             <td style={{width:'auto'}}>
@@ -20,7 +50,8 @@ export default class NavBar extends Component {
                                     <label htmlFor="inputEmail3" className="col-sm-2 col-form-label" style={{float: 'left',marginLeft:'-2%'}}>Enter your Email</label>
                                     <div className="col-sm-5">
                                         <input type="email" className="form-control" id="inputEmail3" required placeholder="Email"
-
+                                               value = {this.state.user_username}
+                                               onChange={this.onChangeUserName}
                                         />
                                     </div>
                                 </div>

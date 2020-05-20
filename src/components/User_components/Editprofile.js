@@ -135,7 +135,7 @@ export default class Editprofile extends Component {
         console.log(`image:${this.state.user_image}`);
 
         axios.post('http://localhost:5000/users/update/'+this.state.user_id,user)
-            .then(res => console.log((res.data)) && alert("Successfully updated!"));
+            .then(res => console.log((res.data)));
 
            // localStorage.clear();
             //localStorage.setItem('user_id',props.user._id),
@@ -302,9 +302,36 @@ export default class Editprofile extends Component {
                             </tbody>
                         </table>
 
+                        {/*<div className="form-group" style={{marginTop:'15px'}}>*/}
+                        {/*    <div className="col-sm-12">*/}
+                        {/*        <button type="submit" className="btn btn-primary">Save changes</button>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
                         <div className="form-group" style={{marginTop:'15px'}}>
                             <div className="col-sm-12">
-                                <button type="submit" className="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            Save changes
+                        </button>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Profile Details Update</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Do you want to update details!
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="close" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary" >Save changes</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

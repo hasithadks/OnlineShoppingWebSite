@@ -92,7 +92,6 @@ constructor(props) {
         const user = {
             user_email: this.state.user_email,
             user_username: this.state.user_username,
-            user_password: this.state.user_password,
             user_phone: this.state.user_phone,
             user_gender: this.state.user_gender,
             user_image: this.state.user_image,
@@ -115,10 +114,12 @@ constructor(props) {
         console.log(`image:${this.state.user_image}`);
 
         axios.post('http://localhost:5000/users/add',user)
-            .then(res => console.log((res.data)) && alert("Successfully registered!"));
+            .then(res => console.log((res.data)));
+
+        alert("Successfully registered!")
 
         axios.post('http://localhost:5000/userAccounts/add',account)
-            .then(res => console.log((res.data))&& console.log("Account details added!"));
+            .then(res => console.log((res.data)));
 
     }
 

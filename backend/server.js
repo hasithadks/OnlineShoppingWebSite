@@ -11,7 +11,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
 
-
     const uri = process.env.ATLAS_URI;
     mongoose.connect(uri,{useNewUrlParser:true, useUnifiedTopology: true, useCreateIndex:true, useFindAndModify: false });
 
@@ -23,9 +22,6 @@ app.use(express.json());
         process.exit(1);
     });
 
-
-
-
 const productRouter = require('./routes/products');
 const quantityRouter = require('./routes/quantity');
 const staffRouter = require('./routes/managementstaff');
@@ -35,7 +31,7 @@ const productCategoryRouter = require('./routes/productcategory');
 const cartRouter = require('./routes/cart');
 const userRouter = require('./routes/user');
 const soldRouter = require('./routes/soldProducts');
-const rateRouter = require('./routes/ratingProduts');
+const accountRouter = require('./routes/account');
 
 app.use('/products', productRouter);
 app.use('/quantity', quantityRouter);
@@ -46,10 +42,8 @@ app.use('/pcategory',productCategoryRouter);
 app.use('/cart',cartRouter);
 app.use('/users',userRouter);
 app.use('/soldProducts',soldRouter);
-app.use('/rateProducts',rateRouter);
-
-const accountRouter = require('./routes/account');
 app.use('/userAccounts',accountRouter);
+app.use('/uploads', express.static('uploads/mstaff'));
 
 app.listen(port, () => {
     console.log(`Server is running on Port: ${port}`);

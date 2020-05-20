@@ -7,11 +7,13 @@ export default class NavBar extends Component {
 
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
+        this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state ={
             user_id: '',
             user_email : '',
+            user_confirmPassword:'',
             user_password: '',
         };
     }
@@ -33,6 +35,7 @@ export default class NavBar extends Component {
 
     }
 
+
     onChangeEmail(e){
         this.setState({
             user_email: e.target.value
@@ -45,6 +48,11 @@ export default class NavBar extends Component {
         });
     }
 
+    onChangeConfirmPassword(e){
+        this.setState({
+            user_confirmPassword : e.target.value
+        });
+    }
 
     onSubmit(e){
         e.preventDefault();
@@ -54,15 +62,27 @@ export default class NavBar extends Component {
                 user_password: this.state.user_password,
             };
 
+
+            if(this.state.user_password.match(this.state.user_confirmPassword)){
+                alert("පාස්වර්ඩ් ඒක හරි!");
+                localStorage.setItem('user_email', this.state.user_email);
+                localStorage.setItem('user_password', this.state.user_password);
+
+                axios.put('http://localhost:5000/userAccounts/update/account/'+ this.state.user_email,user)
+                     .then(res => console.log((res.data)) && alert("Password Successfully changed!"));
+
+
+            }else{
+                alert("පාස්වර්ඩ් ඒක වැරදියි!");
+            }
+
             console.log(`id:${this.state.user_id}`);
             console.log(`email:${this.state.user_email}`);
             console.log(`password:${this.state.user_password}`);
+            console.log(`password:${this.state.user_confirmPassword}`);
 
-            axios.post('http://localhost:5000/userAccounts/update/' + this.state.user_email, user)
-                .then(res => console.log((res.data)) && alert("Password Successfully changed!"));
+            //axios.post('http://localhost:5000/userAccounts/update/' + this.state.user_email, user).then(res => console.log((res.data)) && alert("Password Successfully changed!"));
 
-            localStorage.setItem('user_email', this.state.user_email);
-            localStorage.setItem('user_password', this.state.user_password);
 
     }
 
