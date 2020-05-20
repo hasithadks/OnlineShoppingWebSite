@@ -22,13 +22,14 @@ transporter.verify((error, success) => {
 });
 
 
-// router.route('/:id').get((req,res) => {
-//     let id = req.params.id;
-//     soldProduct.find({userID:id}, function (err, cartList) {
-//
-//     }).then(cartList => res.json(cartList))
-//         .catch(err => res.status(400).json('Error: ' + err));
-// });
+router.route('/:id').get((req,res) => {
+    console.log(req.params.id)
+    let id = req.params.id;
+    soldProduct.find({userID:id}, function (err, soldList) {
+        res.json(soldList);
+    })
+        .catch(err => res.status(400).json('Error: ' + err));
+});
 
 router.route("/add").post((req, res) => {
 

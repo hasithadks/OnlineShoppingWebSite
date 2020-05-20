@@ -4,6 +4,8 @@ import * as configs from "../../Config/config";
 import ProductImage from "../Images/tshirt.jpg";
 import StarRating from "./StarRating";
 import {FaStar} from "react-icons/fa";
+import StarRatingComponent from "react-star-rating-component";
+import {Link} from "react-router-dom";
 
 
 
@@ -14,15 +16,111 @@ export default class ProductRatings extends Component {
 
         this.state = {
             broughtItem: [],
-            rating : null,
-            hover : null,
+            rating : 0,
+            hover : 0,
             userRating : 0,
+            userID : '4787',
+            isItemClick:false,
+            item_name:'',
+            item_description : '',
+            item_from : '',
+            item_brand : '',
+            productID: '',
+            comments : '',
+
+
 
         }
 
         this.handleRating = this.handleRating.bind(this);
+        this.onClickRatingValue = this.onClickRatingValue.bind(this);
+        this.onMouseEnter = this.onMouseEnter.bind(this);
+        this.onMouseOut = this.onMouseOut.bind(this);
+        this.onClickRateNow = this.onClickRateNow.bind(this);
+        this.submitRating = this.submitRating.bind(this);
+        this.onChangeComment = this.onChangeComment.bind(this);
+    }
+
+    componentDidMount() {
+
+        axios.get(configs.BASE_URL + '/soldProducts/' + this.state.userID)
+            .then(response => {
+                this.setState({
+                    broughtItem : response.data
+                });
+                console.log(this.state.broughtItem);
+            })
+    }
+
+    submitRating(){
+
+        let {productID, userID, rating, comments} = this.state;
+
+        let payload = {productID, userID, rating, comments};
+
+        axios.post(configs.BASE_URL + '/rateProducts/add', payload)
+            .then(() => alert("Data Save"));
 
     }
+
+    onClickRatingValue(e){
+        console.log(e.target.value);
+        this.setState({
+            rating : e.target.value
+        })
+    }
+
+    onMouseEnter(e){
+        console.log(e);
+        this.setState({
+            hover : e
+        })
+    }
+
+    onChangeComment(e){
+        this.setState({
+            comments : e.target.value
+        })
+    }
+    onMouseOut(){
+
+        this.setState({
+            hover : 0
+        })
+    }
+
+    onClickRateNow(e){
+       console.log(e.target.name);
+       let selectedindex = Number(e.target.name);
+        this.setState({
+            isItemClick : true
+        });
+
+        let temarray = this.state.broughtItem;
+        temarray.forEach((td, index) => {
+            let indexs = Number(index);
+            console.log(index);
+
+            if(indexs === selectedindex){
+                console.log("Product Id: " + td.productID);
+                axios.get('http://localhost:5000/products/' + td.productID)
+                    .then(response => {
+                        console.log(response.data);
+                        this.setState({
+                            item_name : response.data.item_name,
+                            item_description : response.data.item_description,
+                            item_from : response.data.item_from,
+                            item_brand : response.data.item_brand,
+                            productID : td.productID,
+                        })
+
+                    });
+
+            }
+        })
+
+    }
+
 
     handleRating(rating){
 
@@ -36,8 +134,8 @@ export default class ProductRatings extends Component {
         return (
             <div>
                 <div className="container" style={{backgroundColor: '#ECECEC', padding: '20px', marginBottom: '10px'}}>
-                    <div className="row">
-                        <div className="col" style={{backgroundColor: "white", padding: '20px', marginLeft: '30px'}}>
+                    <div className="row" style={{backgroundColor: "white", padding: '20px', marginLeft: '20px', marginRight:'20px'}}>
+                        <div className="col" >
                             <div className="row">
                                 <div className="col">
                                     <h3>Rate to Products</h3>
@@ -53,7 +151,7 @@ export default class ProductRatings extends Component {
                             {this.state.broughtItem.map((data, index) => {
                                 return (
                                     <div className="row">
-                                        <div className="col-8" style={{marginLeft: '0px'}}>
+                                        <div className="col-7" style={{marginLeft: '0px'}}>
                                             <div className="row">
                                                 <div className="col-3">
                                                     <img src={ProductImage} width="90" height="100" alt="Product Image"
@@ -103,7 +201,7 @@ export default class ProductRatings extends Component {
                                             </div>
                                         </div>
                                         <div className="col-2">
-                                            <input type="button" value="Rate Now"/>
+                                            <input type="button" value="Rate Now" onClick={this.onClickRateNow} name={index} className="btn-primary btn"/>
                                         </div>
                                     </div>
                                 )
@@ -115,51 +213,85 @@ export default class ProductRatings extends Component {
 
                 </div>
                 <br/>
-                <div className="container">
-                    <div className="row">
-                        <div className="col-2">
-                            <img src={ProductImage} width="120" height="140" alt="Product Image"
-                                 style={{float: 'left'}}/>
+                {this.state.isItemClick === true ?
+                    <div className="container">
+                        <hr/>
+                        <div className="row">
+                            <div className="col-2">
+                                <img src={ProductImage} width="120" height="140" alt="Product Image"
+                                     style={{float: 'left', marginLeft: '20px'}}/>
+                            </div>
+                            <div className="col-8">
+                                <div className="row" style={{marginTop: '20px'}}>
+                                    <span>Product : {this.state.item_name}</span>
+                                </div>
+                                <div className="row" style={{marginTop: '20px'}}>
+                                    <span>Description : {this.state.item_description}</span>
+                                </div>
+                                <div className="row">
+                                    <span>Brand : {this.state.item_brand}</span>
+                                </div>
+                                <div className="row">
+                                    <span>From : {this.state.item_from}</span>
+                                </div>
+                            </div>
                         </div>
-                        <div className="col-8">
-                            <div className="row">
-                                <span>Product Name</span>
-                            </div>
-                            <div className="row">
-                                <span>Brand : Nike</span>
-                            </div>
-                            <div className="row">
-                                <span>From : UK</span>
-                            </div>
+                        <hr/>
+                        <div className="row" style={{marginTop: '20px'}}>
+                            <h5 style={{marginLeft: '20px'}}>Give Stars for the Product</h5>
+                        </div>
+                        <div className="row" style={{marginTop: '20px'}}>
+
+                            {[...Array(5)].map((star, i) => {
+                                const ratingValue = i + 1;
+
+                                return <label style={{marginLeft: '20px'}}>
+                                    <input type="radio" name="rating" style={{display: "none", cursor: "pointer"}}
+                                           value={ratingValue}
+                                           onClick={this.onClickRatingValue}/>
+                                    <FaStar size={40}
+                                            color={ratingValue <= (this.state.rating || this.state.hover) ? "#ffc107" : "#e4e5e9"}
+                                            onMouseEnter={() => this.onMouseEnter(i + 1)}
+                                            style={{cursor: "pointer"}}/>
+                                </label>
+                            })}
+
+
+                        </div>
+                        <div className="row">
+                            <span
+                                style={{marginLeft: '20px'}}>You Rate [{this.state.rating}] stars for the product.</span>
+                        </div>
+                        <div className="row" style={{marginTop: '20px'}}>
+                            <h5 style={{marginLeft: '20px'}}>Give Your Idea about this product</h5>
+                        </div>
+                        <div className="row" style={{marginTop: '20px'}}>
+                            <textarea style={{width: '50%', marginLeft: '20px'}} onChange={this.onChangeComment}/>
+                        </div>
+                        <div className="row" style={{marginTop: '20px', marginBottom: '20px'}}>
+                            {/*<Link className="btn btn-primary" onClick={this.submitRating} to={"#"} style={{*/}
+                            {/*    backgroundColor: 'orange',*/}
+                            {/*    borderColor: 'orange',*/}
+                            {/*    marginTop: '20px',*/}
+                            {/*    float: 'left',*/}
+                            {/*    marginLeft: '20px',*/}
+                            {/*    marginBottom: '20px',*/}
+                            {/*    width: '25%'*/}
+                            {/*}}>Add Comment</Link>*/}
+                            <a href="#" type="submit" onClick={this.submitRating}
+                               className="profile-edit-btn nav-link  btn btn-primary stop-color-final"
+                               name="btnAddMore"
+                               style={{
+                                   float: 'left', marginLeft: '20px', marginTop: '00px', marginBottom: '20px',
+                                   backgroundColor: 'orange', borderColor: 'orange', fontSize: '20px', width: '25%'
+                               }}>
+                                Add Comment
+                            </a>
                         </div>
                     </div>
-                    <hr/>
-                    <div className="row">
-                        <h5>Give Stars for the Product</h5>
-                    </div>
-                    <div className="row">
-
-                        {/*{[...Array(5)].map((star, i) => {*/}
-                        {/*    const ratingValue = i + 1;*/}
-
-                        {/*    return <label>*/}
-                        {/*        <input type="radio" name="rating" style={{display: "none", cursor: "pointer"}} value={ratingValue}*/}
-                        {/*               onClick={this.onCllickRating(ratingValue)}/>*/}
-                        {/*        <FaStar size={40} color={ratingValue <= (this.state.hover || this.state.rating) ? "#ffc107" : "#e4e5e9"}*/}
-                        {/*                onMouseEnter={() => this.setState({setHover :  ratingValue})}*/}
-                        {/*                onMouseLeve = {() => this.setState({setHover : null})   }*/}
-                        {/*                style={{cursor: "pointer"}}/>*/}
-                        {/*    </label>*/}
-                        {/*})}*/}
-
-                        <label>Rating is {this.state.rating}.</label>
-
-                        <StarRating handleRating={this.handleRating} />
-                    </div>
-
-
-                </div>
-
+                    :
+                    <div></div>
+                }
             </div>
         );
     }

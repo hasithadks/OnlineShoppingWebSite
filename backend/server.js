@@ -35,6 +35,7 @@ const productCategoryRouter = require('./routes/productcategory');
 const cartRouter = require('./routes/cart');
 const userRouter = require('./routes/user');
 const soldRouter = require('./routes/soldProducts');
+const rateRouter = require('./routes/ratingProduts');
 
 app.use('/products', productRouter);
 app.use('/quantity', quantityRouter);
@@ -45,6 +46,7 @@ app.use('/pcategory',productCategoryRouter);
 app.use('/cart',cartRouter);
 app.use('/users',userRouter);
 app.use('/soldProducts',soldRouter);
+app.use('/rateProducts',rateRouter);
 
 const accountRouter = require('./routes/account');
 app.use('/userAccounts',accountRouter);
