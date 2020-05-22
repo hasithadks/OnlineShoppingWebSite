@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from "axios";
 
 const  User = props =>(
-    localStorage.clear(),
+        localStorage.clear(),
         localStorage.setItem('user_id',props.user._id),
         localStorage.setItem('user_username',props.user.user_username),
         localStorage.setItem('user_email',props.user.user_email),
@@ -21,36 +21,36 @@ export default class Profile extends Component {
         super(props);
 
         this.state ={
-            user_email : localStorage.getItem('user_email'),
-            user_password: localStorage.getItem('user_password'),
-            user_username : localStorage.getItem('user_username'),
-            user_phone : localStorage.getItem('user_phone'),
-            user_gender :localStorage.getItem('user_gender'),
-            user_image : localStorage.getItem('user_image'),
-            user_b_year: localStorage.getItem('user_b_year'),
-            user_b_month: localStorage.getItem('user_b_month'),
-            user_b_day: localStorage.getItem('user_b_day'),
+            user_email : '',
+            user_password: '',
+            user_username : '',
+            user_phone : '',
+            user_gender :'',
+            user_image : '',
+            user_b_year: '',
+            user_b_month: '',
+            user_b_day: '',
 
             user:[],
         };
     }
 
-    componentDidUpdate() {
-        this.state ={
-            user_email : localStorage.getItem('user_email'),
-            user_password: localStorage.getItem('user_password'),
-            user_username : localStorage.getItem('user_username'),
-            user_phone : localStorage.getItem('user_phone'),
-            user_gender :localStorage.getItem('user_gender'),
-            user_image : localStorage.getItem('user_image'),
-            user_b_year: localStorage.getItem('user_b_year'),
-            user_b_month: localStorage.getItem('user_b_month'),
-            user_b_day: localStorage.getItem('user_b_day'),
-        };
-    }
+    // componentDidUpdate() {
+    //     this.state ={
+    //         user_email : localStorage.getItem('user_email'),
+    //         user_password: localStorage.getItem('user_password'),
+    //         user_username : localStorage.getItem('user_username'),
+    //         user_phone : localStorage.getItem('user_phone'),
+    //         user_gender :localStorage.getItem('user_gender'),
+    //         user_image : localStorage.getItem('user_image'),
+    //         user_b_year: localStorage.getItem('user_b_year'),
+    //         user_b_month: localStorage.getItem('user_b_month'),
+    //         user_b_day: localStorage.getItem('user_b_day'),
+    //     };
+    // }
 
     componentDidMount() {
-        this.productList();
+        this.userList();
         axios.get('http://localhost:5000/users/username/'+ localStorage.getItem('user_username'))
             .then(response =>{
                 this.setState({user: response.data});
@@ -58,9 +58,21 @@ export default class Profile extends Component {
             .catch(function (error) {
                 console.log(error);
             });
+
+        this.setState ({
+            user_email : localStorage.getItem('user_email'),
+            user_password: localStorage.getItem('user_password'),
+            user_username : localStorage.getItem('user_username'),
+            user_phone : localStorage.getItem('user_phone'),
+            user_gender :localStorage.getItem('user_gender'),
+            user_image : localStorage.getItem('user_image'),
+            user_b_year: localStorage.getItem('user_b_year'),
+            user_b_month: localStorage.getItem('user_b_month'),
+            user_b_day: localStorage.getItem('user_b_day'),
+        });
     }
 
-    productList(){
+    userList(){
         return this.state.user.map(currentTodo => {
             return <User user ={currentTodo} key={currentTodo._id}/>
         });
@@ -71,7 +83,7 @@ export default class Profile extends Component {
         return (
 
             <div style={{width:'100%',height:'100%'}}>
-                <div>{this.productList()}</div>
+                <div>{this.userList()}</div>
             <div className="container">
                 <form style={{width:'100%', marginTop:'30px', marginBottom:'32px'}}>
                     <hr/>

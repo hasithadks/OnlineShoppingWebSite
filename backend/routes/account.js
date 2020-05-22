@@ -2,6 +2,8 @@ const  router = require('express').Router();
 let Account = require('../models/account.model');
 const nodemailer = require('nodemailer');
 const cred = require('../email-config/config');
+const jwt = require('jsonwebtoken');
+const bcrypt =require('bcrypt');
 
 ////////////////////////////////////////////////////////////////////////////////////////
 var transport = {
@@ -23,33 +25,109 @@ transporter.verify((error, success) => {
 });
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
 router.route('/').get((req,res) =>{
     Account.find()
         .then(accounts => res.json(accounts))
         .catch(err => res.status(400).json('Error: '+ err));
 });
 
-router.route('/add').post((req,res) =>{
-    const user_username = req.body.user_username;
-    const user_password = req.body.user_password;
-    const user_role = req.body.user_role;
+//In registration add function to to Account details
+//password bcrypted
+router.route('/add').post(async (req,res) =>{
 
-    const newAccount = new Account({
-        user_username,
-        user_password,
-        user_role
+    //checking if the user is already exist in the database
+    const user = await Account.findOne({
+        user_username:req.body.user_username
     });
-    newAccount.save()
-        .then(() =>res.json('Account Created....'))
-        .catch(err =>res.status(400).json('Error: '+ err));
+
+    //hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(req.body.user_password,salt);
+
+    if (!user){
+        const user_username = req.body.user_username;
+        const user_password = hashPassword;
+        const user_role = req.body.user_role;
+
+        const newAccount = new Account({
+            user_username,
+            user_password,
+            user_role
+        });
+        newAccount.save()
+            .then(() =>res.json('Account Created....'))
+            .catch(err =>res.status(400).json('Error: '+ err));
+    }else{
+        return res.status(400).json('Email already exit');
+    }
 });
 
-router.route('/username/:email').get((req, res) => {
-    Account.find({"user_username" : req.params.email})
-        .then(accounts => res.json(accounts))
-        .catch(err => res.status(400).json('Error: '+ err));
+//login function
+//validate password, email
+//generate Token and assign to Account table
+router.route('/username/:email').post(async (req, res) => {
+
+    let password = req.body.user_password;
+
+    //email is exist
+    const user = Account.findOne({
+        user_username: req.params.email
+    },async function(err,obj) {
+        let dbps = (obj.user_password);
+
+        const validPass = await bcrypt.compare(password, dbps);
+
+        if (!user){
+            return res.status(400).json('Email is not found');
+        }
+        else {
+            if (!validPass){
+                return  res.status(400).json('Invalid password');
+            }else{
+                //create  token
+                const token = jwt.sign({user_username : user.user_email},process.env.TOKEN_SECRET);
+                res.header('auth_token',token);
+
+                if (token){
+                    Account.find({"user_username": req.params.email})
+                        .then(accounts => res.json(accounts))
+                        .catch(err => res.status(400).json('Error: ' + err));
+
+                    const user_token = token;
+
+                    Account.updateOne({user_token : user_token}, function (err, res) {
+                    }).then();
+                }
+                else{
+                    return res.status(400).json('no token');
+                }
+            }
+        }
+    });
+
+});
+
+//logout function
+//Assign token to null
+router.route('/logout/:email').post(async (req, res) => {
+
+    //email is exist
+    const user = Account.findOne({
+        user_username: req.params.email
+    },async function(err,obj) {
+        let tok = (obj.user_token);
+
+        if (!user){
+            return res.status(400).json('Email is not found');
+        }
+        else {
+                    const user_token = null;
+
+                    Account.updateOne({user_token : user_token}, function (err, res) {
+                    }).then(console.log(user_token));
+            }
+    });
+
 });
 
 router.route('/:id').delete((req,res)=> {
@@ -58,28 +136,62 @@ router.route('/:id').delete((req,res)=> {
         .catch(err => res.status(400).json('Error: '+ err));
 });
 
-router.route('/update/account/:email').put(function(req, res) {
+//password changing function
+router.route('/update/account/:email').put(async function(req, res) {
 
     let userEmail = req.params.email;
     let userPassword = req.body.user_password;
+    let userNewPassword = req.body.user_Newpassword;
 
-    Account.updateMany({user_username : userEmail}, {user_password : userPassword}, function (err, res) {
+    //hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(userNewPassword,salt);
 
-    }).then(response => {
-        res.json("Data update Successfully!");
+    /////////////////////////////////////////////////////////////////////////
+    const user = Account.findOne({
+        user_username: req.params.email
+    },async function(err,obj) {
+        let dbps = (obj.user_password);
+
+        const validPass = await bcrypt.compare(userPassword, dbps);
+
+        if (!user){
+            return res.status(400).json('Email is not found');
+        }
+        else {
+            if (!validPass){
+                return  res.status(400).json('Invalid password');
+            }else{
+                Account.updateOne({user_username : userEmail}, {user_password : hashPassword}, function (err, res) {
+                }).then(console.log("successfully updated"));
+                }
+            }
     });
-
+    ///////////////////////////////////////////////////////////////////////////
 });
 
-router.route('/forgot/:email').get((req, res) => {
-    Account.find({"user_username" : req.params.email})
-        .then(user => {
+router.route('/forgot/:email').get(async (req, res) => {
 
+    //////////////////////////////////////////////////////////
+    const user = Account.findOne({
+        user_username: req.params.email
+    },async function(err,obj) {
+        let dbps = (obj.user_password);
+
+        if (!user){
+            return res.status(400).json('Email is not found');
+        }
+        else {
             let userEmail = req.params.email;
-            let userPassword = res.user_password;
+            let userPassword = dbps;
 
-            console.log(userEmail);
-            console.log(userPassword);
+                    // hash password
+                    const salt = await bcrypt.genSalt(10);
+                    const hashPassword = await bcrypt.hash(userPassword,salt,(err,encrypted)=>{
+                        let userPassword= encrypted;
+
+                        console.log(userPassword);
+                    });
 
             const content = `
                         Hey ${userEmail},\n
@@ -92,30 +204,81 @@ router.route('/forgot/:email').get((req, res) => {
                         Online Fashion Store Team.    
                     `;
 
-            var mail = {
-                from: userEmail,
-                to: userEmail,
-                subject: 'Admin User Credentials',
-                text: content
+                    var mail = {
+                        from: userEmail,
+                        to: userEmail,
+                        subject: 'Admin User Credentials',
+                        text: content
+                    }
+
+                    transporter.sendMail(mail, (err, data) => {
+                        if (err) {
+                            res.json({
+                                msg: 'fail'
+                            })
+                        } else {
+                            res.json({
+                                msg: 'success'
+                            })
+                        }
+                    });
+
             }
-
-            transporter.sendMail(mail, (err, data) => {
-                if (err) {
-                    res.json({
-                        msg: 'fail'
-                    })
-                } else {
-                    res.json({
-                        msg: 'success'
-                    })
-                }
-            });
-        })
+    });
+    //////////////////////////////////////////////////////////
 
 
 
 
 
+    // Account.find( {"user_username" : req.params.email})
+    //     .then(async  user => {
+    //
+    //         let userEmail = req.params.email;
+    //         let userPassword = res.user_password;
+    //
+    //         //hash password
+    //         const salt = await bcrypt.genSalt(10);
+    //         const hashPassword = await bcrypt.hash(userPassword,salt,(err,encrypted)=>{
+    //             let userPassword= encrypted;
+    //
+    //             console.log(userPassword);
+    //         });
+    //
+    //
+    //         console.log(userEmail);
+    //         console.log(userPassword);
+    //
+    //         const content = `
+    //                     Hey ${userEmail},\n
+    //                     You forgot your password.\n\n
+    //                     username : ${userEmail} \n
+    //                     password : ${userPassword} \n\n
+    //                     Please use your credentials to Login from here- http://localhost:3000/login \n
+    //                     To Visit Online Shopping store- http://localhost:3000/home \n
+    //                     Thanks,
+    //                     Online Fashion Store Team.
+    //                 `;
+    //
+    //         var mail = {
+    //             from: userEmail,
+    //             to: userEmail,
+    //             subject: 'Admin User Credentials',
+    //             text: content
+    //         }
+    //
+    //         transporter.sendMail(mail, (err, data) => {
+    //             if (err) {
+    //                 res.json({
+    //                     msg: 'fail'
+    //                 })
+    //             } else {
+    //                 res.json({
+    //                     msg: 'success'
+    //                 })
+    //             }
+    //         });
+    //     })
 });
 
 module.exports = router;

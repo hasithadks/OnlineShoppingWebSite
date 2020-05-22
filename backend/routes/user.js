@@ -30,30 +30,37 @@ router.route('/').get((req,res) =>{
         .catch(err => res.status(400).json('Error: '+ err));
 });
 
-router.route('/add').post((req,res) =>{
-    const user_email = req.body.user_email;
-    const user_username = req.body.user_username;
-    const user_phone = req.body.user_phone;
-    const user_gender = req.body.user_gender;
-    const user_image = req.body.user_image;
-    const user_b_year = req.body.user_b_year;
-    const user_b_month = req.body.user_b_month;
-    const user_b_day = req.body.user_b_day;
+router.route('/add').post(async (req,res) =>{
 
-    const newUser = new User({
-        user_email,
-        user_username,
-        user_phone,
-        user_gender,
-        user_image,
-        user_b_year,
-        user_b_month,
-        user_b_day,
+    //checking if the user is already exist in the database
+    const user = await User.findOne({
+        user_email:req.body.user_email
     });
+
+    if (!user){
+        const user_email = req.body.user_email;
+        const user_username = req.body.user_username;
+        const user_phone = req.body.user_phone;
+        const user_gender = req.body.user_gender;
+        const user_image = req.body.user_image;
+        const user_b_year = req.body.user_b_year;
+        const user_b_month = req.body.user_b_month;
+        const user_b_day = req.body.user_b_day;
+
+        const newUser = new User({
+            user_email,
+            user_username,
+            user_phone,
+            user_gender,
+            user_image,
+            user_b_year,
+            user_b_month,
+            user_b_day,
+        });
 
 
 /////////////////////////////////////////////////////////////////////////////////////
-    const content = `
+        const content = `
                         Hey ${user_username},\n
                         You are successfully registered to Online Fashion Store.\n\n
                         Please use your credentials to Login from here- http://localhost:3000/login \n
@@ -62,30 +69,35 @@ router.route('/add').post((req,res) =>{
                         Online Fashion Store Team.    
                     `;
 
-    var mail = {
-        from: user_username,
-        to: user_email,
-        subject: 'Admin User Credentials',
-        text: content
-    }
-
-    transporter.sendMail(mail, (err, data) => {
-        if (err) {
-            res.json({
-                msg: 'fail'
-            })
-        } else {
-            res.json({
-                msg: 'success'
-            })
+        var mail = {
+            from: user_username,
+            to: user_email,
+            subject: 'Admin User Credentials',
+            text: content
         }
-    })
-;
+
+        transporter.sendMail(mail, (err, data) => {
+            if (err) {
+                res.json({
+                    msg: 'fail'
+                })
+            } else {
+                res.json({
+                    msg: 'success'
+                })
+            }
+        })
+        ;
 /////////////////////////////////////////////////////////////////////////////////////
 
-    newUser.save()
-        .then(() =>res.json('User Succefully Added....'))
-        .catch(err =>res.status(400).json('Error: '+ err));
+        newUser.save()
+            .then(() =>res.json('User Successfully Added....'))
+            .catch(err =>res.status(400).json('Error: '+ err));
+
+    }else{
+        return res.status(400).json('Email already exit');
+    }
+
 });
 
 router.route('/username/:email').get((req, res) => {

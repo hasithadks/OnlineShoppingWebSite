@@ -2,8 +2,33 @@ import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import logo from "../Images/logo.png";
 import advertisement from "../Images/advertisement.png";
+import axios from "axios";
 
 export default class ItemNav extends Component{
+
+    constructor(props) {
+        super(props);
+        this.onSubmit = this.onSubmit.bind(this);
+
+        this.state ={
+            user_email : localStorage.getItem('user_email'),
+            user:[],
+        }
+    }
+
+    onSubmit(e){
+        e.preventDefault(e);
+
+        const logout = {
+            user_email : localStorage.getItem('user_email'),
+        }
+
+        axios.post('http://localhost:5000/userAccounts/logout/' + this.state.user_email,logout)
+            .then(res => console.log((res.data)));
+
+        localStorage.clear();
+    }
+
     render(){
         return(
             <div style={{backgroundColor:"#ececec"}}>
@@ -31,6 +56,12 @@ export default class ItemNav extends Component{
                         </li>
                         <li>
                             <Link style={{color:"#f26f36"}} to ="/register" className="nav-link">SIGNUP</Link>
+                        </li>
+                        <li>
+                            <Link style={{color:"#f26f36"}} to ="/profile" className="nav-link">PROFILE</Link>
+                        </li>
+                        <li>
+                            <Link style={{color:"#f26f36"}} onClick={this.onSubmit} className="nav-link">LOGOUT</Link>
                         </li>
                     </ul>
                 </div>

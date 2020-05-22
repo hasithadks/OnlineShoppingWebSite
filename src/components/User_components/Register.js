@@ -116,10 +116,14 @@ constructor(props) {
         axios.post('http://localhost:5000/users/add',user)
             .then(res => console.log((res.data)));
 
-        alert("Successfully registered!")
-
         axios.post('http://localhost:5000/userAccounts/add',account)
             .then(res => console.log((res.data)));
+
+        // if (result1 && result2){
+        //     alert("Successfully registered!");
+        // }else{
+        //     alert("Email already exist!");
+        // }
 
     }
 

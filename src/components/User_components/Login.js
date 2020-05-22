@@ -24,29 +24,33 @@ export default class Login extends Component{
          }
     }
 
-    componentDidUpdate() {
-        this.productList();
-        axios.get('http://localhost:5000/userAccounts/username/'+ this.state.user_username)
-            .then(response =>{
-                this.setState({user: response.data});
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
+    // componentDidUpdate() {
+    //     this.usertList();
+    //     axios.get('http://localhost:5000/userAccounts/username/'+ this.state.user_username)
+    //         .then(response =>{
+    //             this.setState({
+    //                 user: response.data
+    //             });
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         });
+    // }
 
-    componentDidMount() {
-        this.productList();
-        axios.get('http://localhost:5000/userAccounts/username/'+ this.state.user_username)
-            .then(response =>{
-                this.setState({user: response.data});
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
+    // componentDidMount() {
+    //     this.usertList();
+    //     axios.get('http://localhost:5000/userAccounts/username/'+ this.state.user_username)
+    //         .then(response =>{
+    //             this.setState({
+    //                 user: response.data
+    //             });
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         });
+    // }
 
-    productList(){
+    usertList(){
         return this.state.user.map(currentTodo => {
             return <User user ={currentTodo} key={currentTodo._id}/>
         });
@@ -67,27 +71,58 @@ export default class Login extends Component{
     onSubmit(e){
         e.preventDefault(e);
         // this.props.history.push('/');
-        if(this.state.user_username == localStorage.getItem('user_username') && this.state.user_password == localStorage.getItem('user_password')){
-                console.log("login success!")
+
+        // if(this.state.user_username == localStorage.getItem('user_username') &&
+        //     (this.state.user_password) == localStorage.getItem('user_password')){
+        //         console.log("login success!")
+        //         console.log(localStorage.getItem('user_id'));
+        //         console.log(localStorage.getItem('user_username'));
+        //         console.log(localStorage.getItem('user_password'));
+        //
+        //         alert("Successfully login!");
+        // }
+        // else{
+        //     console.log("try again!")
+        //     console.log(localStorage.getItem('user_username'));
+        //     console.log(localStorage.getItem('user_password'));
+        //
+        //     alert("Login fail!!!! try again later..");
+        // }
+
+        /////////////////////////////////////////////////////////////////////////////////
+        const detail = {
+            user_username: this.state.user_email,
+            user_password: this.state.user_password,
+        }
+        this.usertList();
+            axios.post('http://localhost:5000/userAccounts/username/'+ this.state.user_username,detail)
+                .then(response =>{
+                    this.setState({
+                        user: response.data
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+                if (localStorage.getItem('user_username')){
+                    alert("successfully login");
+                }else{
+                    alert("Login fail");
+                }
+
+                console.log("login success!");
                 console.log(localStorage.getItem('user_id'));
                 console.log(localStorage.getItem('user_username'));
                 console.log(localStorage.getItem('user_password'));
-
-                alert("Successfully login!");
-        }
-        else{
-            console.log("try again!")
-            console.log(localStorage.getItem('user_username'));
-            console.log(localStorage.getItem('user_password'));
-
-            alert("Login fail!!!! try again later..");
-        }
+                console.log(localStorage.getItem('user_email'));
+        ////////////////////////////////////////////////////////////////////////////////
     }
 
     render(){
         return (
             <div className="container">
-                {this.productList()}
+                {this.usertList()}
                 <div style={{width:'50%',marginLeft:'25%',marginTop:'6%',marginBottom:'83px'}}>
                 <div style={{width:'70%',marginLeft:'9%'}}>
                     <hr/>

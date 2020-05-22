@@ -8,6 +8,7 @@ export default class NavBar extends Component {
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
         this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this);
+        this.onChangeNewPassword = this.onChangeNewPassword.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state ={
@@ -15,6 +16,7 @@ export default class NavBar extends Component {
             user_email : '',
             user_confirmPassword:'',
             user_password: '',
+            user_Newpassword:'',
         };
     }
 
@@ -32,57 +34,57 @@ export default class NavBar extends Component {
                     console.log(error)
                 })
         }
-
+        this.setState ({
+            user_email : localStorage.getItem('user_email'),
+            user_username : localStorage.getItem('user_username'),
+        });
     }
-
 
     onChangeEmail(e){
         this.setState({
             user_email: e.target.value
         });
     }
-
     onChangePassword(e){
         this.setState({
             user_password: e.target.value
         });
     }
-
+    onChangeNewPassword(e){
+        this.setState({
+            user_Newpassword: e.target.value
+        });
+    }
     onChangeConfirmPassword(e){
         this.setState({
             user_confirmPassword : e.target.value
         });
     }
-
     onSubmit(e){
         e.preventDefault();
 
             const user = {
                 user_email: this.state.user_email,
                 user_password: this.state.user_password,
+                user_Newpassword: this.state.user_Newpassword,
             };
 
-
-            if(this.state.user_password.match(this.state.user_confirmPassword)){
-                alert("පාස්වර්ඩ් ඒක හරි!");
+            if(this.state.user_Newpassword.match(this.state.user_confirmPassword)){
+                alert("Successfully changed");
                 localStorage.setItem('user_email', this.state.user_email);
-                localStorage.setItem('user_password', this.state.user_password);
+                localStorage.setItem('user_password', this.state.user_Newpassword);
 
                 axios.put('http://localhost:5000/userAccounts/update/account/'+ this.state.user_email,user)
-                     .then(res => console.log((res.data)) && alert("Password Successfully changed!"));
-
-
+                     .then(res => console.log((res.data)));
             }else{
-                alert("පාස්වර්ඩ් ඒක වැරදියි!");
+                alert("Not match");
             }
 
             console.log(`id:${this.state.user_id}`);
             console.log(`email:${this.state.user_email}`);
             console.log(`password:${this.state.user_password}`);
             console.log(`password:${this.state.user_confirmPassword}`);
-
-            //axios.post('http://localhost:5000/userAccounts/update/' + this.state.user_email, user).then(res => console.log((res.data)) && alert("Password Successfully changed!"));
-
+            console.log(localStorage.getItem('user_email'));
 
     }
 
@@ -119,6 +121,18 @@ export default class NavBar extends Component {
                                         <input type="password" className="form-control" id="inputPassword3" required placeholder="Password"
                                                value={this.state.user_password}
                                                onChange={this.onChangePassword}/>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style={{width:'auto'}}>
+                                <div className="form-group">
+                                    <label htmlFor="inputPassword3" className="col-sm-2 col-form-label" style={{float: 'left',marginLeft:'-4%'}}>New Password</label>
+                                    <div className="col-sm-5">
+                                        <input type="password" className="form-control" id="inputPassword3" required placeholder="New Password"
+                                               value={this.state.user_Newpassword}
+                                               onChange={this.onChangeNewPassword}/>
                                     </div>
                                 </div>
                             </td>
