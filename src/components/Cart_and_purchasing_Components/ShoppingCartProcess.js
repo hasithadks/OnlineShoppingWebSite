@@ -406,7 +406,7 @@ export default class ShoppingCartProcess extends Component {
         if(tempArray.length > 0 ){
             tempArray.forEach(item => {
 
-                axios.post(configs.BASE_URL + '/soldProduct/add', item)
+                axios.post(configs.BASE_URL + '/soldProducts/add', item)
                     .then(console.log("Add to DB!!!"));
 
                 axios.delete(configs.BASE_URL + '/cart/delete/' + item._id)
@@ -1060,7 +1060,8 @@ export default class ShoppingCartProcess extends Component {
                                                         <Link className="btn btn-primary" to={"/SuccessMessage/"} style={{
                                                             backgroundColor: 'orange',
                                                             margin: '20px',
-                                                            float: 'left'
+                                                            float: 'left',
+                                                            borderColor: 'orange'
                                                         }} onClick={this.OnClickConfirmOrder}>Confirm Order</Link>
 
                                                     </td>

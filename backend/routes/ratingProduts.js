@@ -3,6 +3,15 @@ let rateProduct = require('../models/rating.model');
 
 
 
+router.route('/:id').get((req,res) => {
+    console.log(req.params.id);
+    let id = req.params.id;
+    rateProduct.find({productID:id}, function (err, List) {
+        res.json(List);
+    })
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
 
 router.route("/add").post((req, res) => {
 

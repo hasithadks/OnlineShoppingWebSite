@@ -6,6 +6,10 @@ const rateProductSchema = new Schema({
     userID : {type:String},
     rating : {type: Number},
     comments: {type: String},
+    userName: {type: String},
+    item_size: {type: String},
+    item_color: {type: String},
+
 
 },{
     timestamps:true

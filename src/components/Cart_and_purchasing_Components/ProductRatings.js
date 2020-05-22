@@ -27,6 +27,9 @@ export default class ProductRatings extends Component {
             item_brand : '',
             productID: '',
             comments : '',
+            userName : '',
+            item_size : '',
+            item_color : '',
 
 
 
@@ -49,14 +52,16 @@ export default class ProductRatings extends Component {
                     broughtItem : response.data
                 });
                 console.log(this.state.broughtItem);
+            }, ()=>{
+                axios.get(configs.BASE_URL + '/soldProducts/' + this.state.userID)
             })
     }
 
     submitRating(){
 
-        let {productID, userID, rating, comments} = this.state;
+        let {productID, userID, rating, comments,userName,item_size,item_color} = this.state;
 
-        let payload = {productID, userID, rating, comments};
+        let payload = {productID, userID, rating, comments,userName,item_size,item_color};
 
         axios.post(configs.BASE_URL + '/rateProducts/add', payload)
             .then(() => alert("Data Save"));
@@ -92,9 +97,7 @@ export default class ProductRatings extends Component {
     onClickRateNow(e){
        console.log(e.target.name);
        let selectedindex = Number(e.target.name);
-        this.setState({
-            isItemClick : true
-        });
+
 
         let temarray = this.state.broughtItem;
         temarray.forEach((td, index) => {
@@ -102,17 +105,24 @@ export default class ProductRatings extends Component {
             console.log(index);
 
             if(indexs === selectedindex){
-                console.log("Product Id: " + td.productID);
-                axios.get('http://localhost:5000/products/' + td.productID)
+                console.log("All");
+                console.log(td);
+                axios.get('http://localhost:5000/products/itemId/' + td.productID)
                     .then(response => {
                         console.log(response.data);
-                        this.setState({
-                            item_name : response.data.item_name,
-                            item_description : response.data.item_description,
-                            item_from : response.data.item_from,
-                            item_brand : response.data.item_brand,
-                            productID : td.productID,
-                        })
+                        if(response.data != null){
+                            this.setState({
+                                item_name : response.data[0].item_name,
+                                item_description : response.data[0].item_description,
+                                item_from : response.data[0].item_from,
+                                item_brand : response.data[0].item_brand,
+                                item_size : response.data[0].item_size,
+                                item_color : response.data[0].item_color,
+                                productID : td.productID,
+                                isItemClick : true
+                            })
+                        }
+
 
                     });
 
