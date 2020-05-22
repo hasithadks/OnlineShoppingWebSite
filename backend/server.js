@@ -32,6 +32,7 @@ const cartRouter = require('./routes/cart');
 const userRouter = require('./routes/user');
 const soldRouter = require('./routes/soldProducts');
 const accountRouter = require('./routes/account');
+const rateRouter = require('./routes/ratingProduts');
 
 app.use('/products', productRouter);
 app.use('/quantity', quantityRouter);
@@ -44,6 +45,7 @@ app.use('/users',userRouter);
 app.use('/soldProducts',soldRouter);
 app.use('/userAccounts',accountRouter);
 app.use('/uploads', express.static('uploads/mstaff'));
+app.use('/rateProducts',rateRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on Port: ${port}`);

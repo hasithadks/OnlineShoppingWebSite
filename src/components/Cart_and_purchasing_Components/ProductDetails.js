@@ -7,11 +7,14 @@ import axios from 'axios';
 import StarRatingComponent from 'react-star-rating-component';
 import pluseImage from '../Images/pluse.png';
 import minusImage from '../Images/minus.png';
+import arrowImage from '../Images/arrowdown2.png';
 import {resolveToLocation} from "react-router-dom/modules/utils/locationUtils";
 import * as configs from "../../Config/config";
+import {FaStar} from "react-icons/fa";
 import Toast from "react-bootstrap/Toast";
 
 import {useState} from "react";
+import swal from "sweetalert";
 // function Example() {
 //     const [showA, setShowA] = useState(true);
 //     const [showB, setShowB] = useState(true);
@@ -53,7 +56,6 @@ export default class ProductDetails extends Component {
             isLike: false,
             isDiscounted: true,
             likeImage: '',
-            rating: 1,
             quantity: 0,
             discount: 0,
             productId: 0,
@@ -64,7 +66,18 @@ export default class ProductDetails extends Component {
             availablecount: 0,
             selectedSize: '',
             selectedColor: '',
-            quantitiesTableID : '',
+            quantitiesTableID: '',
+            overRollRating: 0,
+            hover: 0,
+            ratingCount: 0,
+            ratingFive: 0,
+            ratingFour: 0,
+            ratingThree: 0,
+            ratingTwo: 0,
+            ratingOne: 0,
+            isViewDetais: true,
+            SoldProducts : [],
+
 
 
         };
@@ -76,31 +89,35 @@ export default class ProductDetails extends Component {
         this.onAvailableItemCount = this.onAvailableItemCount.bind(this);
         this.onChangeSize = this.onChangeSize.bind(this);
         this.onChangeColor = this.onChangeColor.bind(this);
+        this.onClickRatingValue = this.onClickRatingValue.bind(this);
+        this.onMouseEnter = this.onMouseEnter.bind(this);
+        this.onClickMore = this.onClickMore.bind(this);
     }
 
     componentDidMount() {
         let pID = 0;
         let uID = 0;
         if (this.props.match.params.id != null) {
-            axios.get('http://localhost:5000/products/' + this.props.match.params.id)
+            axios.get('http://localhost:5000/products/itemId/' + this.props.match.params.id)
                 .then(response => {
-                    pID = response.data.item_id;
+                    pID = this.props.match.params.id;
                     uID = this.state.userID;
-                    //console.log("PID:" + pID);
+                    console.log("Response Data :");
+                    console.log(response.data);
                     this.setState({
-                        productId: response.data.item_id,
-                        productName: response.data.item_name,
-                        productDiscription: response.data.item_description,
-                        item_category: response.data.item_category,
-                        discount: response.data.item_discount,
-                        manufacture: response.data.item_from,
-                        item_brand: response.data.item_brand,
+                        productId: response.data[0].item_id,
+                        productName: response.data[0].item_name,
+                        productDiscription: response.data[0].item_description,
+                        item_category: response.data[0].item_category,
+                        discount: response.data[0].item_discount,
+                        manufacture: response.data[0].item_from,
+                        item_brand: response.data[0].item_brand,
 
                     }, () => {
 
                         //let ids = {pID, uID}
                         pID = this.state.productId;
-                        console.log("Product ID : "+pID)
+                        console.log("Product ID : " + pID)
                         axios.get(configs.BASE_URL + '/favouriteProduct/uid/' + uID + '/pid/' + pID)
                             .then(response => {
                                 // console.log("Product ID :"+this.state.productId);
@@ -108,19 +125,19 @@ export default class ProductDetails extends Component {
 
                                 if (response.data.length > 0) {
                                     console.log(response.data);
-                                    console.log("Is Like : "+response.data[0].isLiked);
+                                    console.log("Is Like : " + response.data[0].isLiked);
                                     // const selectedItem = response.data.filter((dt) => {
                                     //     return dt.userID === this.state.userID
                                     //console.log("Selected Item:" + selectedItem);
 
-                                        let data = response.data;
-                                        if (data[0].isLiked === true) {
-                                            this.setState({
-                                                isLike: true,
-                                                favo_ID: data[0]._id
-                                            });
-                                        }
-                                    console.log("Favo ID : "+this.state.favo_ID);
+                                    let data = response.data;
+                                    if (data[0].isLiked === true) {
+                                        this.setState({
+                                            isLike: true,
+                                            favo_ID: data[0]._id
+                                        });
+                                    }
+                                    console.log("Favo ID : " + this.state.favo_ID);
                                 }
                             });
 
@@ -131,10 +148,12 @@ export default class ProductDetails extends Component {
                     console.log(error)
                 })
 
+
         }
-        //+ this.props.match.params.id
-        if (this.state.productId != null) {
-            axios.get('http://localhost:5000/quantity/5ebfda913fd9a64774105de7')
+        // + this.props.match.params.id
+        if (this.props.match.params.id != null) {
+            console.log("find qty ID: " + this.props.match.params.id)
+            axios.get('http://localhost:5000/quantity/' + this.props.match.params.id)
                 .then(response => {
                     this.setState({productQuantities: response.data});
                     let sizeList = [];
@@ -145,6 +164,10 @@ export default class ProductDetails extends Component {
                         colorList.push(response.data[i].item_colour);
 
                     }
+
+                    // sizeList.filter(shirt => shirt.item_size === item_size);
+
+
                     this.setState({
                         shirtSize: sizeList,
                         itemColor: colorList
@@ -155,7 +178,19 @@ export default class ProductDetails extends Component {
                 })
                 .catch(function (error) {
                     console.log(error);
+                });
+
+            let pID = this.state.productId;
+            // let uID = this.state.userID;
+            console.log("IN SOLD ITEM CALL Product ID : " + pID);
+            // console.log("IN SOLD ITEM CALL User ID : " + uID);
+            axios.get(configs.BASE_URL + '/rateProducts/5ec2dcc1c18bee188449150e')
+                .then(response => {
+
+                    this.setState({SoldProducts: response.data});
+
                 })
+
         } else {
             this.setState({quantity: []});
         }
@@ -163,6 +198,33 @@ export default class ProductDetails extends Component {
 
     }
 
+    onClickRatingValue(e) {
+        console.log(e.target.value);
+        this.setState({
+            rating: e.target.value
+        })
+    }
+
+    onMouseEnter(e) {
+        console.log(e);
+        this.setState({
+            hover: e
+        })
+    }
+
+    onClickMore(e) {
+
+        if (this.state.isViewDetais === false) {
+            this.setState({
+                isViewDetais: true
+            })
+        } else {
+            this.setState({
+                isViewDetais: false
+            })
+
+        }
+    }
 
     onChangeIsLike() {
 
@@ -196,15 +258,18 @@ export default class ProductDetails extends Component {
     }
 
     onclickShoppingCart() {
-
-        if (this.state.shirtSize === "") {
-            alert("Please Select Size");
-        } else if (this.state.itemColor === "") {
-            alert("Please Select Color");
-        } else if (this.state.quantity === 0) {
-            alert("Please Select Quantity");
-        }
-        console.log("size : " + this.state.shirtSize);
+        //     console.log("Shirt Size :" + this.state.shirtSize)
+        // if (this.state.shirtSize.toString() === " ") {
+        //     //alert("Please Select Size");
+        //     swal("Error!", "Please Select Size", "warning");
+        //     //swal("Good job!", "Your Details has been Saved Successfully!", "success");
+        // } else if (this.state.itemColor === " ") {
+        //     alert("Please Select Color");
+        // } else if (this.state.quantity === 0) {
+        //     //alert("Please Select Quantity");
+        //     swal("Error!", "Please Select Size", "warning");
+        // }
+        // console.log("size : " + this.state.shirtSize);
         if (this.state.shirtSize !== "" && this.state.itemColor !== "" && this.state.quantity > 0) {
             //  let {productId, userID, productPrice, discount, discountedPrice, selectedSize, selectedColor, quantity} = this.state;
 
@@ -232,7 +297,9 @@ export default class ProductDetails extends Component {
 
 
             axios.post(configs.BASE_URL + '/cart/add', payload)
-                .then(() => alert("Add to Cart"));
+                .then(() => swal("Success!", "Add to Cart!!!", "success"));
+        } else {
+            swal("Error!", "Please Select Size , Color and Quantity Correctly!", "warning");
         }
 
     }
@@ -267,20 +334,19 @@ export default class ProductDetails extends Component {
 
                     this.setState({
                         availablecount: selectedItem[0].item_quantity,
-                        quantitiesTableID : selectedItem[0]._id
+                        quantitiesTableID: selectedItem[0]._id
 
                     });
 
-                    console.log("Selected Item Id: "+JSON.stringify(selectedItem[0]._id));
+                    console.log("Selected Item Id: " + JSON.stringify(selectedItem[0]._id));
                 } else {
                     this.setState({
                         availablecount: 0,
-                        quantitiesTableID : ''
+                        quantitiesTableID: ''
                     });
                 }
             }
-        }
-        catch (exception) {
+        } catch (exception) {
             console.log(exception);
         }
 
@@ -334,9 +400,9 @@ export default class ProductDetails extends Component {
                             {this.state.isLike === false ?
                                 <img className="img-thumbnail" src={FavouriteImageGray} width="50" height="50"
                                      alt="Add Favourite Image" onClick={this.onChangeIsLike}
-                                     style={{float: 'Right'}}/> :
+                                     style={{float: 'Right', cursor: "pointer"}}/> :
                                 <img className="img-thumbnail" src={FavouriteImageRed} width="50" height="50"
-                                     alt="Add Favourite Image" onClick={this.onChangeIsLike} style={{float: 'Right'}}/>}
+                                     alt="Add Favourite Image" onClick={this.onChangeIsLike} style={{float: 'Right', cursor: "pointer"}}/>}
                             <h4>{this.state.productName}</h4>
                             <span style={{fontSize: '14px'}}>Ratings</span>
                             <div className="row" style={{float: 'center', paddingBottom: '0px'}}>
@@ -431,7 +497,7 @@ export default class ProductDetails extends Component {
                                 </div>
                                 <div className="col-2" style={{padding: '0px'}}>
                                     <br/>
-                                    <img src={minusImage} width="25" height="25"
+                                    <img src={minusImage} width="25" height="25" style={{cursor: "pointer"}}
                                          alt="Add Favourite Image" onClick={this.onClickMinesLeft}/>
                                 </div>
                                 <div className="col-1" style={{padding: '0px'}}>
@@ -441,7 +507,7 @@ export default class ProductDetails extends Component {
                                 </div>
                                 <div className="col-2" style={{padding: '0px', marginLeft: '-0px'}}>
                                     <br/>
-                                    <img src={pluseImage} width="25" height="25"
+                                    <img src={pluseImage} width="25" height="25" style={{cursor: "pointer"}}
                                          alt="Add Favourite Image" onClick={this.onClickPlusRight}/>
                                 </div>
                                 <div className="col-2" style={{padding: '0px'}}>
@@ -478,6 +544,228 @@ export default class ProductDetails extends Component {
 
                     </div>
                 </div>
+                <div className="row">
+                    <div className="col" style={{padding:'20px',marginBottom:'20px'}}>
+                        {/*<img src={arrowImage} width="50" height="50" alt="Product Image"*/}
+                        {/*    //onClick={this.onClickMore}*/}
+                        {/*     style={{float: 'center'}}/>*/}
+                             <a style={{cursor: "pointer", color:'#AEAEAE'}} onClick={this.onClickMore}>More Details >>></a>
+                    </div>
+                </div>
+
+                {this.state.isViewDetais === true ?
+                    <div className="container">
+                        <div className="row" style={{backgroundColor: "#F3F3F3", padding: '15px'}}>
+                            <h4 style={{marginLeft: '15px'}}>Product Details of <span>{this.state.productName}</span>
+                            </h4>
+                        </div>
+                        <div className="row" style={{padding: '15px'}}>
+                            <span style={{marginLeft: '15px'}}>{this.state.productDiscription}</span>
+                        </div>
+                        <hr/>
+                        <div className="row" style={{padding: '10px'}}>
+                            <span style={{marginLeft: '15px'}}>Brand : {this.state.item_brand}</span>
+                        </div>
+                        <div className="row" style={{padding: '10px'}}>
+                            <span style={{marginLeft: '15px'}}>From : {this.state.manufacture}</span>
+                        </div>
+                        <br/>
+                        <div className="row" style={{backgroundColor: "#F3F3F3", padding: '15px'}}>
+                            <h4 style={{marginLeft: '15px'}}>Ratings & Reviews of <span>{this.state.productName}</span>
+                            </h4>
+                        </div>
+                        <div className="row">
+                            <div className="col-4">
+                                <div className="row" style={{padding: '15px'}}>
+                                    <h2 style={{marginLeft: '15px'}}><span style={{color: 'gray'}}><b
+                                        style={{fontSize: '40px', color: "black"}}>{this.state.overRollRating}</b>/5</span></h2>
+                                </div>
+                                <div className="row">
+                                    {[...Array(5)].map((star, i) => {
+                                        const ratingValue = i + 1;
+
+                                        return <label style={{marginLeft: '20px', float: 'left'}}>
+                                            <input type="radio" name="rating"
+                                                   style={{display: "none", cursor: "pointer"}}
+                                                   value={ratingValue}
+                                                   //onClick={this.onClickRatingValue}
+                                            />
+                                            <FaStar size={40}
+                                                    color={ratingValue <= (this.state.overRollRating) ? "#ffc107" : "#e4e5e9"}
+                                                    //onMouseEnter={() => this.onMouseEnter(i + 1)}
+                                                    style={{cursor: "pointer"}}/>
+                                        </label>
+                                    })}
+                                </div>
+                                <div className="row" style={{padding: '15px'}}>
+                                    <span style={{marginLeft: '15px'}}>{this.state.ratingCount} Ratings</span>
+                                </div>
+
+                            </div>
+                            <div className="col-6">
+                                <div className="row" style={{padding: '5px'}}>
+                                    <div className="col-6">
+                                        {[...Array(5)].map((star, i) => {
+                                            const ratingValue = i + 1;
+
+                                            return <label style={{marginLeft: '15px', float: 'left'}}>
+                                                <input type="radio" name="rating"
+                                                       style={{display: "none", cursor: "pointer"}}
+                                                       value={ratingValue}
+                                                />
+                                                <FaStar size={20}
+                                                        color={ratingValue <= 5 ? "#ffc107" : "#e4e5e9"}
+                                                        style={{cursor: "pointer"}}/>
+                                            </label>
+                                        })}
+
+                                    </div>
+                                    <div className="col-1">
+                                        <span>{this.state.ratingFive}</span>
+                                    </div>
+
+                                </div>
+                                <div className="row" style={{padding: '5px'}}>
+                                    <div className="col-6">
+                                        {[...Array(5)].map((star, i) => {
+                                            const ratingValue = i + 1;
+
+                                            return <label style={{marginLeft: '15px', float: 'left'}}>
+                                                <input type="radio" name="rating"
+                                                       style={{display: "none", cursor: "pointer"}}
+                                                       value={ratingValue}
+                                                />
+                                                <FaStar size={20}
+                                                        color={ratingValue <= 4 ? "#ffc107" : "#e4e5e9"}
+                                                        style={{cursor: "pointer"}}/>
+                                            </label>
+                                        })}
+
+                                    </div>
+                                    <div className="col-1">
+                                        <span>{this.state.ratingFive}</span>
+                                    </div>
+
+                                </div>
+                                <div className="row" style={{padding: '5px'}}>
+                                    <div className="col-6">
+                                        {[...Array(5)].map((star, i) => {
+                                            const ratingValue = i + 1;
+
+                                            return <label style={{marginLeft: '15px', float: 'left'}}>
+                                                <input type="radio" name="rating"
+                                                       style={{display: "none", cursor: "pointer"}}
+                                                       value={ratingValue}
+                                                />
+                                                <FaStar size={20}
+                                                        color={ratingValue <= 3 ? "#ffc107" : "#e4e5e9"}
+                                                        style={{cursor: "pointer"}}/>
+                                            </label>
+                                        })}
+
+                                    </div>
+                                    <div className="col-1">
+                                        <span>{this.state.ratingFive}</span>
+                                    </div>
+
+                                </div>
+                                <div className="row" style={{padding: '5px'}}>
+                                    <div className="col-6">
+                                        {[...Array(5)].map((star, i) => {
+                                            const ratingValue = i + 1;
+
+                                            return <label style={{marginLeft: '15px', float: 'left'}}>
+                                                <input type="radio" name="rating"
+                                                       style={{display: "none", cursor: "pointer"}}
+                                                       value={ratingValue}
+                                                />
+                                                <FaStar size={20}
+                                                        color={ratingValue <= 2 ? "#ffc107" : "#e4e5e9"}
+                                                        style={{cursor: "pointer"}}/>
+                                            </label>
+                                        })}
+
+                                    </div>
+                                    <div className="col-1">
+                                        <span>{this.state.ratingFive}</span>
+                                    </div>
+
+                                </div>
+                                <div className="row" style={{padding: '5px'}}>
+                                    <div className="col-6">
+                                        {[...Array(5)].map((star, i) => {
+                                            const ratingValue = i + 1;
+
+                                            return <label style={{marginLeft: '15px', float: 'left'}}>
+                                                <input type="radio" name="rating"
+                                                       style={{display: "none", cursor: "pointer"}}
+                                                       value={ratingValue}
+                                                />
+                                                <FaStar size={20}
+                                                        color={ratingValue <= 1 ? "#ffc107" : "#e4e5e9"}
+                                                        style={{cursor: "pointer"}}/>
+                                            </label>
+                                        })}
+
+                                    </div>
+                                    <div className="col-1">
+                                        <span>{this.state.ratingFive}</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row" style={{backgroundColor: "#F3F3F3", padding: '15px'}}>
+
+                            <h4 style={{marginLeft: '15px'}}><span>Product Reviews</span></h4>
+
+                        </div>
+                        {this.state.SoldProducts.map((item, index) => {
+                            return(
+                                <div className="row" style={{paddingLeft: '25px',paddingBottom:'10px', paddingTop:'10px', backgroundColor:"#F8F8F8"}}>
+                                    <div className="col">
+                                        <div className="row" style={{padding: '0px'}}>
+
+                                            {[...Array(5)].map((star, i) => {
+                                                const ratingValue = i + 1;
+
+                                                return <label style={{marginLeft: '2px', float: 'left'}}>
+                                                    <input type="radio" name="rating"
+                                                           style={{display: "none", cursor: "pointer"}}
+                                                           value={ratingValue}
+                                                    />
+                                                    <FaStar size={18}
+                                                            color={ratingValue <= (item.rating) ? "#ffc107" : "#e4e5e9"}
+                                                            style={{margin: '0px'}}/>
+                                                </label>
+                                            })}
+
+
+
+                                        </div>
+                                        <div className="row" style={{padding: '0px', marginTop:'-5px'}}>
+                                    <span>
+                                    <span>Hasitha </span>
+                                    <label style={{color: 'green', fontSize:'12px', marginLeft:'5px'}}>Verified Purchase</label>
+                                        </span>
+                                        </div>
+                                        <div className="row" style={{padding: '0px'}}>
+                                            <label style={{fontSize:'20px'}}>{item.comments}</label>
+                                        </div>
+                                        <div className="row" style={{padding: '0px',fontSize:'12px',color: '#AEAEAE'}}>
+                                            <span>Size: M  Color : White </span>
+                                        </div>
+                                        <hr style={{marginLeft:'-15px'}}/>
+                                    </div>
+
+                                </div>
+                            )
+                        })}
+
+                    </div>
+                    :
+                    <div></div>
+                }
             </div>
 
         );

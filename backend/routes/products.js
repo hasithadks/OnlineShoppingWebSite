@@ -20,6 +20,15 @@ productRouter.route('/:id').get(function (req, res) {
     });
 });
 
+productRouter.route('/itemId/:id').get(function (req, res) {
+    console.log("Product Item ID");
+    console.log(req.params.id);
+    let id = req.params.id;
+    Product.find({"item_id" : id}, function (err, product) {
+        res.json(product);
+    });
+});
+
 
 // productRouter.route('/add').post(function(req, res) {
 //     let product = new Product(req.body);

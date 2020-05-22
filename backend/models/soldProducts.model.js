@@ -10,6 +10,8 @@ const soldProductSchema = new Schema({
     item_size: {type:String},
     item_color: {type:String},
     requested_qty: {type: Number},
+},{
+    timestamps:true
 });
 
 const soldProduct = mongoose.model('soldProduct', soldProductSchema);

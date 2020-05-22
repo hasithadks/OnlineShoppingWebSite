@@ -3,32 +3,34 @@ let soldProduct = require('../models/soldProducts.model');
 const nodemailer = require('nodemailer');
 const cred = require('../email-config/config');
 
-var transport = {
-    host : 'smtp.gmail.com',
-    auth : {
-        user : cred.USER,
-        pass : cred.PASS
-    }
-};
+// var transport = {
+//     host : 'smtp.gmail.com',
+//     auth : {
+//         user : cred.USER,
+//         pass : cred.PASS
+//     }
+// };
+//
+// var transporter = nodemailer.createTransport(transport);
+//
+// transporter.verify((error, success) => {
+//     if (error) {
+//         console.log(error);
+//     } else {
+//         console.log('Server is ready to take messages of Order Department');
+//     }
+// });
 
-var transporter = nodemailer.createTransport(transport);
 
-transporter.verify((error, success) => {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log('Server is ready to take messages of Order Department');
-    }
+router.route('/:id').get((req,res) => {
+    console.log(req.params.id)
+    let id = req.params.id;
+    soldProduct.find({userID:id}, function (err, soldList) {
+        res.json(soldList);
+    })
+        .catch(err => res.status(400).json('Error: ' + err));
 });
 
-
-// router.route('/:id').get((req,res) => {
-//     let id = req.params.id;
-//     soldProduct.find({userID:id}, function (err, cartList) {
-//
-//     }).then(cartList => res.json(cartList))
-//         .catch(err => res.status(400).json('Error: ' + err));
-// });
 
 router.route("/add").post((req, res) => {
 
@@ -47,19 +49,6 @@ router.route("/add").post((req, res) => {
     all.save()
         .then((data) => {
            console.log( data._id);
-
-            //
-            // const content = `
-            //             Hi, \n
-            //             Your order has placed  successfully. \n\n
-            //             Your order will receive within 3 Days. Are there any issues contact us email : onlineshoppingwebsite18@gmail.com
-            //             Order reference No : ${data._id}. \n
-            //
-            //             Thanks, \n
-            //             Online Fashion Store Team.
-            //         `;
-
-
         })
         .catch(err => res.status(400).json('Error: ' + err));
 });
