@@ -10,7 +10,7 @@ const MStaff = props => (
         <td>{props.mstaff.email}</td>
         <td>{props.mstaff.role}</td>
         <td>
-            <Link style={{color:"black"}} to={"/admin/mstaff/edit/"+props.mstaff._id}><button style={{paddingRight:"20px;",width:"auto"}} className="btn btn-warning mr-1">Edit</button></Link>
+            <Link style={{color:"black"}} to={"/admin/mstaff/edit/"+props.mstaff._id}><button style={{paddingRight:"20px",width:"auto"}} className="btn btn-warning mr-1">Edit</button></Link>
             <button style={{width:"auto"}} className="btn btn-danger" onClick={() => {props.deleteMstaff(props.mstaff._id)}}>Delete</button>
         </td>
     </tr>
