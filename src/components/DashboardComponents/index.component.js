@@ -16,7 +16,7 @@ export default class DashboardIndex extends Component{
         return(
             <div>
                 <div className="row" id="body-row">
-                    <div id="sidebar-container" className="sidebar-expanded d-none d-md-block ml-xl-5 mt-4">
+                    <div id="sidebar-container" style={{marginLeft:"10px"}}>
                         <ul className="list-group" style={{width:"300px"}}>
                             <li className="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
                                 <span style={{color:"white"}}>Management Dashboard</span>
@@ -29,13 +29,13 @@ export default class DashboardIndex extends Component{
                             </Link>
                             <Link to ="/admin/itemlist" className=" list-group-item list-group-item-action flex-column align-items-start">
                                 <div className="d-flex w-100 justify-content-start align-items-center">
-                                    <span className="fa fa-user fa-fw mr-3" />
+                                    <span className="fa fa-box fa-fw mr-3" />
                                     <span className="menu-collapsed">Products</span>
                                 </div>
                             </Link>
                             <Link to ="/admin/pcategory" className=" list-group-item list-group-item-action flex-column align-items-start">
                                 <div className="d-flex w-100 justify-content-start align-items-center">
-                                    <span className="fa fa-user fa-fw mr-3" />
+                                    <span className="fa fa-boxes fa-fw mr-3" />
                                     <span className="menu-collapsed">Product Categories</span>
                                 </div>
                             </Link>

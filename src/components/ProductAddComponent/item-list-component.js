@@ -74,7 +74,7 @@ export default class ItemLists extends Component{
 
 
                         <div className="col-sm-3" style={{marginLeft:"850px"}}>
-                            <Link style={{color:"black", textDecoration:"none"}} to={"/admin/product/additem"}><button className="btn btn-block btn-warning">Add Item</button></Link>
+                            <Link style={{color:"black", textDecoration:"none"}} to={"/admin/product/additem"}><button style={{width:"auto"}} className="btn btn-block btn-warning">Add Item</button></Link>
                         </div>
 
                         <table className="table table-striped" style={{marginTop :20}}>

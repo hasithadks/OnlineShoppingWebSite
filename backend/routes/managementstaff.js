@@ -3,6 +3,7 @@ const ManagementStaff = require('../models/managementstaff.model');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
 const cred = require('../email-config/config');
+var filename = '';
 
 var transport = {
     host : 'smtp.gmail.com',
@@ -24,10 +25,11 @@ transporter.verify((error, success) => {
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './uploads/mstaff/');
+        cb(null, '../../OnlineShoppingWebSite/src/components/uploads/');
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + file.originalname);
+        filename = Date.now() + '_' + file.originalname;
+        cb(null, filename);
     }
 });
 
@@ -60,7 +62,7 @@ router.route('/add').post(upload.single('profilePic'),(req ,res) =>{
    const lname = req.body.lname;
    const role = req.body.role;
    const email = req.body.email;
-   const profilePic = req.file.path;
+    const profilePic = filename;
 
    const newManagementStaff = new ManagementStaff({
        username,
@@ -130,7 +132,7 @@ router.route('/update/:id').post(upload.single('profilePic'),(req , res) =>{
             managementstaff.lname = req.body.lname;
             managementstaff.role = req.body.role;
             managementstaff.email = req.body.email;
-            managementstaff.profilePic = req.file.path;
+            managementstaff.profilePic = filename;
 
             const content = `
                         Hey ${managementstaff.fname} ${managementstaff.lname},\n

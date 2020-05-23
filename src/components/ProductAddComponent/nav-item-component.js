@@ -69,31 +69,10 @@ export default class ItemNav extends Component{
                             <div className="header-top-container container">
                                 <div className="header-row">
                                     <div className="header-column justify-content-start">
-                                        <span className="d-none d-sm-flex align-items-center">
-                                          <i className="fas fa-map-marker-alt mr-1" />
-                                          1234 Street Name, City Name
-                                        </span>
-                                        <span className="d-none d-sm-flex align-items-center ml-4">
-                                          <i className="fas fa-phone mr-1" />
-                                          <a href="tel:+1234567890">123-456-7890</a>
-                                        </span>
+                                        <span className="d-none d-sm-flex align-items-center"><i className="fas fa-map-marker-alt mr-1" />40 D. S. Senanayake Mawatha, Colombo 008</span>
+                                        <span className="d-none d-sm-flex align-items-center ml-4"><i className="fas fa-phone mr-1" /><a href="tel:0112 672 689">0112 672 689</a></span>
                                     </div>
                                     <div className="header-column justify-content-end">
-                                        <ul className="nav">
-                                            <li className="nav-item">
-                                                <a className="nav-link" href="contact-us-1.html">Contact Us</a>
-                                            </li>
-                                            <li className="nav-item">
-                                                <a href="#" className="nav-link dropdown-menu-toggle py-2" id="dropdownLanguage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                    English	<i className="fas fa-angle-down fa-sm" />
-                                                </a>
-                                                <ul className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownLanguage">
-                                                    <li><a href="#" className="no-skin"><img src="web-assets/img/blank.gif" className="flag flag-us" alt="English" /> English</a></li>
-                                                    <li><a href="#" className="no-skin"><img src="web-assets/img/blank.gif" className="flag flag-es" alt="Español" /> Español</a></li>
-                                                    <li><a href="#" className="no-skin"><img src="web-assets/img/blank.gif" className="flag flag-fr" alt="Française" /> Française</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
                                         <ul className="header-top-social-icons social-icons social-icons-transparent d-none d-md-block">
                                             <li className="social-icons-facebook">
                                                 <a href="http://www.facebook.com/" target="_blank" title="Facebook"><i className="fab fa-facebook-f" /></a>
@@ -113,73 +92,35 @@ export default class ItemNav extends Component{
                             <div className="header-row">
                                 <div className="header-column justify-content-start">
                                     <div className="header-logo">
-                                        <a href="#">
+                                        <a href="/home">
                                             <img alt="EZ" width={230} height={62} src={logo} />
                                         </a>
                                     </div>
                                 </div>
                                 <div className="header-column justify-content-end">
-                                    <div className="header-search-expanded">
-                                        <form method="GET">
-                                            <div className="input-group bg-light border">
-                                                <input type="text" className="form-control text-4" name="s" placeholder="I'm looking for..." aria-label="I'm looking for..." />
-                                                <span className="input-group-btn">
-                                                  <button className="btn" type="submit"><i className="lnr lnr-magnifier text-color-dark" /></button>
-                                                </span>
-                                            </div>
-                                        </form>
-                                    </div>
                                     <div className="header-nav justify-content-start">
-                                        <a href="#" className="header-search-button order-1 text-5 d-none d-sm-block mt-1 mr-xl-2">
-                                            <i className="lnr lnr-magnifier" />
-                                        </a>
                                         <div className="header-nav-main header-nav-main-effect-1 header-nav-main-sub-effect-1">
                                             <nav className="collapse">
                                                 <ul className="nav flex-column flex-lg-row" id="mainNav">
                                                     <li className="dropdown dropdown-mega">
-                                                        <a className="dropdown-item dropdown-toggle" href="#">
-                                                            Home
-                                                        </a>
-                                                    </li>
-                                                    <li className="dropdown dropdown-mega dropdown-mega-style-2">
-                                                        <a className="dropdown-item dropdown-toggle" href="#">
-                                                            Elements
-                                                        </a>
+                                                        <a className="dropdown-item dropdown-toggle" href="/home">Home</a>
                                                     </li>
                                                     <li className="dropdown">
-                                                        <a className="dropdown-item dropdown-toggle" href="#">
-                                                            Features
-                                                        </a>
-                                                    </li>
-                                                    <li className="dropdown">
-                                                        <a className="dropdown-item dropdown-toggle" href="#">
-                                                            Pages
-                                                        </a>
-                                                    </li>
-                                                    <li className="dropdown dropdown-mega dropdown-mega-style-2">
-                                                        <a className="dropdown-item dropdown-toggle" href="#">
-                                                            Portfolio
-                                                        </a>
-
-                                                    </li>
-                                                    <li className="dropdown dropdown-mega dropdown-mega-style-2">
-                                                        <a className="dropdown-item dropdown-toggle" href="#">
-                                                            Blog
-                                                        </a>
-                                                    </li>
-                                                    <li className="dropdown active">
-                                                        <a className="dropdown-item dropdown-toggle active" href="#">
-                                                            Shop
-                                                        </a>
+                                                        <a className="dropdown-item dropdown-toggle" href="#">Profile</a>
+                                                        <ul className="dropdown-menu" style={{width:"100px!important"}}>
+                                                            <li><a className="dropdown-item" href="#">My Profile</a></li>
+                                                            <li><a className="dropdown-item" href="#">Wish List</a></li>
+                                                            <li><a className="dropdown-item" href="#">Purchased History</a></li>
+                                                        </ul>
                                                     </li>
                                                 </ul>
                                             </nav>
                                         </div>
-                                        <a href="#" className="btn btn-link text-color-default font-weight-bold order-3 d-none d-sm-block ml-auto mr-2 pt-1 text-1">Login</a>
+                                        <a href="/login" className="btn btn-link text-color-default font-weight-bold order-3 d-none d-sm-block ml-auto mr-2 pt-1 text-1">Login</a>
                                         <div className="mini-cart order-4">
                                             <span className="font-weight-bold font-primary">Cart / <span className="cart-total">$0.00</span></span>
                                             <div className="mini-cart-icon">
-                                                <img src="web-assets/img/icons/cart-bag.svg" className="img-fluid" alt="" />
+                                                <img src={require('../Images/cart-bag.svg')} className="img-fluid" alt="" />
                                                 <span className="badge badge-primary rounded-circle">0</span>
                                             </div>
                                             <div className="mini-cart-content">
