@@ -18,15 +18,16 @@ router.route("/add").post((req, res) => {
     let {productID : productID,
         userID : userID,
         rating : rating,
-        comments : comments} = req.body;
+        comments : comments,
+        userName : userName,
+        item_size : item_size,
+        item_color : item_color} = req.body;
 
-
-    let all = new rateProduct({productID , userID , rating, comments});
+console.log(req.body);
+    let all = new rateProduct({productID , userID , rating, comments, userName, item_size, item_color});
 
     all.save()
-        .then((data) => {
-
-        })
+        .then(() => res.json('Rating success!'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 

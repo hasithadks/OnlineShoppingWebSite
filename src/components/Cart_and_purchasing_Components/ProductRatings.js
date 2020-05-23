@@ -6,6 +6,7 @@ import StarRating from "./StarRating";
 import {FaStar} from "react-icons/fa";
 import StarRatingComponent from "react-star-rating-component";
 import {Link} from "react-router-dom";
+import {iconSuccessLine} from "react-bootstrap-sweetalert/dist/styles/SweetAlertStyles";
 
 
 
@@ -29,11 +30,9 @@ export default class ProductRatings extends Component {
             comments : '',
             userName : '',
             item_size : '',
-            item_color : '',
+            item_color : ''
 
-
-
-        }
+        };
 
         this.handleRating = this.handleRating.bind(this);
         this.onClickRatingValue = this.onClickRatingValue.bind(this);
@@ -52,19 +51,42 @@ export default class ProductRatings extends Component {
                     broughtItem : response.data
                 });
                 console.log(this.state.broughtItem);
-            }, ()=>{
-                axios.get(configs.BASE_URL + '/soldProducts/' + this.state.userID)
+            })
+//+ this.state.userID
+        axios.get(configs.BASE_URL + '/users/5ec80040cdf68565a0dcaa3e')
+            .then(response => {
+                console.log(response.data.user_username);
+                this.setState({
+                    userName : response.data.user_username
+                })
             })
     }
 
     submitRating(){
+        console.log(this.state.broughtItem);
+        let {productID,
+            userID,
+            rating,
+            comments,
+            userName,
+            item_size,
+            item_color} = this.state;
 
-        let {productID, userID, rating, comments,userName,item_size,item_color} = this.state;
-
-        let payload = {productID, userID, rating, comments,userName,item_size,item_color};
-
+        let payload = {
+            productID,
+            userID,
+            rating,
+            comments,
+            userName,
+            item_size,
+            item_color};
+        console.log("payload");
+        console.log(payload);
         axios.post(configs.BASE_URL + '/rateProducts/add', payload)
-            .then(() => alert("Data Save"));
+            .then(response => {
+
+
+            });
 
     }
 
@@ -105,19 +127,24 @@ export default class ProductRatings extends Component {
             console.log(index);
 
             if(indexs === selectedindex){
-                console.log("All");
-                console.log(td);
+               // console.log("Temp array");
+               // console.log(temarray[index].item_size);
+
+                this.setState({
+                     item_size : temarray[index].item_size,
+                     item_color : temarray[index].item_color,
+                })
+
+
                 axios.get('http://localhost:5000/products/itemId/' + td.productID)
                     .then(response => {
-                        console.log(response.data);
-                        if(response.data != null){
+                        //console.log(response.data);
+                        if(response.data.length > 0){
                             this.setState({
                                 item_name : response.data[0].item_name,
                                 item_description : response.data[0].item_description,
                                 item_from : response.data[0].item_from,
                                 item_brand : response.data[0].item_brand,
-                                item_size : response.data[0].item_size,
-                                item_color : response.data[0].item_color,
                                 productID : td.productID,
                                 isItemClick : true
                             })
@@ -276,7 +303,7 @@ export default class ProductRatings extends Component {
                             <h5 style={{marginLeft: '20px'}}>Give Your Idea about this product</h5>
                         </div>
                         <div className="row" style={{marginTop: '20px'}}>
-                            <textarea style={{width: '50%', marginLeft: '20px'}} onChange={this.onChangeComment}/>
+                            <textarea style={{width: '50%', marginLeft: '20px'}} value={this.state.comments} onChange={this.onChangeComment}/>
                         </div>
                         <div className="row" style={{marginTop: '20px', marginBottom: '20px'}}>
                             {/*<Link className="btn btn-primary" onClick={this.submitRating} to={"#"} style={{*/}
@@ -288,7 +315,7 @@ export default class ProductRatings extends Component {
                             {/*    marginBottom: '20px',*/}
                             {/*    width: '25%'*/}
                             {/*}}>Add Comment</Link>*/}
-                            <a href="#" type="submit" onClick={this.submitRating}
+                            <a href="/ProductRatings" type="submit" onClick={this.submitRating}
                                className="profile-edit-btn nav-link  btn btn-primary stop-color-final"
                                name="btnAddMore"
                                style={{
