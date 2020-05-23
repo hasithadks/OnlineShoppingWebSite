@@ -15,6 +15,7 @@ import Toast from "react-bootstrap/Toast";
 
 import {useState} from "react";
 import swal from "sweetalert";
+import roundTo from "round-to";
 // function Example() {
 //     const [showA, setShowA] = useState(true);
 //     const [showB, setShowB] = useState(true);
@@ -51,10 +52,10 @@ export default class ProductDetails extends Component {
             item_brand: "",
             shirtSize: ['S', 'M', 'L', 'XL', 'XXL'],
             itemColor: [],
-            productPrice: 1250,
-            discountedPrice: 1700,
+            productPrice: 0,
+            discountedPrice: 0,
             isLike: false,
-            isDiscounted: true,
+            isDiscounted: false,
             likeImage: '',
             quantity: 0,
             discount: 0,
@@ -75,8 +76,9 @@ export default class ProductDetails extends Component {
             ratingThree: 0,
             ratingTwo: 0,
             ratingOne: 0,
-            isViewDetais: true,
+            isViewDetais: false,
             SoldProducts : [],
+            isViewComment : true
 
 
 
@@ -112,12 +114,35 @@ export default class ProductDetails extends Component {
                         discount: response.data[0].item_discount,
                         manufacture: response.data[0].item_from,
                         item_brand: response.data[0].item_brand,
+                        productPrice : response.data[0].item_price
 
                     }, () => {
 
+                        let tempDiscount = this.state.discount;
+                        let temProductPrice = this.state.productPrice;
+                        let temDiscountedPrice = this.state.discountedPrice;
+
+                        if(tempDiscount > 0){
+
+                            temDiscountedPrice = roundTo(Number(temProductPrice - (temProductPrice * tempDiscount)/100),2);
+                            this.setState({
+                                isDiscounted : true,
+                                discountedPrice : temDiscountedPrice
+                            })
+
+
+                        }
+                        else {
+                            this.setState({
+                                isDiscounted : false,
+                                discountedPrice : temProductPrice
+                            })
+                        }
+
+
                         //let ids = {pID, uID}
                         pID = this.state.productId;
-                        console.log("Product ID : " + pID)
+                        //console.log("Product ID : " + pID)
                         axios.get(configs.BASE_URL + '/favouriteProduct/uid/' + uID + '/pid/' + pID)
                             .then(response => {
                                 // console.log("Product ID :"+this.state.productId);
@@ -165,12 +190,24 @@ export default class ProductDetails extends Component {
 
                     }
 
+                   // const distincSize = [...new Set(sizeList.map(x => x.))]
                     // sizeList.filter(shirt => shirt.item_size === item_size);
 
+                    const distinct = (value, index, self) => {
+                        return self.indexOf(value) === index;
+                    }
+
+                    const distinctSize = sizeList.filter(distinct);
+                    distinctSize.sort(function(a, b) {
+                    });
+
+                    const distinctcolor = colorList.filter(distinct);
+                    distinctcolor.sort(function(a, b) {
+                    });
 
                     this.setState({
-                        shirtSize: sizeList,
-                        itemColor: colorList
+                        shirtSize: distinctSize,
+                        itemColor: distinctcolor
                     })
                     //  console.log(response.data);
                     //   console.log(this.state.itemColor);
@@ -184,12 +221,58 @@ export default class ProductDetails extends Component {
             // let uID = this.state.userID;
             console.log("IN SOLD ITEM CALL Product ID : " + pID);
             // console.log("IN SOLD ITEM CALL User ID : " + uID);
-            axios.get(configs.BASE_URL + '/rateProducts/5ec2dcc1c18bee188449150e')
+            axios.get(configs.BASE_URL + '/rateProducts/5ec8cffeb93d1827608c8995')
                 .then(response => {
+                    console.log("Sold All products");
+                    console.log(response.data);
+                    this.setState({
+                        SoldProducts: response.data
+                    }, () =>{
+                        console.log("In Call Back Function")
+                        let temArray = this.state.SoldProducts;
+                        let rating5 = this.state.ratingFive;
+                        let rating4 = this.state.ratingFour;
+                        let rating3 = this.state.ratingThree;
+                        let rating2 = this.state.ratingTwo;
+                        let rating1 = this.state.ratingOne;
+                        let totalRating = this.state.overRollRating;
+                        let avgRating = 0;
 
-                    this.setState({SoldProducts: response.data});
+                        console.log("Sold Products");
+                        console.log(temArray)
+                        temArray.map((data, index) => {
 
-                })
+                            console.log(data.rating);
+                            if (data.rating === 5) {
+                                rating5 = Number(rating5 + 1);
+                            } else if (data.rating === 4) {
+                                rating4 = Number(rating4 + 1);
+                            } else if (data.rating === 3) {
+                                rating3 = Number(rating3 + 1);
+                            } else if (data.rating === 2) {
+                                rating2 = Number(rating2 + 1);
+                            } else if (data.rating === 1) {
+                                rating1 = Number(rating1 + 1);
+                            }
+
+                            totalRating = Number(totalRating + data.rating);
+                        });
+
+                        if(temArray.length > 0) {
+                            avgRating = roundTo(Number(totalRating / temArray.length), 2);
+                        }
+                        this.setState({
+                            ratingCount: temArray.length,
+                            ratingFive: rating5,
+                            ratingFour: rating4,
+                            ratingThree: rating3,
+                            ratingTwo: rating2,
+                            ratingOne: rating1,
+                            overRollRating: avgRating
+                        });
+                    });
+
+                });
 
         } else {
             this.setState({quantity: []});
@@ -214,6 +297,53 @@ export default class ProductDetails extends Component {
 
     onClickMore(e) {
 
+        // if(this.state.isViewComment === true) {
+        //     console.log("In Call Back Function")
+        //     let temArray = this.state.SoldProducts;
+        //     let rating5 = this.state.ratingFive;
+        //     let rating4 = this.state.ratingFour;
+        //     let rating3 = this.state.ratingThree;
+        //     let rating2 = this.state.ratingTwo;
+        //     let rating1 = this.state.ratingOne;
+        //     let totalRating = this.state.overRollRating;
+        //     let avgRating = 0;
+        //
+        //     console.log("Sold Products");
+        //     console.log(temArray)
+        //     temArray.map((data, index) => {
+        //
+        //         console.log(data.rating);
+        //         if (data.rating === 5) {
+        //             rating5 = Number(rating5 + 1);
+        //         } else if (data.rating === 4) {
+        //             rating4 = Number(rating4 + 1);
+        //         } else if (data.rating === 3) {
+        //             rating3 = Number(rating3 + 1);
+        //         } else if (data.rating === 2) {
+        //             rating2 = Number(rating2 + 1);
+        //         } else if (data.rating === 1) {
+        //             rating1 = Number(rating1 + 1);
+        //         }
+        //
+        //         totalRating = Number(totalRating + data.rating);
+        //     });
+        //
+        //     if(temArray.length > 0) {
+        //         avgRating = roundTo(Number(totalRating / temArray.length), 2);
+        //     }
+        //     this.setState({
+        //         ratingCount: temArray.length,
+        //         ratingFive: rating5,
+        //         ratingFour: rating4,
+        //         ratingThree: rating3,
+        //         ratingTwo: rating2,
+        //         ratingOne: rating1,
+        //         overRollRating: avgRating
+        //     });
+        // }
+        this.setState({
+            isViewComment : false
+        })
         if (this.state.isViewDetais === false) {
             this.setState({
                 isViewDetais: true
@@ -404,23 +534,24 @@ export default class ProductDetails extends Component {
                                 <img className="img-thumbnail" src={FavouriteImageRed} width="50" height="50"
                                      alt="Add Favourite Image" onClick={this.onChangeIsLike} style={{float: 'Right', cursor: "pointer"}}/>}
                             <h4>{this.state.productName}</h4>
-                            <span style={{fontSize: '14px'}}>Ratings</span>
+                            {/*<span style={{fontSize: '14px'}}>Ratings</span>*/}
                             <div className="row" style={{float: 'center', paddingBottom: '0px'}}>
-                                <div className="col-lg-9" style={{paddingBottom: '0px'}}>
-                                    <StarRatingComponent
-                                        name="rate1"
-                                        starCount={5}
-                                        value={this.rating}
-                                        onStarClick={this.onStarClick.bind(this)}
-                                        editing={false}
-                                        value={4.2454}
+                                <div className="col">
+                                {[...Array(5)].map((star, i) => {
+                                    const ratingValue = i + 1;
 
-                                        //rating={this.state.rating}
-                                        //starRatedColor="blue"
-                                        //changeRating={this.changeRating}
-                                        //numberOfStars={6}
-                                        //name='rating'
-                                    />
+                                    return <label style={{marginLeft: '5px', faloat: 'center'}}>
+                                        <input type="radio" name="rating"
+                                               style={{display: "none", cursor: "pointer"}}
+                                               value={ratingValue}
+                                            //onClick={this.onClickRatingValue}
+                                        />
+                                        <FaStar size={15}
+                                                color={ratingValue <= (this.state.overRollRating) ? "#ffc107" : "#e4e5e9"}
+                                            //onMouseEnter={() => this.onMouseEnter(i + 1)}
+                                                style={{cursor: "pointer"}}/>
+                                    </label>
+                                })}
                                 </div>
                             </div>
 
@@ -456,7 +587,7 @@ export default class ProductDetails extends Component {
                             <div className="col-3" style={{padding: '0px'}}>
                                 <select style={{width: '100%'}} className="browser-default custom-select"
                                         onChange={(e) => this.onChangeSize(e)}>
-                                    <option value="" disabled selected>Select Size</option>
+                                    <option defaultValue="Select Size" disabled selected>Select Size</option>
                                     {this.state.shirtSize.map((size) => <option key={size}
                                                                                 value={size}>{size}</option>)}
 
@@ -643,7 +774,7 @@ export default class ProductDetails extends Component {
 
                                     </div>
                                     <div className="col-1">
-                                        <span>{this.state.ratingFive}</span>
+                                        <span>{this.state.ratingFour}</span>
                                     </div>
 
                                 </div>
@@ -665,7 +796,7 @@ export default class ProductDetails extends Component {
 
                                     </div>
                                     <div className="col-1">
-                                        <span>{this.state.ratingFive}</span>
+                                        <span>{this.state.ratingThree}</span>
                                     </div>
 
                                 </div>
@@ -687,7 +818,7 @@ export default class ProductDetails extends Component {
 
                                     </div>
                                     <div className="col-1">
-                                        <span>{this.state.ratingFive}</span>
+                                        <span>{this.state.ratingTwo}</span>
                                     </div>
 
                                 </div>
@@ -709,7 +840,7 @@ export default class ProductDetails extends Component {
 
                                     </div>
                                     <div className="col-1">
-                                        <span>{this.state.ratingFive}</span>
+                                        <span>{this.state.ratingOne}</span>
                                     </div>
 
                                 </div>
@@ -745,7 +876,7 @@ export default class ProductDetails extends Component {
                                         </div>
                                         <div className="row" style={{padding: '0px', marginTop:'-5px'}}>
                                     <span>
-                                    <span>Hasitha </span>
+                                    <span>{item.userName} </span>
                                     <label style={{color: 'green', fontSize:'12px', marginLeft:'5px'}}>Verified Purchase</label>
                                         </span>
                                         </div>
@@ -753,7 +884,7 @@ export default class ProductDetails extends Component {
                                             <label style={{fontSize:'20px'}}>{item.comments}</label>
                                         </div>
                                         <div className="row" style={{padding: '0px',fontSize:'12px',color: '#AEAEAE'}}>
-                                            <span>Size: M  Color : White </span>
+                                            <span>Size: {item.item_size}  Color : {item.item_color} </span>
                                         </div>
                                         <hr style={{marginLeft:'-15px'}}/>
                                     </div>

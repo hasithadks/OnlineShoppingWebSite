@@ -13,9 +13,29 @@ export default class EditManagementStaff extends Component{
             lname : '',
             role : '',
             email : '',
-            profilePic : null,
+            profilePic : ''
         }
     }
+
+    // componentDidUpdate(){
+    //     axios.get('http://localhost:5000/mstaff/'+this.props.match.params.id)
+    //         .then(response =>{
+    //             this.setState({
+    //                 username: response.data.username,
+    //                 password : response.data.password,
+    //                 fname : response.data.fname,
+    //                 lname : response.data.lname,
+    //                 role : response.data.role,
+    //                 email : response.data.email,
+    //                 profilePic : response.data.profilePic
+    //             })
+    //             console.log(response);
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         });
+    // }
+
 
     componentDidMount() {
         axios.get('http://localhost:5000/mstaff/'+this.props.match.params.id)
@@ -30,10 +50,43 @@ export default class EditManagementStaff extends Component{
                     profilePic : response.data.profilePic
                 })
                 console.log(response);
+
+                //////////////////////////////////////////////
+                // var profileimg  = this.state.profilePic;
+                var profile = response.data.profilePic;
+
+                this.setState({
+                    profilePic : profile
+                })
+                //
+                // if(profileimg != null){
+                //     let hs = profileimg + '';
+                //     hs = hs
+                //         .replace(/\\/g, '/')
+                //     this.setState({
+                //         profilePic : hs
+                //     });
+                //     console.log("Pathssss: " +this.state.profilePic);
+                //
+                // }
+                // else{
+                //     let hs= "this/this";
+                //     hs = hs
+                //         .replace(/\\/g, '/');
+                //     this.setState({
+                //         profilePic : hs
+                //     });
+                //     console.log("Path bijja: " +this.state.profilePic);
+                //
+                // }
+
+                // let logo = require('../uploads/')
+
+                ////////////////////////////////////////////////
             })
             .catch(function (error) {
                 console.log(error);
-            })
+            });
     }
 
     onChangeHandler = e => {
@@ -42,9 +95,16 @@ export default class EditManagementStaff extends Component{
         })
     }
 
-    fileUploadHandler = e => {
+    // fileUploadHandler = e => {
+    //     this.setState({
+    //         profilePic: e.target.files[0]
+    //     })
+    // }
+
+    fileUploadHandler = e =>{
+        let file = e.target.files[0];
         this.setState({
-            profilePic: e.target.files[0]
+            profilePic : file
         })
     }
 
@@ -153,7 +213,14 @@ export default class EditManagementStaff extends Component{
                                 </div>
                                 <div className="col-md-10">
                                     <input type="file" className="form-control" onChange={this.fileUploadHandler} />
-                                    <img src={this.state.profilePic} style={{width:"100px",height:"100px"}} className="form-control img-thumbnail" alt="Profile Picture"></img>
+                                    <img src={require('../../../src/components/uploads/'+this.state.profilePic)} style={{width:"100px",height:"100px"}} className="form-control img-thumbnail" />
+                                    <p>{this.state.profilePic}</p>
+                                    {/*<img src={'../uploads/'+this.state.profilePic} alt=".........."/>*/}
+                                    {/*<img src={require('../uploads/1590216878829_pod3.jpg')} className="img-thumbnail"/>*/}
+                                    {/*<img height="50" src={require('../uploads/'+props.quantity.item_productImage)} alt=""/>*/}
+                                    {/*<img src={}/>*/}
+                                    {/*<img src="../uploads/1589961745797profile1.png" className="img-thumbnail"></img>*/}
+                                    {/*<img src={logo1} className="img-thumbnail"></img>*/}
                                 </div>
                             </div>
                         </div>

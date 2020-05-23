@@ -44,7 +44,6 @@ app.use('/cart',cartRouter);
 app.use('/users',userRouter);
 app.use('/soldProducts',soldRouter);
 app.use('/userAccounts',accountRouter);
-app.use('/uploads', express.static('uploads/mstaff'));
 app.use('/rateProducts',rateRouter);
 
 app.listen(port, () => {
