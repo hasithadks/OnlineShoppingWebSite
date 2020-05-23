@@ -31,7 +31,7 @@ function App() {
     return (
         <div className="App">
             <Router>
-                <ItemNav/>
+                {/*<ItemNav/>*/}
                 <Switch>
                     <Route path="/login"><Login/></Route>
                     <Route path="/register"><Register/></Route>
@@ -52,7 +52,7 @@ function App() {
                     <Route path="/shoppingCartProcess" exact component={shoppingCartProcess}/>
                     <Route path="/SuccessMessage" exact component={SuccessMessage}/>
                 </Switch>
-                <ItemFooter/>
+                {/*<ItemFooter/>*/}
             </Router>
         </div>
     );

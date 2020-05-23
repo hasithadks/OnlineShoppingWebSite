@@ -13,7 +13,7 @@ const  Product = props =>(
         <td>{props.product.item_brand}</td>
         <td>
             <div>
-                <Link className="mx-1 text-success fas fa-pen text-decoration-none" to={"/admin/additem/"+props.product._id}></Link><span className=" mx-1 text-danger fas fa-trash" href ='#' onClick={()=>{props.deleteProduct(props.product._id,props.product.item_id)}}></span>
+                <Link className="mx-1 text-success fas fa-pen text-decoration-none" to={"/admin/product/edititem/"+props.product._id}></Link><span className=" mx-1 text-danger fas fa-trash" href ='#' onClick={()=>{props.deleteProduct(props.product._id,props.product.item_id)}}></span>
             </div>
         </td>
     </tr>
@@ -66,13 +66,17 @@ export default class ItemLists extends Component{
     }
     render(){
         return(
-            <div className="container card">
+            <div>
                 <div className="App-center">
                     <div className="container">
                         <br/>
-                        <h3 className="text-monospace">Item List</h3>
-                        <br/>
-                        <Link style={{color:"black", textDecoration:"none"}} to={"/admin/additem"}><button className="btn btn-block btn-warning">Add Item</button></Link>
+                        <h3><b> Item List </b></h3>
+
+
+                        <div className="col-sm-3" style={{marginLeft:"850px"}}>
+                            <Link style={{color:"black", textDecoration:"none"}} to={"/admin/product/additem"}><button className="btn btn-block btn-warning">Add Item</button></Link>
+                        </div>
+
                         <table className="table table-striped" style={{marginTop :20}}>
                             <thead>
                             <tr>
@@ -92,7 +96,10 @@ export default class ItemLists extends Component{
                         </table>
                     </div>
                 </div>
+
+
             </div>
+
         )
     }
 }
