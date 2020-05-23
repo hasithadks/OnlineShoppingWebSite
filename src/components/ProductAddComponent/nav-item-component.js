@@ -2,8 +2,58 @@ import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import logo from "../Images/shenosa-white.png";
 import advertisement from "../Images/advertisement.png";
+import axios from "axios";
+import * as configs from "../../Config/config";
+import roundTo from "round-to";
 
 export default class ItemNav extends Component{
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            totalPrice : 0,
+            noOfItem : 0,
+            cartList : [],
+
+        };
+
+    }
+
+    componentDidMount() {
+
+        let userID = localStorage.getItem('user_id');
+        console.log(userID);
+        if(userID != null || userID != ''){
+            axios.get(configs.BASE_URL + '/cart/' + userID)
+                .then(response => {
+                    this.setState({
+                        cartList: response.data
+                    },() => {
+
+                       // console.log("inside then :")
+                        // console.log(response.data);
+                        let temcartList = response.data;
+                        let temTotal = 0;
+                        let temCount = response.data.length
+                        temcartList.map((data,index)=> {
+                            temTotal = roundTo(Number(temTotal + (data.discounted_price * data.requested_qty)),2);
+                        })
+
+                        this.setState({
+                            totalPrice : temTotal,
+                            noOfItem : temCount
+                        })
+                    })
+                   // console.log("inside then :")
+                   // console.log(response.data);
+                   // console.log(this.state.cartList);
+                });
+
+        }
+
+    }
+
     render(){
         return(
             // <div style={{backgroundColor:"#ececec"}}>
@@ -109,8 +159,8 @@ export default class ItemNav extends Component{
                                                         <a className="dropdown-item dropdown-toggle" href="#">Profile</a>
                                                         <ul className="dropdown-menu" style={{width:"100px!important"}}>
                                                             <li><a className="dropdown-item" href="#">My Profile</a></li>
-                                                            <li><a className="dropdown-item" href="#">Wish List</a></li>
-                                                            <li><a className="dropdown-item" href="#">Purchased History</a></li>
+                                                            <li><a className="dropdown-item" href="/FavouriteList">Wish List</a></li>
+                                                            <li><a className="dropdown-item" href="/ProductRatings">Purchased History</a></li>
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -118,21 +168,21 @@ export default class ItemNav extends Component{
                                         </div>
                                         <a href="/login" className="btn btn-link text-color-default font-weight-bold order-3 d-none d-sm-block ml-auto mr-2 pt-1 text-1">Login</a>
                                         <div className="mini-cart order-4">
-                                            <span className="font-weight-bold font-primary">Cart / <span className="cart-total">$0.00</span></span>
+                                            <span className="font-weight-bold font-primary">Cart / <span className="cart-total">Rs. {this.state.totalPrice}</span></span>
                                             <div className="mini-cart-icon">
                                                 <img src={require('../Images/cart-bag.svg')} className="img-fluid" alt="" />
-                                                <span className="badge badge-primary rounded-circle">0</span>
+                                                <span className="badge badge-primary rounded-circle" style={{fontSize:'12px'}}>{this.state.noOfItem}</span>
                                             </div>
                                             <div className="mini-cart-content">
                                                 <div className="inner-wrapper bg-light rounded">
                                                     <div className="mini-cart-product">
                                                         <div className="row">
                                                             <div className="col-7">
-                                                                <h2 className="text-color-default font-secondary text-1 mt-3 mb-0">Blue Hoodies</h2>
-                                                                <strong className="text-color-dark">
-                                                                    <span className="qty">1x</span>
-                                                                    <span className="product-price">$12.00</span>
-                                                                </strong>
+                                                                {/*<h2 className="text-color-default font-secondary text-1 mt-3 mb-0">Blue Hoodies</h2>*/}
+                                                                {/*<strong className="text-color-dark">*/}
+                                                                {/*    <span className="qty">1x</span>*/}
+                                                                {/*    <span className="product-price">$12.00</span>*/}
+                                                                {/*</strong>*/}
                                                             </div>
                                                             <div className="col-5">
                                                                 <div className="product-image">
@@ -148,17 +198,17 @@ export default class ItemNav extends Component{
                                                                 <strong className="text-color-dark">TOTAL:</strong>
                                                             </div>
                                                             <div className="col text-right">
-                                                                <strong className="total-value text-color-dark">$12.00</strong>
+                                                                <strong className="total-value text-color-dark">Rs. {this.state.totalPrice}</strong>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div className="mini-cart-actions">
                                                         <div className="row">
                                                             <div className="col pr-1">
-                                                                <a href="#" className="btn btn-dark font-weight-bold rounded text-0">VIEW CART</a>
+                                                                <a href="/shoppingCartProcess" className="btn btn-dark font-weight-bold rounded text-0">VIEW CART</a>
                                                             </div>
                                                             <div className="col pl-1">
-                                                                <a href="#" className="btn btn-primary font-weight-bold rounded text-0">CHECKOUT</a>
+                                                                <a href="/shoppingCartProcess" className="btn btn-primary font-weight-bold rounded text-0">CHECKOUT</a>
                                                             </div>
                                                         </div>
                                                     </div>
