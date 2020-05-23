@@ -106,24 +106,37 @@ constructor(props) {
             user_role: 'Customer'
         }
 
-        console.log(`email:${this.state.user_email}`);
-        console.log(`username:${this.state.user_username}`);
-        console.log(`password:${this.state.user_password}`);
-        console.log(`phone:${this.state.user_phone}`);
-        console.log(`gender:${this.state.user_gender}`);
-        console.log(`image:${this.state.user_image}`);
+        // console.log(`email:${this.state.user_email}`);
+        // console.log(`username:${this.state.user_username}`);
+        // console.log(`password:${this.state.user_password}`);
+        // console.log(`phone:${this.state.user_phone}`);
+        // console.log(`gender:${this.state.user_gender}`);
+        // console.log(`image:${this.state.user_image}`);
 
         axios.post('http://localhost:5000/users/add',user)
-            .then(res => console.log((res.data)));
+            .then(response =>{
+                this.setState({
+                    users: response.data
+                });
+            });
 
         axios.post('http://localhost:5000/userAccounts/add',account)
-            .then(res => console.log((res.data)));
+            .then(response =>{
+                this.setState({
+                    users: response.data
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+             });
 
-        // if (result1 && result2){
-        //     alert("Successfully registered!");
-        // }else{
-        //     alert("Email already exist!");
-        // }
+        let temp = this.state.users;
+
+        if (temp.length > 0){
+            window.location='/login';
+        }else{
+            window.location='/register';
+        }
 
     }
 

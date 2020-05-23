@@ -10,6 +10,7 @@ import Profile from "./components/User_components/Profile";
 import Editprofile from "./components/User_components/Editprofile";
 import PasswordChange from "./components/User_components/PasswordChange";
 import ForgotPassword from "./components/User_components/ForgotPassword";
+import ResetPassword from "./components/User_components/ResetPassword";
 
 // IT18063288
 import ProductDetails from "./components/Cart_and_purchasing_Components/ProductDetails";
@@ -40,6 +41,7 @@ function App() {
                     <Route path="/edit"><Editprofile/></Route>
                     <Route path="/passwordchange"><PasswordChange/></Route>
                     <Route path="/forgotpassword"><ForgotPassword/></Route>
+                    <Route path="/resetpassword"><ResetPassword/></Route>
                     {/*<Route path="/productDetails"><ProductDetails/></Route>*/}
                     <Route path="/productDetails" exact component={ProductDetails}/>
                     <Route path="/productDetails/:id" exact component={ProductDetails}/>

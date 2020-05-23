@@ -54,6 +54,18 @@ export default class Profile extends Component {
         axios.get('http://localhost:5000/users/username/'+ localStorage.getItem('user_username'))
             .then(response =>{
                 this.setState({user: response.data});
+
+                this.setState ({
+                    user_email : localStorage.getItem('user_email'),
+                    user_password: localStorage.getItem('user_password'),
+                    user_username : localStorage.getItem('user_username'),
+                    user_phone : localStorage.getItem('user_phone'),
+                    user_gender :localStorage.getItem('user_gender'),
+                    user_image : localStorage.getItem('user_image'),
+                    user_b_year: localStorage.getItem('user_b_year'),
+                    user_b_month: localStorage.getItem('user_b_month'),
+                    user_b_day: localStorage.getItem('user_b_day'),
+                });
             })
             .catch(function (error) {
                 console.log(error);

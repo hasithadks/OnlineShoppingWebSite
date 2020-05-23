@@ -94,21 +94,26 @@ export default class Login extends Component{
             user_username: this.state.user_email,
             user_password: this.state.user_password,
         }
-        this.usertList();
+
             axios.post('http://localhost:5000/userAccounts/username/'+ this.state.user_username,detail)
                 .then(response =>{
                     this.setState({
                         user: response.data
                     });
+                    this.usertList();
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
 
-                if (localStorage.getItem('user_username')){
-                    alert("successfully login");
+                let usertemp = this.state.user;
+
+                if (usertemp.length > 0){
+                    alert("Successfully login");
+                    window.location='/home';
                 }else{
                     alert("Login fail");
+                    // window.location='/login';
                 }
 
                 console.log("login success!");

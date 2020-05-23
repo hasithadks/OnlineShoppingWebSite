@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import axios from "axios";
 
-export default class PasswordChange extends Component {
+export default class ResetPassword extends Component {
     constructor(props) {
         super(props);
 
         this.onChangeEmail = this.onChangeEmail.bind(this);
-        this.onChangePassword = this.onChangePassword.bind(this);
         this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this);
         this.onChangeNewPassword = this.onChangeNewPassword.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -14,40 +13,14 @@ export default class PasswordChange extends Component {
         this.state ={
             user_id: '',
             user_email : '',
-            user_confirmPassword:'',
-            user_password: '',
             user_Newpassword:'',
+            user_confirmPassword:'',
         };
-    }
-
-    componentDidMount() {
-        if(localStorage.getItem('user_email') != null){
-            axios.get('http://localhost:5000/userAccounts/username/'+ localStorage.getItem('user_email'))
-                .then(response =>{
-                    this.setState({
-                        user_id : localStorage.getItem('user_id'),
-                        user_email : localStorage.getItem('user_email'),
-                        user_password : localStorage.getItem('user_password'),
-                    })
-                })
-                .catch(function (error) {
-                    console.log(error)
-                })
-        }
-        this.setState ({
-            user_email : localStorage.getItem('user_email'),
-            user_username : localStorage.getItem('user_username'),
-        });
     }
 
     onChangeEmail(e){
         this.setState({
             user_email: e.target.value
-        });
-    }
-    onChangePassword(e){
-        this.setState({
-            user_password: e.target.value
         });
     }
     onChangeNewPassword(e){
@@ -63,29 +36,24 @@ export default class PasswordChange extends Component {
     onSubmit(e){
         e.preventDefault();
 
-            const user = {
-                user_email: this.state.user_email,
-                user_password: this.state.user_password,
-                user_Newpassword: this.state.user_Newpassword,
-            };
+        const user = {
+            user_Newpassword: this.state.user_Newpassword,
+            user_confirmPassword: this.state.user_confirmPassword,
+        };
 
-            if(this.state.user_Newpassword.match(this.state.user_confirmPassword)){
-                alert("Successfully changed");
-                localStorage.setItem('user_email', this.state.user_email);
-                localStorage.setItem('user_password', this.state.user_Newpassword);
+        if(this.state.user_Newpassword.match(this.state.user_confirmPassword)){
 
-                axios.put('http://localhost:5000/userAccounts/update/account/'+ this.state.user_email,user)
-                     .then(res => console.log((res.data)));
-            }else{
-                alert("Not match");
-            }
+            axios.put('http://localhost:5000/userAccounts/reset/'+ this.state.user_email,user)
+                .then(res => console.log((res.data)));
 
-            console.log(`id:${this.state.user_id}`);
-            console.log(`email:${this.state.user_email}`);
-            console.log(`password:${this.state.user_password}`);
-            console.log(`password:${this.state.user_confirmPassword}`);
-            console.log(localStorage.getItem('user_email'));
+            alert("Successfully changed");
+        }else{
+            alert("Not match");
+        }
 
+        console.log(`email:${this.state.user_email}`);
+        console.log(`New password:${this.state.user_Newpassword}`);
+        console.log(`Confirm password:${this.state.user_confirmPassword}`);
     }
 
 
@@ -95,7 +63,7 @@ export default class PasswordChange extends Component {
             <div className="container">
                 <div style={{width:'70%', marginLeft:'15%'}}>
                     <hr/>
-                    <h2>Password change Request</h2>
+                    <h2>Reset Password</h2>
                     <hr/>
                 </div>
 
@@ -106,21 +74,9 @@ export default class PasswordChange extends Component {
                                 <div className="form-group">
                                     <label htmlFor="inputEmail3" className="col-sm-2 col-form-label" style={{float: 'left',marginLeft:'-5%'}}>Email</label>
                                     <div className="col-sm-5">
-                                        <input type="email" className="form-control" id="inputEmail3" required placeholder="Email" disabled
+                                        <input type="email" className="form-control" id="inputEmail3" required placeholder="Email"
                                                value={this.state.user_email}
                                                onChange={this.onChangeEmail}/>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style={{width:'auto'}}>
-                                <div className="form-group">
-                                    <label htmlFor="inputPassword3" className="col-sm-2 col-form-label" style={{float: 'left',marginLeft:'-4%'}}>Password</label>
-                                    <div className="col-sm-5">
-                                        <input type="password" className="form-control" id="inputPassword3" required placeholder="Password"
-                                               value={this.state.user_password}
-                                               onChange={this.onChangePassword}/>
                                     </div>
                                 </div>
                             </td>
@@ -153,7 +109,7 @@ export default class PasswordChange extends Component {
                         <tr>
                             <div className="form-group" style={{marginTop:'15px'}}>
                                 <div className="col-sm-12">
-                                    <button type="submit" className="btn btn-primary">Password change</button>
+                                    <button type="submit" className="btn btn-primary">Reset Password</button>
                                 </div>
                             </div>
                         </tr>

@@ -55,7 +55,7 @@ router.route('/add').post(async (req,res) =>{
             user_role
         });
         newAccount.save()
-            .then(() =>res.json('Account Created....'))
+            .then(account => res.json(newAccount))
             .catch(err =>res.status(400).json('Error: '+ err));
     }else{
         return res.status(400).json('Email already exit');
@@ -95,8 +95,9 @@ router.route('/username/:email').post(async (req, res) => {
 
                     const user_token = token;
 
-                    Account.updateOne({user_token : user_token}, function (err, res) {
+                    Account.updateOne({"user_username": req.params.email},{user_token : user_token}, function (err, res) {
                     }).then();
+
                 }
                 else{
                     return res.status(400).json('no token');
@@ -115,17 +116,16 @@ router.route('/logout/:email').post(async (req, res) => {
     const user = Account.findOne({
         user_username: req.params.email
     },async function(err,obj) {
-        let tok = (obj.user_token);
 
         if (!user){
             return res.status(400).json('Email is not found');
         }
         else {
-                    const user_token = null;
+                const user_token = null;
 
-                    Account.updateOne({user_token : user_token}, function (err, res) {
-                    }).then(console.log(user_token));
-            }
+            Account.updateOne({"user_username": req.params.email},{user_token : user_token}, function (err, res) {
+            }).then(console.log("Logout"));
+        }
     });
 
 });
@@ -185,19 +185,21 @@ router.route('/forgot/:email').get(async (req, res) => {
             let userEmail = req.params.email;
             let userPassword = dbps;
 
-                    // hash password
-                    const salt = await bcrypt.genSalt(10);
-                    const hashPassword = await bcrypt.hash(userPassword,salt,(err,encrypted)=>{
-                        let userPassword= encrypted;
-
-                        console.log(userPassword);
-                    });
+                    // // hash password
+                    // const salt = await bcrypt.genSalt(10);
+                    // const hashPassword = await bcrypt.hash(userPassword,salt,(err,encrypted)=>{
+                    //     let userPassword= encrypted;
+                    //
+                    //     console.log(userPassword);
+                    // });
 
             const content = `
                         Hey ${userEmail},\n
                         You forgot your password.\n\n
                         username : ${userEmail} \n 
-                        password : ${userPassword} \n\n
+                        Please use this link to reset the password\n
+                        Here is your reset link: http://localhost:3000/ResetPassword \n
+                        
                         Please use your credentials to Login from here- http://localhost:3000/login \n
                         To Visit Online Shopping store- http://localhost:3000/home \n
                         Thanks,
@@ -222,63 +224,71 @@ router.route('/forgot/:email').get(async (req, res) => {
                             })
                         }
                     });
-
             }
     });
-    //////////////////////////////////////////////////////////
+});
+
+router.route('/reset/:email').put(async (req, res) => {
+
+    const user = Account.findOne({
+        user_username: req.params.email
+    },async function(err,obj) {
+        let dbps = (obj.user_password);
+
+        if (!user){
+            return res.status(400).json('Email is not found');
+        }
+        else {
+            let userEmail = req.params.email;
+            let userOldPassword = dbps;
+            let userNewPassword = req.body.user_Newpassword;
+            let confirmPassword = req.body.user_confirmPassword;
+
+            //hash password
+            const salt = await bcrypt.genSalt(10);
+            const newHashPassword = await bcrypt.hash(userNewPassword,salt);
+
+                if (userNewPassword === confirmPassword){
+                    return  res.status(400).json('Invalid password');
+                }else{
+                    Account.updateOne({user_username : userEmail}, {user_password : newHashPassword}, function (err, res) {
+                    }).then(console.log("successfully Reset Password"));
+                }
 
 
+            const content = `
+                        Hey ${userEmail},\n
+                        You Successfully Reset your password.\n\n
+                        username : ${userEmail} \n 
+                        
+                        Please use your credentials to Login from here- http://localhost:3000/login \n
+                        To Visit Online Shopping store- http://localhost:3000/home \n
+                        Thanks,
+                        Online Fashion Store Team.    
+                    `;
 
+            var mail = {
+                from: userEmail,
+                to: userEmail,
+                subject: 'Admin User Credentials',
+                text: content
+            }
 
+            transporter.sendMail(mail, (err, data) => {
+                if (err) {
+                    res.json({
+                        msg: 'fail'
+                    })
+                } else {
+                    res.json({
+                        msg: 'success'
+                    })
+                }
+            });
 
-    // Account.find( {"user_username" : req.params.email})
-    //     .then(async  user => {
-    //
-    //         let userEmail = req.params.email;
-    //         let userPassword = res.user_password;
-    //
-    //         //hash password
-    //         const salt = await bcrypt.genSalt(10);
-    //         const hashPassword = await bcrypt.hash(userPassword,salt,(err,encrypted)=>{
-    //             let userPassword= encrypted;
-    //
-    //             console.log(userPassword);
-    //         });
-    //
-    //
-    //         console.log(userEmail);
-    //         console.log(userPassword);
-    //
-    //         const content = `
-    //                     Hey ${userEmail},\n
-    //                     You forgot your password.\n\n
-    //                     username : ${userEmail} \n
-    //                     password : ${userPassword} \n\n
-    //                     Please use your credentials to Login from here- http://localhost:3000/login \n
-    //                     To Visit Online Shopping store- http://localhost:3000/home \n
-    //                     Thanks,
-    //                     Online Fashion Store Team.
-    //                 `;
-    //
-    //         var mail = {
-    //             from: userEmail,
-    //             to: userEmail,
-    //             subject: 'Admin User Credentials',
-    //             text: content
-    //         }
-    //
-    //         transporter.sendMail(mail, (err, data) => {
-    //             if (err) {
-    //                 res.json({
-    //                     msg: 'fail'
-    //                 })
-    //             } else {
-    //                 res.json({
-    //                     msg: 'success'
-    //                 })
-    //             }
-    //         });
-    //     })
+        }
+    });
+
 });
 
 module.exports = router;
