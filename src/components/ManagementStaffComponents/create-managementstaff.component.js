@@ -28,16 +28,9 @@ export default class CreateManagementStaff extends Component{
         })
     }
 
-    // fileUploadHandler = e => {
-    //     this.setState({
-    //         profilePic: e.target.files[0]
-    //     })
-    // }
-
-    fileUploadHandler = e =>{
-        let file = e.target.files[0];
+    fileUploadHandler = e => {
         this.setState({
-            profilePic : file
+            profilePic: e.target.files[0]
         })
     }
 
@@ -63,7 +56,7 @@ export default class CreateManagementStaff extends Component{
             data: managementstaff,
         }).then(res => console.log(res.data));
 
-        window.location = '/admin/mstaff';
+        // window.location = '/admin/mstaff';
     }
 
     render() {
@@ -146,7 +139,7 @@ export default class CreateManagementStaff extends Component{
                                 </div>
                                 <div className="col-md-10">
                                     <input type="file" className="form-control" onChange={this.fileUploadHandler} />
-                                    <img src={this.state.profilePic} style={{width:"100px",height:"100px"}} className="form-control img-thumbnail" alt="..............."></img>
+                                    <img src={this.state.profilePic} style={{width:"200px",height:"200px"}} className="form-control img-thumbnail" alt="User Image" />
                                 </div>
                             </div>
                         </div>

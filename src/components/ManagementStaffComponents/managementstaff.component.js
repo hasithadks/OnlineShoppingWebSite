@@ -10,8 +10,8 @@ const MStaff = props => (
         <td>{props.mstaff.email}</td>
         <td>{props.mstaff.role}</td>
         <td>
-            <Link style={{color:"black"}} to={"/admin/mstaff/edit/"+props.mstaff._id}><button style={{paddingRight:"20px",width:"auto"}} className="btn btn-warning mr-1">Edit</button></Link>
-            <button style={{width:"auto"}} className="btn btn-danger" onClick={() => {props.deleteMstaff(props.mstaff._id)}}>Delete</button>
+            <Link style={{color:"black"}} to={"/admin/mstaff/edit/"+props.mstaff._id}><button style={{paddingRight:"20px",width:"auto"}} className="btn btn-warning mr-1"><i className="fa fa-pencil-alt"> Edit</i></button></Link>
+            <button style={{width:"auto",color:"black"}} className="btn btn-danger" onClick={() => {props.deleteMstaff(props.mstaff._id)}}><i className="fa fa-trash-alt"> Delete</i></button>
         </td>
     </tr>
 );

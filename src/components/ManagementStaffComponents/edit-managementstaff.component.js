@@ -13,29 +13,9 @@ export default class EditManagementStaff extends Component{
             lname : '',
             role : '',
             email : '',
-            profilePic : ''
+            profilePic : 'default-img.jpg'
         }
     }
-
-    // componentDidUpdate(){
-    //     axios.get('http://localhost:5000/mstaff/'+this.props.match.params.id)
-    //         .then(response =>{
-    //             this.setState({
-    //                 username: response.data.username,
-    //                 password : response.data.password,
-    //                 fname : response.data.fname,
-    //                 lname : response.data.lname,
-    //                 role : response.data.role,
-    //                 email : response.data.email,
-    //                 profilePic : response.data.profilePic
-    //             })
-    //             console.log(response);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // }
-
 
     componentDidMount() {
         axios.get('http://localhost:5000/mstaff/'+this.props.match.params.id)
@@ -47,42 +27,15 @@ export default class EditManagementStaff extends Component{
                     lname : response.data.lname,
                     role : response.data.role,
                     email : response.data.email,
-                    profilePic : response.data.profilePic
+                    profilePic : response.data.profilePic.toString()
+                },()=>{
+                    // console.log("Profile Pic");
+                    // console.log(this.state.profilePic);
                 })
-                console.log(response);
+                console.log(response.data);
+                // console.log("Profile Pic");
+                // console.log(response.data.profilePic);
 
-                //////////////////////////////////////////////
-                // var profileimg  = this.state.profilePic;
-                // var profile = response.data.profilePic;
-                //
-                // this.setState({
-                //     profilePic : profile
-                // })
-                //
-                // if(profileimg != null){
-                //     let hs = profileimg + '';
-                //     hs = hs
-                //         .replace(/\\/g, '/')
-                //     this.setState({
-                //         profilePic : hs
-                //     });
-                //     console.log("Pathssss: " +this.state.profilePic);
-                //
-                // }
-                // else{
-                //     let hs= "this/this";
-                //     hs = hs
-                //         .replace(/\\/g, '/');
-                //     this.setState({
-                //         profilePic : hs
-                //     });
-                //     console.log("Path bijja: " +this.state.profilePic);
-                //
-                // }
-
-                // let logo = require('../uploads/')
-
-                ////////////////////////////////////////////////
             })
             .catch(function (error) {
                 console.log(error);
@@ -95,16 +48,9 @@ export default class EditManagementStaff extends Component{
         })
     }
 
-    // fileUploadHandler = e => {
-    //     this.setState({
-    //         profilePic: e.target.files[0]
-    //     })
-    // }
-
-    fileUploadHandler = e =>{
-        let file = e.target.files[0];
+    fileUploadHandler = e => {
         this.setState({
-            profilePic : file
+            profilePic: e.target.files[0]
         })
     }
 
@@ -213,7 +159,8 @@ export default class EditManagementStaff extends Component{
                                 </div>
                                 <div className="col-md-10">
                                     <input type="file" className="form-control" onChange={this.fileUploadHandler} />
-                                    <p className="form-control">{this.state.profilePic}</p>
+                                    {/*<p className="form-control">{this.state.profilePic}</p>*/}
+                                    <img className="form-control img-thumbnail" style={{height:"200px",width:"200px"}}  src={require('../uploads/' + this.state.profilePic)} alt="User Image"/>
                                 </div>
                             </div>
                         </div>
