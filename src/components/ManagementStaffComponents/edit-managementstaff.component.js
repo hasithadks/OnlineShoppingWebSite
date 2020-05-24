@@ -53,11 +53,11 @@ export default class EditManagementStaff extends Component{
 
                 //////////////////////////////////////////////
                 // var profileimg  = this.state.profilePic;
-                var profile = response.data.profilePic;
-
-                this.setState({
-                    profilePic : profile
-                })
+                // var profile = response.data.profilePic;
+                //
+                // this.setState({
+                //     profilePic : profile
+                // })
                 //
                 // if(profileimg != null){
                 //     let hs = profileimg + '';
@@ -213,14 +213,7 @@ export default class EditManagementStaff extends Component{
                                 </div>
                                 <div className="col-md-10">
                                     <input type="file" className="form-control" onChange={this.fileUploadHandler} />
-                                    <img src={require('../../../src/components/uploads/'+this.state.profilePic)} style={{width:"100px",height:"100px"}} className="form-control img-thumbnail" />
-                                    <p>{this.state.profilePic}</p>
-                                    {/*<img src={'../uploads/'+this.state.profilePic} alt=".........."/>*/}
-                                    {/*<img src={require('../uploads/1590216878829_pod3.jpg')} className="img-thumbnail"/>*/}
-                                    {/*<img height="50" src={require('../uploads/'+props.quantity.item_productImage)} alt=""/>*/}
-                                    {/*<img src={}/>*/}
-                                    {/*<img src="../uploads/1589961745797profile1.png" className="img-thumbnail"></img>*/}
-                                    {/*<img src={logo1} className="img-thumbnail"></img>*/}
+                                    <p className="form-control">{this.state.profilePic}</p>
                                 </div>
                             </div>
                         </div>

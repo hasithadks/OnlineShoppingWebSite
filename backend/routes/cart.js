@@ -4,10 +4,13 @@ let userCart = require('../models/cart.model');
 
 router.route('/:id').get((req,res) => {
    let id = req.params.id;
+   console.log("cart userID : " + id);
    userCart.find({userID:id}, function (err, cartList) {
-
-   }).then(cartList => res.json(cartList))
-       .catch(err => res.status(400).json('Error: ' + err));
+       res.json(cartList);
+       console.log("inside the cart get method:")
+       console.log(cartList);
+   })//.then(cartList => res.json(cartList))
+      // .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route("/add").post((req, res) => {

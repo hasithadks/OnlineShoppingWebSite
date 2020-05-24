@@ -7,6 +7,8 @@ import Cash_icon from "../Images/cash_icon.png";
 import card_icon from "../Images/credit_card.png";
 import visa_card from "../Images/visa_card.png";
 import master_card from "../Images/master_card.png";
+import roundTo from "round-to";
+import swal from "sweetalert";
 
 export default class ShoppingCartProcess extends Component {
 
@@ -16,7 +18,7 @@ export default class ShoppingCartProcess extends Component {
         this.state = {
             delivery: 220,
             total: 0,
-            userID: "4787",
+            userID: null,
             cartList: [],
             selectedItem: 0,
             is_item_checkbox: false,
@@ -58,10 +60,10 @@ export default class ShoppingCartProcess extends Component {
             isCash: false,
             isCard: false,
             isFinneshedProcess: false,
-            cardNumber : 0,
-            cardName : '',
-            expiredate : '',
-            cvv : 0,
+            cardNumber: 0,
+            cardName: '',
+            expiredate: '',
+            cvv: 0,
 
         };
         //Shopping Cart Functions
@@ -94,37 +96,40 @@ export default class ShoppingCartProcess extends Component {
 
 
     componentDidMount() {
-        axios.get(configs.BASE_URL + '/cart/' + this.state.userID)
-            .then(response => {
-                this.setState({
-                    cartList: response.data
-                })
+        let userID = localStorage.getItem('user_id');
 
-            });
-
-        axios.get(configs.BASE_URL + '/deliveryDetails/' + this.state.userID)
-            .then(response => {
-                if (response.data.length > 0) {
-                    // console.log(JSON.stringify(response.data[0].province));
-
+        if (userID != null) {
+            axios.get(configs.BASE_URL + '/cart/' + userID)
+                .then(response => {
                     this.setState({
-                            isOldClient: true,
-                            userDeliveryAddress: response.data,
-                            fullName: response.data[0].fullName,
-                            updateProvince: response.data[0].province,
-                            phoneNo: response.data[0].phoneNo,
-                            district: response.data[0].district,
-                            city: response.data[0].city,
-                            address: response.data[0].address,
-                            detailsID: response.data[0]._id
-                        },
-                        () => {
+                        cartList: response.data
+                    })
 
-                        });
+                });
 
-                }
-            })
+            axios.get(configs.BASE_URL + '/deliveryDetails/' + userID)
+                .then(response => {
+                    if (response.data.length > 0) {
+                        // console.log(JSON.stringify(response.data[0].province));
 
+                        this.setState({
+                                isOldClient: true,
+                                userDeliveryAddress: response.data,
+                                fullName: response.data[0].fullName,
+                                updateProvince: response.data[0].province,
+                                phoneNo: response.data[0].phoneNo,
+                                district: response.data[0].district,
+                                city: response.data[0].city,
+                                address: response.data[0].address,
+                                detailsID: response.data[0]._id
+                            },
+                            () => {
+
+                            });
+
+                    }
+                })
+        }
 
     }
 
@@ -152,7 +157,7 @@ export default class ShoppingCartProcess extends Component {
         if (isChecked === true) {
 
             subTotal = Number(subTotal + qtyPrice);
-            Total = Number(subTotal + Delivery);
+            Total = roundTo(Number(subTotal + Delivery), 2);
             itemCount = Number(itemCount + 1);
 
             let temarr = this.state.selectedItems;
@@ -192,53 +197,16 @@ export default class ShoppingCartProcess extends Component {
 
     onClickProceedOrder() {
 
-        // let tempArray = this.state.selectedItems;
-        // console.log("tempArray : Item :");
-        // console.log(tempArray);
-        // if(tempArray.length > 0 ){
-        //     tempArray.forEach(item => {
-        //
-        //         axios.post(configs.BASE_URL + '/soldProduct/add', item)
-        //             .then(console.log("Add to DB!!!"));
-        //
-        //         axios.delete(configs.BASE_URL + '/cart/delete/' + item._id)
-        //             .then(response => {
-        //                 console.log("Delete From DB!!!")
-        //             });
-        //
-        //         axios.get('http://localhost:5000/quantity/qty/' + item.quantities_id)
-        //             .then(response => {
-        //                 console.log("Quantities id send and get Data");
-        //                 console.log(response.data);
-        //                 console.log(response.data.item_quantity);
-        //                 let item_quantity = response.data.item_quantity;
-        //                 console.log("Item qty : " + item_quantity);
-        //                 item_quantity = item_quantity - item.requested_qty;
-        //                 console.log("Updated qty : " + item_quantity);
-        //                 let payload = {
-        //                     item_quantity : item_quantity
-        //                 }
-        //
-        //                 axios.put('http://localhost:5000/quantity/update/itemQuantity/'+item.quantities_id,payload)
-        //                     .then(res => console.log(res.data));
-        //             });
-        //         this.componentDidMount();
-        //     })
-        //
-        //
-        // }
-
         let tempArray = this.state.selectedItems;
 
-        if(tempArray.length > 0){
+        if (tempArray.length > 0) {
             this.setState({
                 isSelectProcessOrder: true
             })
+        } else {
+            //alert("Please Select Item !!!")
+            swal("Empty!!!", "Please Select Item !!!", "warning");
         }
-        else {
-            alert("Please Select Item !!!")
-        }
-
 
 
     }
@@ -249,7 +217,8 @@ export default class ShoppingCartProcess extends Component {
 
         axios.delete(configs.BASE_URL + '/cart/delete/' + Id)
             .then(response => {
-                alert(response.data);
+                swal("Success!", "Item Remove from cart", "success");
+                //alert(response.data);
                 this.componentDidMount();
 
             });
@@ -354,9 +323,9 @@ export default class ShoppingCartProcess extends Component {
         })
     }
 
-    OnClickPayNow(){
+    OnClickPayNow() {
 
-        if(!(this.state.cardNumber > 0 || this.state.cardNumber === '' || this.state.cardName === '' || this.state.expiredate === '' || this.state.cvv === '')) {
+        if (!(this.state.cardNumber > 0 || this.state.cardNumber === '' || this.state.cardName === '' || this.state.expiredate === '' || this.state.cvv === '')) {
 
 
             let tempArray = this.state.selectedItems;
@@ -398,12 +367,12 @@ export default class ShoppingCartProcess extends Component {
 
     }
 
-    OnClickConfirmOrder(){
+    OnClickConfirmOrder() {
 
         let tempArray = this.state.selectedItems;
         console.log("tempArray : Item :");
         console.log(tempArray);
-        if(tempArray.length > 0 ){
+        if (tempArray.length > 0) {
             tempArray.forEach(item => {
 
                 axios.post(configs.BASE_URL + '/soldProducts/add', item)
@@ -424,10 +393,10 @@ export default class ShoppingCartProcess extends Component {
                         item_quantity = item_quantity - item.requested_qty;
                         console.log("Updated qty : " + item_quantity);
                         let payload = {
-                            item_quantity : item_quantity
+                            item_quantity: item_quantity
                         };
 
-                        axios.put('http://localhost:5000/quantity/update/itemQuantity/'+item.quantities_id,payload)
+                        axios.put('http://localhost:5000/quantity/update/itemQuantity/' + item.quantities_id, payload)
                             .then(res => console.log(res.data));
                     });
                 this.componentDidMount();
@@ -435,30 +404,31 @@ export default class ShoppingCartProcess extends Component {
         }
     }
 
-    onChangeCardNumber(e){
+    onChangeCardNumber(e) {
         console.log("Card No : " + e.target.value)
         this.setState({
-            cardNumber : e.target.value
+            cardNumber: e.target.value
         })
     }
 
-    onChangeNameOnCard(e){
+    onChangeNameOnCard(e) {
         this.setState({
-            cardName : e.target.value
+            cardName: e.target.value
         })
     }
 
-    onChangeExpireDate(e){
+    onChangeExpireDate(e) {
         this.setState({
-            expiredate : e.target.value
+            expiredate: e.target.value
         })
     }
 
-    onChangeCVV(e){
+    onChangeCVV(e) {
         this.setState({
-            cvv : e.target.value
+            cvv: e.target.value
         })
     }
+
     render() {
         return (
             //=============== Shopping Cart ====================
@@ -487,7 +457,7 @@ export default class ShoppingCartProcess extends Component {
                                                        style={{float: 'left', marginTop: '25px'}}
                                                        onClick={this.onSelectItem}/>
                                             </div>
-                                            <div className="col-8" style={{marginLeft: '-5px'}}>
+                                            <div className="col-7" style={{marginLeft: '-5px'}}>
                                                 <div className="row">
                                                     <div className="col-3">
                                                         <img src={ProductImage} width="80" height="90"
@@ -514,10 +484,10 @@ export default class ShoppingCartProcess extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-2">
+                                            <div className="col-3">
                                                 <div className="row">
                                             <span style={{
-                                                fontSize: '25px',
+                                                fontSize: '20px',
                                                 color: 'orange'
                                             }}><b>Rs. {data.discounted_price}</b></span>
                                                     {data.item_discount > 0 ?
@@ -631,7 +601,7 @@ export default class ShoppingCartProcess extends Component {
                                                         Name</label>
                                                     <br/>
                                                     <input type="text" onChange={this.onChangeName}
-                                                           style={{marginLeft: '20px', float: 'left'}}
+                                                           style={{marginLeft: '20px', float: 'left',width:'90%'}}
                                                            placeholder="Enter your first and last name"
                                                            className="form-control"/>
                                                 </td>
@@ -647,7 +617,8 @@ export default class ShoppingCartProcess extends Component {
                                                             style={{
                                                                 marginLeft: '20px',
                                                                 float: 'left',
-                                                                fontColor: 'black'
+                                                                fontColor: 'black',
+                                                                width:'90%'
                                                             }}
                                                             onChange={e => this.FindDistrict(e.target.value)}>
                                                         <option value="" disabled selected>Please select your Provinces
@@ -665,7 +636,7 @@ export default class ShoppingCartProcess extends Component {
                                                         style={{marginLeft: '20px', float: 'left', marginTop: '20px'}}>Phone
                                                         Number</label>
                                                     <br/>
-                                                    <input type="text" style={{marginLeft: '20px', float: 'left'}}
+                                                    <input type="text" style={{marginLeft: '20px', float: 'left',width:'90%'}}
                                                            onChange={this.onChangePhoneNumber}
                                                            placeholder="Enter your phone number "
                                                            className="form-control"/>
@@ -682,7 +653,7 @@ export default class ShoppingCartProcess extends Component {
                                                             style={{
                                                                 marginLeft: '20px',
                                                                 float: 'left',
-                                                                fontColor: 'black'
+                                                                fontColor: 'black',width:'90%'
                                                             }}
                                                             disabled={!this.state.isProvinceSelected}>
                                                         <option value="" disabled selected>Please select your District
@@ -702,7 +673,7 @@ export default class ShoppingCartProcess extends Component {
                                                         marginTop: '20px'
                                                     }}>City</label>
                                                     <br/>
-                                                    <input type="text" style={{marginLeft: '20px', float: 'left'}}
+                                                    <input type="text" style={{marginLeft: '20px', float: 'left',width:'90%'}}
                                                            onChange={this.onChangeCity}
                                                            placeholder="Enter your City" className="form-control"/>
                                                 </td>
@@ -714,7 +685,7 @@ export default class ShoppingCartProcess extends Component {
                                                             marginTop: '20px'
                                                         }}>Address</label>
                                                     <br/>
-                                                    <input type="text" style={{marginLeft: '20px', float: 'left'}}
+                                                    <input type="text" style={{marginLeft: '20px', float: 'left',width:'90%'}}
                                                            onChange={this.onChangeAddress}
                                                            placeholder="Ex: Home#, street Name, Main road"
                                                            className="form-control"/>
@@ -729,20 +700,14 @@ export default class ShoppingCartProcess extends Component {
                                                        name="btnAddMore"
                                                        value="Proceed to Pay" style={{
                                                         float: 'Right',
-                                                        marginRight: '25px',
+                                                        marginRight: '27px',
                                                         marginTop: '30px',
                                                         marginBottom: '20px',
-                                                        width: '100%'
+                                                        width: 'auto',
+
                                                     }}>
                                                         Save & Proceed Order
                                                     </a>
-                                                    {/*<input type="submit" className="btn" value="Proceed to Pay" style={{*/}
-                                                    {/*    backgroundColor: 'orange',*/}
-                                                    {/*    marginTop: '30px',*/}
-                                                    {/*    float: 'Right',*/}
-                                                    {/*    marginRight: '25px',*/}
-                                                    {/*    marginBottom: '20px'*/}
-                                                    {/*}}/>*/}
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -896,7 +861,8 @@ export default class ShoppingCartProcess extends Component {
                                                     <h4 style={{float: 'left'}}>Total Amount :</h4>
                                                 </div>
                                                 <div className="col">
-                                                    <h4 style={{float: 'left', marginLeft:'20px'}}><span>Rs. {this.state.total}</span></h4>
+                                                    <h4 style={{float: 'left', marginLeft: '20px'}}>
+                                                        <span>Rs. {this.state.total}</span></h4>
                                                 </div>
                                             </div>
 
@@ -942,7 +908,8 @@ export default class ShoppingCartProcess extends Component {
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="text" className="form-control" required onChange={this.onChangeCardNumber}
+                                                            <input type="text" className="form-control" required
+                                                                   onChange={this.onChangeCardNumber}
                                                                    style={{
                                                                        marginLeft: '20px',
                                                                        float: 'left',
@@ -962,7 +929,8 @@ export default class ShoppingCartProcess extends Component {
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="text" className="form-control" required onChange={this.onChangeNameOnCard}
+                                                            <input type="text" className="form-control" required
+                                                                   onChange={this.onChangeNameOnCard}
                                                                    style={{
                                                                        marginLeft: '20px',
                                                                        float: 'left',
@@ -982,7 +950,8 @@ export default class ShoppingCartProcess extends Component {
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="date" className="form-control" required onChange={this.onChangeExpireDate}
+                                                            <input type="date" className="form-control" required
+                                                                   onChange={this.onChangeExpireDate}
                                                                    style={{
                                                                        marginLeft: '20px',
                                                                        float: 'left',
@@ -1003,7 +972,8 @@ export default class ShoppingCartProcess extends Component {
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="text" className="form-control" required onChange={this.onChangeCVV}
+                                                            <input type="text" className="form-control" required
+                                                                   onChange={this.onChangeCVV}
                                                                    style={{
                                                                        marginLeft: '20px',
                                                                        float: 'left',
@@ -1024,14 +994,15 @@ export default class ShoppingCartProcess extends Component {
 
                                                             {/*       }}/>*/}
 
-                                                            <Link className="btn btn-primary" to={"/SuccessMessage/"} style={{
-                                                                backgroundColor: 'orange',
-                                                                marginTop: '20px',
-                                                                float: 'left',
-                                                                marginLeft: '20px',
-                                                                marginBottom: '20px',
-                                                                width: '95%'
-                                                            }} onClick={this.OnClickPayNow}>Pay Now</Link>
+                                                            <Link className="btn btn-primary" to={"/SuccessMessage/"}
+                                                                  style={{
+                                                                      backgroundColor: 'orange',
+                                                                      marginTop: '20px',
+                                                                      float: 'left',
+                                                                      marginLeft: '20px',
+                                                                      marginBottom: '20px',
+                                                                      width: '95%'
+                                                                  }} onClick={this.OnClickPayNow}>Pay Now</Link>
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -1057,12 +1028,13 @@ export default class ShoppingCartProcess extends Component {
                                                         {/*           float: 'left'*/}
                                                         {/*       }}/>*/}
 
-                                                        <Link className="btn btn-primary" to={"/SuccessMessage/"} style={{
-                                                            backgroundColor: 'orange',
-                                                            margin: '20px',
-                                                            float: 'left',
-                                                            borderColor: 'orange'
-                                                        }} onClick={this.OnClickConfirmOrder}>Confirm Order</Link>
+                                                        <Link className="btn btn-primary" to={"/SuccessMessage/"}
+                                                              style={{
+                                                                  backgroundColor: 'orange',
+                                                                  margin: '20px',
+                                                                  float: 'left',
+                                                                  borderColor: 'orange'
+                                                              }} onClick={this.OnClickConfirmOrder}>Confirm Order</Link>
 
                                                     </td>
                                                 </tr>

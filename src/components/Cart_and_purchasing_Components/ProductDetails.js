@@ -60,7 +60,7 @@ export default class ProductDetails extends Component {
             quantity: 0,
             discount: 0,
             productId: 0,
-            userID: 4787,
+            userID: null,
             favo_ID: "",
             allProduct: [],
             productQuantities: [],
@@ -78,7 +78,9 @@ export default class ProductDetails extends Component {
             ratingOne: 0,
             isViewDetais: false,
             SoldProducts : [],
-            isViewComment : true
+            isViewComment : true,
+            userEmail : null,
+
 
 
 
@@ -102,8 +104,11 @@ export default class ProductDetails extends Component {
         if (this.props.match.params.id != null) {
             axios.get('http://localhost:5000/products/itemId/' + this.props.match.params.id)
                 .then(response => {
+                    let userEmail = localStorage.getItem('user_username');
+                    console.log("User Email : " + userEmail);
                     pID = this.props.match.params.id;
-                    uID = this.state.userID;
+                    uID = localStorage.getItem('user_id');
+                    console.log("User id : " + uID);
                     console.log("Response Data :");
                     console.log(response.data);
                     this.setState({
@@ -114,7 +119,9 @@ export default class ProductDetails extends Component {
                         discount: response.data[0].item_discount,
                         manufacture: response.data[0].item_from,
                         item_brand: response.data[0].item_brand,
-                        productPrice : response.data[0].item_price
+                        productPrice : response.data[0].item_price,
+                        userID : uID,
+                        userEmail : userEmail
 
                     }, () => {
 
@@ -190,12 +197,9 @@ export default class ProductDetails extends Component {
 
                     }
 
-                   // const distincSize = [...new Set(sizeList.map(x => x.))]
-                    // sizeList.filter(shirt => shirt.item_size === item_size);
-
                     const distinct = (value, index, self) => {
                         return self.indexOf(value) === index;
-                    }
+                    };
 
                     const distinctSize = sizeList.filter(distinct);
                     distinctSize.sort(function(a, b) {
@@ -221,7 +225,7 @@ export default class ProductDetails extends Component {
             // let uID = this.state.userID;
             console.log("IN SOLD ITEM CALL Product ID : " + pID);
             // console.log("IN SOLD ITEM CALL User ID : " + uID);
-            axios.get(configs.BASE_URL + '/rateProducts/5ec8cffeb93d1827608c8995')
+            axios.get(configs.BASE_URL + '/rateProducts/' + pID)
                 .then(response => {
                     console.log("Sold All products");
                     console.log(response.data);
@@ -296,54 +300,9 @@ export default class ProductDetails extends Component {
     }
 
     onClickMore(e) {
-
-        // if(this.state.isViewComment === true) {
-        //     console.log("In Call Back Function")
-        //     let temArray = this.state.SoldProducts;
-        //     let rating5 = this.state.ratingFive;
-        //     let rating4 = this.state.ratingFour;
-        //     let rating3 = this.state.ratingThree;
-        //     let rating2 = this.state.ratingTwo;
-        //     let rating1 = this.state.ratingOne;
-        //     let totalRating = this.state.overRollRating;
-        //     let avgRating = 0;
-        //
-        //     console.log("Sold Products");
-        //     console.log(temArray)
-        //     temArray.map((data, index) => {
-        //
-        //         console.log(data.rating);
-        //         if (data.rating === 5) {
-        //             rating5 = Number(rating5 + 1);
-        //         } else if (data.rating === 4) {
-        //             rating4 = Number(rating4 + 1);
-        //         } else if (data.rating === 3) {
-        //             rating3 = Number(rating3 + 1);
-        //         } else if (data.rating === 2) {
-        //             rating2 = Number(rating2 + 1);
-        //         } else if (data.rating === 1) {
-        //             rating1 = Number(rating1 + 1);
-        //         }
-        //
-        //         totalRating = Number(totalRating + data.rating);
-        //     });
-        //
-        //     if(temArray.length > 0) {
-        //         avgRating = roundTo(Number(totalRating / temArray.length), 2);
-        //     }
-        //     this.setState({
-        //         ratingCount: temArray.length,
-        //         ratingFive: rating5,
-        //         ratingFour: rating4,
-        //         ratingThree: rating3,
-        //         ratingTwo: rating2,
-        //         ratingOne: rating1,
-        //         overRollRating: avgRating
-        //     });
-        // }
         this.setState({
             isViewComment : false
-        })
+        });
         if (this.state.isViewDetais === false) {
             this.setState({
                 isViewDetais: true
@@ -388,48 +347,47 @@ export default class ProductDetails extends Component {
     }
 
     onclickShoppingCart() {
-        //     console.log("Shirt Size :" + this.state.shirtSize)
-        // if (this.state.shirtSize.toString() === " ") {
-        //     //alert("Please Select Size");
-        //     swal("Error!", "Please Select Size", "warning");
-        //     //swal("Good job!", "Your Details has been Saved Successfully!", "success");
-        // } else if (this.state.itemColor === " ") {
-        //     alert("Please Select Color");
-        // } else if (this.state.quantity === 0) {
-        //     //alert("Please Select Quantity");
-        //     swal("Error!", "Please Select Size", "warning");
-        // }
-        // console.log("size : " + this.state.shirtSize);
-        if (this.state.shirtSize !== "" && this.state.itemColor !== "" && this.state.quantity > 0) {
-            //  let {productId, userID, productPrice, discount, discountedPrice, selectedSize, selectedColor, quantity} = this.state;
-
-            let productID = this.state.productId;
-            let userID = this.state.userID;
-            let item_price = this.state.productPrice;
-            let item_discount = this.state.discount;
-            let discounted_price = this.state.discountedPrice;
-            let item_size = this.state.selectedSize;
-            let item_color = this.state.selectedColor;
-            let requested_qty = this.state.quantity;
-            let quantities_id = this.state.quantitiesTableID;
-
-            let payload = {
-                productID,
-                userID,
-                item_price,
-                item_discount,
-                discounted_price,
-                item_size,
-                item_color,
-                requested_qty,
-                quantities_id
-            };
 
 
-            axios.post(configs.BASE_URL + '/cart/add', payload)
-                .then(() => swal("Success!", "Add to Cart!!!", "success"));
-        } else {
-            swal("Error!", "Please Select Size , Color and Quantity Correctly!", "warning");
+        if(this.state.userID != null) {
+
+
+            if (this.state.shirtSize !== "" && this.state.itemColor !== "" && this.state.quantity > 0) {
+                //  let {productId, userID, productPrice, discount, discountedPrice, selectedSize, selectedColor, quantity} = this.state;
+
+                let productID = this.state.productId;
+                let userID = this.state.userID;
+                let item_price = this.state.productPrice;
+                let item_discount = this.state.discount;
+                let discounted_price = this.state.discountedPrice;
+                let item_size = this.state.selectedSize;
+                let item_color = this.state.selectedColor;
+                let requested_qty = this.state.quantity;
+                let quantities_id = this.state.quantitiesTableID;
+
+                let payload = {
+                    productID,
+                    userID,
+                    item_price,
+                    item_discount,
+                    discounted_price,
+                    item_size,
+                    item_color,
+                    requested_qty,
+                    quantities_id
+                };
+
+
+                axios.post(configs.BASE_URL + '/cart/add', payload)
+                    .then(() => {
+                        swal("Success!", "Add to Cart!!!", "success");
+                        window.location.reload();
+                    });
+            } else {
+                swal("Error!", "Please Select Size , Color and Quantity Correctly!", "warning");
+            }
+        }else {
+            swal("Can not Add to Cart!", "Please Logged to the system!!!", "warning");
         }
 
     }
