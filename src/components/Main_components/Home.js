@@ -76,38 +76,41 @@ export default class Home extends Component {
                             <div className="carousel-item active">
                                 <div className="view" style={{width:'100%',height:'500px'}}>
                                     <img className="d-block w-100"
-                                         src="https://mdbootstrap.com/img/Photos/Slides/img%20(68).jpg"
+                                         // src="https://mdbootstrap.com/img/Photos/Slides/img%20(68).jpg"
+                                        src={require('../Images/slide1.jpg')}
                                          alt="First slide"/>
                                     <div className="mask rgba-black-light"></div>
                                 </div>
-                                <div className="carousel-caption">
-                                    <h3 className="h3-responsive">Light mask</h3>
-                                    <p>First text</p>
-                                </div>
+                                {/*<div className="carousel-caption">*/}
+                                {/*    <h3 className="h3-responsive">Light mask</h3>*/}
+                                {/*    <p>First text</p>*/}
+                                {/*</div>*/}
                             </div>
                             <div className="carousel-item">
                                 <div className="view">
                                     <img className="d-block w-100"
-                                         src="https://mdbootstrap.com/img/Photos/Slides/img%20(6).jpg"
+                                         // src="https://mdbootstrap.com/img/Photos/Slides/img%20(6).jpg"
+                                        src={require('../Images/slide2.jpg')}
                                          alt="Second slide"/>
                                     <div className="mask rgba-black-strong"></div>
                                 </div>
-                                <div className="carousel-caption">
-                                    <h3 className="h3-responsive">Strong mask</h3>
-                                    <p>Secondary text</p>
-                                </div>
+                                {/*<div className="carousel-caption">*/}
+                                {/*    <h3 className="h3-responsive">Strong mask</h3>*/}
+                                {/*    <p>Secondary text</p>*/}
+                                {/*</div>*/}
                             </div>
                             <div className="carousel-item">
                                 <div className="view">
                                     <img className="d-block w-100"
-                                         src="https://mdbootstrap.com/img/Photos/Slides/img%20(9).jpg"
+                                         // src="https://mdbootstrap.com/img/Photos/Slides/img%20(9).jpg"
+                                        src={require('../Images/slide3.jpg')}
                                          alt="Third slide"/>
                                     <div className="mask rgba-black-slight"></div>
                                 </div>
-                                <div className="carousel-caption">
-                                    <h3 className="h3-responsive">Slight mask</h3>
-                                    <p>Third text</p>
-                                </div>
+                                {/*<div className="carousel-caption">*/}
+                                {/*    <h3 className="h3-responsive">Slight mask</h3>*/}
+                                {/*    <p>Third text</p>*/}
+                                {/*</div>*/}
                             </div>
                         </div>
                         <a className="carousel-control-prev" href="#carousel-example-2" role="button" data-slide="prev">
