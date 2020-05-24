@@ -24,37 +24,18 @@ export default class Login extends Component{
          }
     }
 
-    // componentDidUpdate() {
-    //     this.usertList();
-    //     axios.get('http://localhost:5000/userAccounts/username/'+ this.state.user_username)
-    //         .then(response =>{
-    //             this.setState({
-    //                 user: response.data
-    //             });
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // }
-
     // componentDidMount() {
-    //     this.usertList();
     //     axios.get('http://localhost:5000/userAccounts/username/'+ this.state.user_username)
     //         .then(response =>{
     //             this.setState({
     //                 user: response.data
     //             });
+    //             this.usertList();
     //         })
     //         .catch(function (error) {
     //             console.log(error);
     //         });
     // }
-
-    usertList(){
-        return this.state.user.map(currentTodo => {
-            return <User user ={currentTodo} key={currentTodo._id}/>
-        });
-    }
 
     onChangeUserName(e){
         this.setState({
@@ -68,28 +49,17 @@ export default class Login extends Component{
         });
     }
 
+    usertList(){
+        return this.state.user.map(currentTodo => {
+            return <User user ={currentTodo} key={currentTodo._id}/>
+        });
+    }
+
     onSubmit(e){
         e.preventDefault(e);
-        // this.props.history.push('/');
-
-        // if(this.state.user_username == localStorage.getItem('user_username') &&
-        //     (this.state.user_password) == localStorage.getItem('user_password')){
-        //         console.log("login success!")
-        //         console.log(localStorage.getItem('user_id'));
-        //         console.log(localStorage.getItem('user_username'));
-        //         console.log(localStorage.getItem('user_password'));
-        //
-        //         alert("Successfully login!");
-        // }
-        // else{
-        //     console.log("try again!")
-        //     console.log(localStorage.getItem('user_username'));
-        //     console.log(localStorage.getItem('user_password'));
-        //
-        //     alert("Login fail!!!! try again later..");
-        // }
 
         /////////////////////////////////////////////////////////////////////////////////
+        this.usertList();
         const detail = {
             user_username: this.state.user_email,
             user_password: this.state.user_password,
@@ -100,7 +70,7 @@ export default class Login extends Component{
                     this.setState({
                         user: response.data
                     });
-                    this.usertList();
+                    // this.usertList();
                 })
                 .catch(function (error) {
                     console.log(error);

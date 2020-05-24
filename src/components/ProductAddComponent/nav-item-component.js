@@ -2,8 +2,52 @@ import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import logo from "../Images/shenosa-white.png";
 import advertisement from "../Images/advertisement.png";
+import axios from "axios";
 
 export default class ItemNav extends Component{
+    constructor(props) {
+        super(props);
+
+        this.onSubmit = this.onSubmit.bind(this);
+
+         this.state ={
+           user_email:'',
+             user:[],
+         };
+    }
+    onSubmit(e){
+        e.preventDefault();
+
+        this.setState({
+            user_email : localStorage.getItem('user_email'),
+        });
+
+        const user = {
+            user_email : this.state.user_email,
+        };
+
+            axios.post('http://localhost:5000/userAccounts/logout/'+ localStorage.getItem('user_email'),user)
+                .then(response =>{
+                    this.setState({
+                        user: response.data
+                    });
+                });
+        let usertemp = this.state.user;
+
+        if (usertemp.length > 0){
+            alert("Logout fail");
+        }else{
+            window.location='/login';
+            localStorage.clear();
+        }
+
+
+
+    }
+
+
+
+
     render(){
         return(
             // <div style={{backgroundColor:"#ececec"}}>
@@ -108,9 +152,10 @@ export default class ItemNav extends Component{
                                                     <li className="dropdown">
                                                         <a className="dropdown-item dropdown-toggle" href="#">Profile</a>
                                                         <ul className="dropdown-menu" style={{width:"100px!important"}}>
-                                                            <li><a className="dropdown-item" href="#">My Profile</a></li>
+                                                            <li><a className="dropdown-item" href="/profile">My Profile</a></li>
                                                             <li><a className="dropdown-item" href="#">Wish List</a></li>
                                                             <li><a className="dropdown-item" href="#">Purchased History</a></li>
+                                                            <li><a className="dropdown-item" onClick={this.onSubmit}>Logout</a></li>
                                                         </ul>
                                                     </li>
                                                 </ul>

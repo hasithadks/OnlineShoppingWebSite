@@ -38,7 +38,7 @@ export default class NavBar extends Component {
             <div className="container">
                 <div style={{width:'70%', marginLeft:'15%'}}>
                     <hr/>
-                    <h2>Reset Password</h2>
+                    <h2>Password Reset Request</h2>
                     <hr/>
                 </div>
 

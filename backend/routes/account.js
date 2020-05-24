@@ -121,19 +121,14 @@ router.route('/logout/:email').post(async (req, res) => {
             return res.status(400).json('Email is not found');
         }
         else {
-                const user_token = null;
+            const user_token = null;
 
             Account.updateOne({"user_username": req.params.email},{user_token : user_token}, function (err, res) {
-            }).then(console.log("Logout"));
+            }).then(accounts => res.json(0));
+
         }
     });
 
-});
-
-router.route('/:id').delete((req,res)=> {
-    Account.findByIdAndDelete(req.params.id)
-        .then(() => res.json('Account Deleted....'))
-        .catch(err => res.status(400).json('Error: '+ err));
 });
 
 //password changing function
@@ -285,9 +280,19 @@ router.route('/reset/:email').put(async (req, res) => {
                     })
                 }
             });
-
         }
     });
+});
+
+router.route('/delete/:email').delete((req,res)=> {
+    // Account.findOneAndDelete(req.params.email)
+    //     .then(() => res.json('Account Deleted....'))
+    //     .catch(err => res.status(401).json('Error: '+ err));
+
+    let userEmail = req.params.email;
+
+    Account.deleteOne({user_email : userEmail}, function (err, res) {
+    }).then(console.log("successfully delete from user"));
 
 });
 

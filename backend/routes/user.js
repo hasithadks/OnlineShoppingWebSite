@@ -112,12 +112,6 @@ router.route('/:id').get((req,res)=>{
         .catch(err=>res.status(400).json('Error: '+ err));
 });
 
-router.route('/:id').delete((req,res)=> {
-    User.findByIdAndDelete(req.params.id)
-        .then(() => res.json('User Deleted....'))
-        .catch(err => res.status(400).json('Error: '+ err));
-});
-
 router.route('/update/:id').post((req,res) => {
     User.findById(req.params.id)
         .then(user => {
@@ -135,6 +129,17 @@ router.route('/update/:id').post((req,res) => {
                 .catch(err => res.status(400).json('Error: ' + err));
         })
         .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/delete/:email').delete((req,res)=> {
+    // User.findOneAndDelete(req.params.email)
+    //     .then(() => res.json('User Deleted....'))
+    //     .catch(err => res.status(401).json('Error: '+ err));
+
+    let userEmail = req.params.email;
+
+    User.deleteOne({user_email : userEmail}, function (err, res) {
+    }).then(console.log("successfully delete from user"));
 });
 
 
