@@ -44,7 +44,7 @@ export default class ShoppingCartProcess extends Component {
             districtsList: [],
             userId: '147',
             fullName: '',
-            phoneNo: '',
+            phoneNo: null,
             province: '',
             updateProvince: '',
             district: '',
@@ -102,7 +102,8 @@ export default class ShoppingCartProcess extends Component {
             axios.get(configs.BASE_URL + '/cart/' + userID)
                 .then(response => {
                     this.setState({
-                        cartList: response.data
+                        cartList: response.data,
+                        userID : userID
                     })
 
                 });
@@ -226,17 +227,34 @@ export default class ShoppingCartProcess extends Component {
 
 //=============================================================Delivery Details Functions===============================================//
 
-    SaveDeliveryDetails() {
-        let {userID, fullName, phoneNo, province, district, city, address} = this.state;
+    SaveDeliveryDetails(e) {
 
-        let payload = {userID, fullName, phoneNo, province, district, city, address};
+        e.preventDefault();
 
-        axios.post(configs.BASE_URL + '/deliveryDetails/add', payload)
-            .then(() => alert("Data Save"));
+        console.log("user ID Delivery Details : " + this.state.userID );
+        console.log("Phone No Delivery Details : " + this.state.phoneNo );
+        console.log("Full Name Delivery Details : " + this.state.fullName );
+        console.log("District Delivery Details : " + this.state.district );
+        console.log("city Delivery Details : " + this.state.city );
+        console.log("address Delivery Details : " + this.state.address );
 
-        this.setState({
-            isFilledDeliveryDetails: true
-        })
+        if(this.state.phoneNo !== null && this.state.fullName !== '' && this.state.city !== '' && this.state.city !== '' && this.state.address !== ''){
+
+            let {userID, fullName, phoneNo, province, district, city, address} = this.state;
+
+            let payload = {userID, fullName, phoneNo, province, district, city, address};
+
+            axios.post(configs.BASE_URL + '/deliveryDetails/add', payload)
+                .then(() => swal("Success!", "Delivery Details Saved", "success"));
+
+            this.setState({
+                isFilledDeliveryDetails: true
+            })
+
+        }
+        else {
+            swal("Empty!!!", "Please fill All Fields", "warning");
+        }
     }
 
     FindDistrict(value) {
@@ -335,7 +353,7 @@ export default class ShoppingCartProcess extends Component {
                 tempArray.forEach(item => {
 
                     axios.post(configs.BASE_URL + '/soldProducts/add', item)
-                        .then(console.log("Add to DB!!!"));
+                        .then();
 
                     axios.delete(configs.BASE_URL + '/cart/delete/' + item._id)
                         .then(response => {
@@ -359,10 +377,14 @@ export default class ShoppingCartProcess extends Component {
                                 .then(res => console.log(res.data));
                         });
                     this.componentDidMount();
+                    window.location.reload()
                 })
 
 
             }
+        }
+        else {
+            swal("Empty!!!", "Please fill All Fields", "warning");
         }
 
     }
@@ -376,7 +398,7 @@ export default class ShoppingCartProcess extends Component {
             tempArray.forEach(item => {
 
                 axios.post(configs.BASE_URL + '/soldProducts/add', item)
-                    .then(console.log("Add to DB!!!"));
+                    .then();
 
                 axios.delete(configs.BASE_URL + '/cart/delete/' + item._id)
                     .then(response => {
@@ -673,9 +695,9 @@ export default class ShoppingCartProcess extends Component {
                                                         marginTop: '20px'
                                                     }}>City</label>
                                                     <br/>
-                                                    <input type="text" style={{marginLeft: '20px', float: 'left',width:'90%'}}
+                                                    <input type="text" required style={{marginLeft: '20px', float: 'left',width:'90%'}}
                                                            onChange={this.onChangeCity}
-                                                           placeholder="Enter your City" className="form-control"/>
+                                                           placeholder="Enter your City" className="form-control" />
                                                 </td>
                                                 <td>
                                                     <label
@@ -688,14 +710,14 @@ export default class ShoppingCartProcess extends Component {
                                                     <input type="text" style={{marginLeft: '20px', float: 'left',width:'90%'}}
                                                            onChange={this.onChangeAddress}
                                                            placeholder="Ex: Home#, street Name, Main road"
-                                                           className="form-control"/>
+                                                           className="form-control" required/>
 
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td></td>
                                                 <td>
-                                                    <a href="#" type="submit" onClick={this.SaveDeliveryDetails}
+                                                    <a type="submit" onClick={this.SaveDeliveryDetails}
                                                        className="profile-edit-btn nav-link  btn btn-primary"
                                                        name="btnAddMore"
                                                        value="Proceed to Pay" style={{
@@ -737,7 +759,7 @@ export default class ShoppingCartProcess extends Component {
                                                     <input type="text"
                                                            onChange={this.onChangeName}
                                                            value={this.state.fullName}
-                                                           style={{marginLeft: '20px', float: 'left'}}
+                                                           style={{marginLeft: '20px', float: 'left',width:'90%'}}
                                                            className="form-control"/>
                                                 </td>
                                                 <td>
@@ -752,7 +774,7 @@ export default class ShoppingCartProcess extends Component {
                                                     <input type="text" type="text"
                                                            onChange={this.onChangeProvince}
                                                            value={this.state.updateProvince}
-                                                           style={{marginLeft: '20px', float: 'left'}}
+                                                           style={{marginLeft: '20px', float: 'left',width:'90%'}}
                                                            className="form-control"/>
                                                 </td>
                                             </tr>
@@ -762,7 +784,7 @@ export default class ShoppingCartProcess extends Component {
                                                         style={{marginLeft: '20px', float: 'left', marginTop: '20px'}}>Phone
                                                         Number</label>
                                                     <br/>
-                                                    <input type="text" style={{marginLeft: '20px', float: 'left'}}
+                                                    <input type="text" style={{marginLeft: '20px', float: 'left',width:'90%'}}
                                                            onChange={this.onChangePhoneNumber}
                                                            value={this.state.phoneNo}
                                                            type="text"
@@ -781,7 +803,7 @@ export default class ShoppingCartProcess extends Component {
                                                     <input type="text" type="text"
                                                            onChange={this.onChangeDistrict}
                                                            value={this.state.district}
-                                                           style={{marginLeft: '20px', float: 'left'}}
+                                                           style={{marginLeft: '20px', float: 'left',width:'90%'}}
                                                            className="form-control"/>
                                                 </td>
                                             </tr>
@@ -793,7 +815,7 @@ export default class ShoppingCartProcess extends Component {
                                                         marginTop: '20px'
                                                     }}>City</label>
                                                     <br/>
-                                                    <input type="text" style={{marginLeft: '20px', float: 'left'}}
+                                                    <input type="text" style={{marginLeft: '20px', float: 'left',width:'90%'}}
                                                            onChange={this.onChangeCity}
                                                            value={this.state.city}
                                                            type="text"
@@ -807,7 +829,7 @@ export default class ShoppingCartProcess extends Component {
                                                             marginTop: '20px'
                                                         }}>Address</label>
                                                     <br/>
-                                                    <input type="text" style={{marginLeft: '20px', float: 'left'}}
+                                                    <input type="text" style={{marginLeft: '20px', float: 'left',width:'90%'}}
                                                            id="addressID"
                                                            onChange={this.onChangeAddress}
                                                            value={this.state.address}
@@ -994,7 +1016,7 @@ export default class ShoppingCartProcess extends Component {
 
                                                             {/*       }}/>*/}
 
-                                                            <Link className="btn btn-primary" to={"/SuccessMessage/"}
+                                                            <Link className="btn btn-primary"
                                                                   style={{
                                                                       backgroundColor: 'orange',
                                                                       marginTop: '20px',

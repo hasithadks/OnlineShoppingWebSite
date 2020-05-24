@@ -16,28 +16,6 @@ import Toast from "react-bootstrap/Toast";
 import {useState} from "react";
 import swal from "sweetalert";
 import roundTo from "round-to";
-// function Example() {
-//     const [showA, setShowA] = useState(true);
-//     const [showB, setShowB] = useState(true);
-//
-//     const toggleShowA = () => setShowA(!showA);
-//     const toggleShowB = () => setShowB(!showB);
-//
-//     return (
-//         <Toast show={showA} autohide={true}>
-//             <Toast.Header>
-//                 <img
-//                     src="holder.js/20x20?text=%20"
-//                     className="rounded mr-2"
-//                     alt=""
-//                 />
-//                 <strong className="mr-auto">Bootstrap</strong>
-//                 <small>11 mins ago</small>
-//             </Toast.Header>
-//             <Toast.Body>Woohoo, you're reading this text in a Toast!</Toast.Body>
-//         </Toast>
-//     );
-// }
 
 export default class ProductDetails extends Component {
 
@@ -212,6 +190,64 @@ export default class ProductDetails extends Component {
                     this.setState({
                         shirtSize: distinctSize,
                         itemColor: distinctcolor
+                    }, () => {
+
+                        let pID = this.state.productId;
+                        // let uID = this.state.userID;
+                        console.log("IN SOLD ITEM CALL Product ID : " + pID);
+                        // console.log("IN SOLD ITEM CALL User ID : " + uID);
+                        axios.get(configs.BASE_URL + '/rateProducts/' + pID)
+                            .then(response => {
+                                console.log("Sold All products");
+                                console.log(response.data);
+                                this.setState({
+                                    SoldProducts: response.data
+                                }, () =>{
+                                    console.log("In Call Back Function")
+                                    let temArray = this.state.SoldProducts;
+                                    let rating5 = this.state.ratingFive;
+                                    let rating4 = this.state.ratingFour;
+                                    let rating3 = this.state.ratingThree;
+                                    let rating2 = this.state.ratingTwo;
+                                    let rating1 = this.state.ratingOne;
+                                    let totalRating = this.state.overRollRating;
+                                    let avgRating = 0;
+
+                                    console.log("Sold Products");
+                                    console.log(temArray)
+                                    temArray.map((data, index) => {
+
+                                        console.log(data.rating);
+                                        if (data.rating === 5) {
+                                            rating5 = Number(rating5 + 1);
+                                        } else if (data.rating === 4) {
+                                            rating4 = Number(rating4 + 1);
+                                        } else if (data.rating === 3) {
+                                            rating3 = Number(rating3 + 1);
+                                        } else if (data.rating === 2) {
+                                            rating2 = Number(rating2 + 1);
+                                        } else if (data.rating === 1) {
+                                            rating1 = Number(rating1 + 1);
+                                        }
+
+                                        totalRating = Number(totalRating + data.rating);
+                                    });
+
+                                    if(temArray.length > 0) {
+                                        avgRating = roundTo(Number(totalRating / temArray.length), 2);
+                                    }
+                                    this.setState({
+                                        ratingCount: temArray.length,
+                                        ratingFive: rating5,
+                                        ratingFour: rating4,
+                                        ratingThree: rating3,
+                                        ratingTwo: rating2,
+                                        ratingOne: rating1,
+                                        overRollRating: avgRating
+                                    });
+                                });
+
+                            });
                     })
                     //  console.log(response.data);
                     //   console.log(this.state.itemColor);
@@ -221,62 +257,8 @@ export default class ProductDetails extends Component {
                     console.log(error);
                 });
 
-            let pID = this.state.productId;
-            // let uID = this.state.userID;
-            console.log("IN SOLD ITEM CALL Product ID : " + pID);
-            // console.log("IN SOLD ITEM CALL User ID : " + uID);
-            axios.get(configs.BASE_URL + '/rateProducts/' + pID)
-                .then(response => {
-                    console.log("Sold All products");
-                    console.log(response.data);
-                    this.setState({
-                        SoldProducts: response.data
-                    }, () =>{
-                        console.log("In Call Back Function")
-                        let temArray = this.state.SoldProducts;
-                        let rating5 = this.state.ratingFive;
-                        let rating4 = this.state.ratingFour;
-                        let rating3 = this.state.ratingThree;
-                        let rating2 = this.state.ratingTwo;
-                        let rating1 = this.state.ratingOne;
-                        let totalRating = this.state.overRollRating;
-                        let avgRating = 0;
 
-                        console.log("Sold Products");
-                        console.log(temArray)
-                        temArray.map((data, index) => {
 
-                            console.log(data.rating);
-                            if (data.rating === 5) {
-                                rating5 = Number(rating5 + 1);
-                            } else if (data.rating === 4) {
-                                rating4 = Number(rating4 + 1);
-                            } else if (data.rating === 3) {
-                                rating3 = Number(rating3 + 1);
-                            } else if (data.rating === 2) {
-                                rating2 = Number(rating2 + 1);
-                            } else if (data.rating === 1) {
-                                rating1 = Number(rating1 + 1);
-                            }
-
-                            totalRating = Number(totalRating + data.rating);
-                        });
-
-                        if(temArray.length > 0) {
-                            avgRating = roundTo(Number(totalRating / temArray.length), 2);
-                        }
-                        this.setState({
-                            ratingCount: temArray.length,
-                            ratingFive: rating5,
-                            ratingFour: rating4,
-                            ratingThree: rating3,
-                            ratingTwo: rating2,
-                            ratingOne: rating1,
-                            overRollRating: avgRating
-                        });
-                    });
-
-                });
 
         } else {
             this.setState({quantity: []});

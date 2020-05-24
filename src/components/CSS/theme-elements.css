@@ -6236,13 +6236,13 @@ html.boxed .responsive-images {
 }
 
 /* Stile Switcher Required */
-.style-switcher-required {
-	visibility: hidden !important;
-}
+/*.style-switcher-required {*/
+/*	visibility: hidden !important;*/
+/*}*/
 
-.style-switcher-active .style-switcher-required {
-	visibility: visible !important;
-}
+/*.style-switcher-active .style-switcher-required {*/
+/*	visibility: visible !important;*/
+/*}*/
 
 /* Dividers */
 hr {

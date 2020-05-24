@@ -19,7 +19,7 @@ export default class ProductRatings extends Component {
             rating: 0,
             hover: 0,
             userRating: 0,
-            userID: '4787',
+            userID: null,
             isItemClick: false,
             item_name: '',
             item_description: '',
@@ -32,6 +32,7 @@ export default class ProductRatings extends Component {
             item_color: '',
             alreadyRate: false,
             RateProductID : '',
+            userEmail : ''
 
         };
 
@@ -47,20 +48,37 @@ export default class ProductRatings extends Component {
 
     componentDidMount() {
 
-        axios.get(configs.BASE_URL + '/soldProducts/' + this.state.userID)
+        let userID = localStorage.getItem('user_id');
+        axios.get(configs.BASE_URL + '/soldProducts/' + userID)
             .then(response => {
                 this.setState({
-                    broughtItem: response.data
+                    broughtItem: response.data,
+                    userID : userID
                 });
                 console.log(this.state.broughtItem);
             });
 //+ this.state.userID
-        axios.get(configs.BASE_URL + '/users/5ec90424784eef2d90e559be')
+        console.log("user Id : "+ userID)
+        axios.get(configs.BASE_URL + '/userAccounts/' + userID)
             .then(response => {
-                console.log(response.data.user_username);
-                this.setState({
-                    userName: response.data.user_username
-                })
+
+                if(response.data > 0 || response.data !== null){
+                    console.log(response.data);
+                    this.setState({
+                        userEmail: response.data.user_username
+                    }, ()=> {
+
+                        axios.get(configs.BASE_URL + '/users/username/' + this.state.userEmail)
+                            .then(response => {
+                                console.log("user Table Send User Email")
+                                console.log(response.data)
+                                this.setState({
+                                    userName : response.data.user_username
+                                })
+                            })
+                    });
+                }
+
             });
     }
 
