@@ -58,26 +58,17 @@ export default class ProductRatings extends Component {
                 console.log(this.state.broughtItem);
             });
 //+ this.state.userID
-        console.log("user Id : "+ userID)
-        axios.get(configs.BASE_URL + '/userAccounts/' + userID)
+        let userEmail = localStorage.getItem('user_username');
+        axios.get(configs.BASE_URL + '/users/username/' + userEmail)
             .then(response => {
+                console.log("UserAccount responce :");
+                console.log(response.data[0].user_username);
+                // if(response.data[0] > 0 || response.data[0] !== null){
 
-                if(response.data > 0 || response.data !== null){
-                    console.log(response.data);
                     this.setState({
-                        userEmail: response.data.user_username
-                    }, ()=> {
-
-                        axios.get(configs.BASE_URL + '/users/username/' + this.state.userEmail)
-                            .then(response => {
-                                console.log("user Table Send User Email")
-                                console.log(response.data)
-                                this.setState({
-                                    userName : response.data.user_username
-                                })
-                            })
+                        userName: response.data[0].user_username
                     });
-                }
+               // }
 
             });
     }
