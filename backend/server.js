@@ -45,6 +45,7 @@ app.use('/users',userRouter);
 app.use('/soldProducts',soldRouter);
 app.use('/userAccounts',accountRouter);
 app.use('/rateProducts',rateRouter);
+// app.use('/uploads', express.static('/uploads'));
 
 app.listen(port, () => {
     console.log(`Server is running on Port: ${port}`);
