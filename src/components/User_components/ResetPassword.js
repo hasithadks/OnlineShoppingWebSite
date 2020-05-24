@@ -6,8 +6,8 @@ export default class ResetPassword extends Component {
         super(props);
 
         this.onChangeEmail = this.onChangeEmail.bind(this);
-        this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this);
         this.onChangeNewPassword = this.onChangeNewPassword.bind(this);
+        this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state ={
@@ -38,23 +38,21 @@ export default class ResetPassword extends Component {
 
         const user = {
             user_Newpassword: this.state.user_Newpassword,
-            user_confirmPassword: this.state.user_confirmPassword,
         };
 
-        if(this.state.user_Newpassword.match(this.state.user_confirmPassword)){
+        if(this.state.user_Newpassword === this.state.user_confirmPassword){
+            if (this.state.user_Newpassword > 5){
+                axios.put('http://localhost:5000/userAccounts/reset/' + this.state.user_email,user)
+                    .then(res => console.log((res.data)));
 
-            axios.put('http://localhost:5000/userAccounts/reset/'+ this.state.user_email,user)
-                .then(res => console.log((res.data)));
-
-            alert("Check your email");
-            window.location='/ResetPassword';
+                alert("Check your email");
+                window.location='/ResetPassword';
+            }else{
+                alert("Password should at least 6 characters");
+            }
         }else{
             alert("Not match");
         }
-
-        console.log(`email:${this.state.user_email}`);
-        console.log(`New password:${this.state.user_Newpassword}`);
-        console.log(`Confirm password:${this.state.user_confirmPassword}`);
     }
 
 

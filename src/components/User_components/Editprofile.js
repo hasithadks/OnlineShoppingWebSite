@@ -27,8 +27,6 @@ export default class Editprofile extends Component {
             user_b_year: '',
             user_b_month: '',
             user_b_day: '',
-
-          //  users:[]
         };
     }
 
@@ -53,7 +51,6 @@ export default class Editprofile extends Component {
                     console.log(error)
                 })
         }
-
     }
 
     onChangeEmail(e){
@@ -126,28 +123,32 @@ export default class Editprofile extends Component {
             user_b_day: this.state.user_b_day
         };
 
-        console.log(`id:${this.state.user_id}`);
-        console.log(`email:${this.state.user_email}`);
-        console.log(`username:${this.state.user_username}`);
-        console.log(`password:${this.state.user_password}`);
-        console.log(`phone:${this.state.user_phone}`);
-        console.log(`gender:${this.state.user_gender}`);
-        console.log(`image:${this.state.user_image}`);
+        if (this.state.user_phone.length >= 9 && this.state.user_phone.length <= 10  ) {
+            if (this.state.user_username.length > 5) {
+                axios.post('http://localhost:5000/users/update/'+this.state.user_id,user)
+                    .then(res => {
+                        localStorage.setItem('user_email',this.state.user_email);
+                        localStorage.setItem('user_username',this.state.user_username);
+                        localStorage.setItem('user_password',this.state.user_password);
+                        localStorage.setItem('user_phone',this.state.user_phone);
+                        localStorage.setItem('user_gender',this.state.user_gender);
+                        localStorage.setItem('user_image',this.state.user_image);
+                        localStorage.setItem('user_b_year',this.state.user_b_year);
+                        localStorage.setItem('user_b_month',this.state.user_b_month);
+                        localStorage.setItem('user_b_day',this.state.user_b_day);
 
-        axios.post('http://localhost:5000/users/update/'+this.state.user_id,user)
-            .then(res => console.log((res.data)));
-
-           // localStorage.clear();
-            //localStorage.setItem('user_id',props.user._id),
-            localStorage.setItem('user_email',this.state.user_email);
-            localStorage.setItem('user_username',this.state.user_username);
-            localStorage.setItem('user_password',this.state.user_password);
-            localStorage.setItem('user_phone',this.state.user_phone);
-            localStorage.setItem('user_gender',this.state.user_gender);
-            localStorage.setItem('user_image',this.state.user_image);
-            localStorage.setItem('user_b_year',this.state.user_b_year);
-            localStorage.setItem('user_b_month',this.state.user_b_month);
-            localStorage.setItem('user_b_day',this.state.user_b_day);
+                        window.location = '/profile';
+                    })
+                    .catch(function (error) {
+                        alert("Profile update fail");
+                        window.location='/edit';
+                    });
+            }else{
+                alert("User Name should at least 6 characters");
+            }
+        }else{
+            alert("Phone number invalid");
+        }
     }
 
 
@@ -158,7 +159,7 @@ export default class Editprofile extends Component {
                 <div className="container1">
                     <div style={{width:'70%', marginLeft:'15%'}}>
                         <hr/>
-                            <h1>Update Profile</h1>
+                            <h2>PROFILE UPDATE</h2>
                         <hr/>
                     </div>
 
@@ -212,7 +213,7 @@ export default class Editprofile extends Component {
                                                     <div className="form-group">
                                                         <label htmlFor="inputEmail3" className="col-sm-2 col-form-label" style={{float: 'left'}}>Gender</label>
                                                         <div className="col-sm-12">
-                                                            <select className="browser-default custom-select"
+                                                            <select className="browser-default custom-select" style={{height:'32px'}}
                                                                 value={this.state.user_gender}
                                                                 onChange={this.onChangeGender}>
                                                                 <option value="Male">Male</option>
@@ -228,7 +229,7 @@ export default class Editprofile extends Component {
                                                         <label htmlFor="inputEmail3" className="col-sm-2 col-form-label" style={{float:'left'}}>Birthday</label>
                                                         <div className='row col-sm-12' style={{marginLeft:'1px'}}>
                                                         <div style={{width:'116px'}}>
-                                                            <select className="browser-default custom-select" style={{fontSize:'14px'}}
+                                                            <select className="browser-default custom-select" style={{fontSize:'14px',height:'32px'}}
                                                                 value={this.state.user_b_year}
                                                                 onChange={this.onChangeBYear}>
                                                                 <option value="year">Year</option>
@@ -239,7 +240,7 @@ export default class Editprofile extends Component {
                                                             </select>
                                                         </div>
                                                         <div style={{width:'116px',marginLeft:'15px'}}>
-                                                            <select className="browser-default custom-select" style={{fontSize:'14px'}}
+                                                            <select className="browser-default custom-select" style={{fontSize:'14px',height:'32px'}}
                                                                 value={this.state.user_b_month}
                                                                 onChange={this.onChangeBMonth}>
                                                                 <option value="month">Month</option>
@@ -258,7 +259,7 @@ export default class Editprofile extends Component {
                                                             </select>
                                                         </div>
                                                         <div style={{width:'116px',marginLeft:'15px'}}>
-                                                            <select className="browser-default custom-select" style={{fontSize:'14px'}}
+                                                            <select className="browser-default custom-select" style={{fontSize:'14px',height:'32px'}}
                                                                 value={this.state.user_b_day}
                                                                 onChange={this.onChangeBDay}>
                                                                 <option value="day">Day</option>
@@ -327,14 +328,6 @@ export default class Editprofile extends Component {
                             </tbody>
                         </table>
 
-                        {/*<div className="form-group" style={{marginTop:'15px'}}>*/}
-                        {/*    <div className="col-sm-12">*/}
-                        {/*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">*/}
-                        {/*    Save changes*/}
-                        {/*</button>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -345,11 +338,11 @@ export default class Editprofile extends Component {
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        Do you want to update details!
+                                        Are you sure to update details!
                                     </div>
                                     <div class="modal-footer">
                                         <button type="close" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary" >Save changes</button>
+                                        <button type="submit" href="'/profile'" class="btn btn-primary" >Save changes</button>
                                     </div>
                                 </div>
                             </div>

@@ -37,20 +37,6 @@ export default class Profile extends Component {
         };
     }
 
-    // componentDidUpdate() {
-    //     this.state ={
-    //         user_email : localStorage.getItem('user_email'),
-    //         user_password: localStorage.getItem('user_password'),
-    //         user_username : localStorage.getItem('user_username'),
-    //         user_phone : localStorage.getItem('user_phone'),
-    //         user_gender :localStorage.getItem('user_gender'),
-    //         user_image : localStorage.getItem('user_image'),
-    //         user_b_year: localStorage.getItem('user_b_year'),
-    //         user_b_month: localStorage.getItem('user_b_month'),
-    //         user_b_day: localStorage.getItem('user_b_day'),
-    //     };
-    // }
-
     componentDidMount() {
         this.userList();
         axios.get('http://localhost:5000/users/username/'+ localStorage.getItem('user_username'))
@@ -113,15 +99,15 @@ export default class Profile extends Component {
                 this.setState({
                     users: response.data
                 });
+
+                localStorage.clear();
+                window.location = '/register';
             })
             .catch(function (error) {
                 console.log(error);
+
+                alert("Something wrong!")
             });
-
-        window.location='/register';
-        localStorage.clear();
-
-        console.log(localStorage.getItem('user_email'));
 
     }
 
@@ -183,7 +169,7 @@ export default class Profile extends Component {
                                                     </a>
                                                 </div>
                                                 <div className="col-md-12 " style={{marginTop:'1px'}}>
-                                                    <a onClick={this.onSubmit} type="submit" className="btn-primary nav-link" name="edit" value="password change">
+                                                    <a onClick={this.onSubmit} type="button" className="btn-primary nav-link" name="delete" value="account delete" data-toggle="modal" data-target="#exampleModal">
                                                         Delete account
                                                     </a>
                                                 </div>
@@ -271,6 +257,30 @@ export default class Profile extends Component {
                         </tbody>
                     </table>
                     <hr/>
+
+                    <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div className="modal-dialog" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLabel">Profile Details Update</h5>
+                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div className="modal-body">
+                                    Are you sure to delete your account!
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="close" className="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <button type="submit" href='/register' className="btn btn-primary">Delete account
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </form>
             </div>
             </div>

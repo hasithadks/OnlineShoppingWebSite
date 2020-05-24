@@ -24,19 +24,6 @@ export default class Login extends Component{
          }
     }
 
-    // componentDidMount() {
-    //     axios.get('http://localhost:5000/userAccounts/username/'+ this.state.user_username)
-    //         .then(response =>{
-    //             this.setState({
-    //                 user: response.data
-    //             });
-    //             this.usertList();
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // }
-
     onChangeUserName(e){
         this.setState({
             user_username :e.target.value
@@ -58,7 +45,6 @@ export default class Login extends Component{
     onSubmit(e){
         e.preventDefault(e);
 
-        /////////////////////////////////////////////////////////////////////////////////
         this.usertList();
         const detail = {
             user_username: this.state.user_email,
@@ -67,31 +53,16 @@ export default class Login extends Component{
 
             axios.post('http://localhost:5000/userAccounts/username/'+ this.state.user_username,detail)
                 .then(response =>{
+                    window.location='/home';
                     this.setState({
                         user: response.data
                     });
-                    // this.usertList();
                 })
                 .catch(function (error) {
                     console.log(error);
-                });
-
-                let usertemp = this.state.user;
-
-                if (usertemp.length > 0){
-                    alert("Successfully login");
-                    window.location='/home';
-                }else{
                     alert("Login fail");
-                    // window.location='/login';
-                }
-
-                console.log("login success!");
-                console.log(localStorage.getItem('user_id'));
-                console.log(localStorage.getItem('user_username'));
-                console.log(localStorage.getItem('user_password'));
-                console.log(localStorage.getItem('user_email'));
-        ////////////////////////////////////////////////////////////////////////////////
+                    window.location='/login';
+                });
     }
 
     render(){
@@ -126,16 +97,14 @@ export default class Login extends Component{
                                        value = {this.state.user_password}
                                        onChange={this.onChangePassword}
                                 />
+                                <a href="/register" style={{fontSize:'12px', color:'blue',float: 'left'}}>Register</a>
+                                <a href="/forgotpassword" style={{fontSize:'12px', color:'blue',float: 'right'}}>Forgot password?</a>
                             </div>
                         </tr>
                         <tr>
-                            <a href="/forgotpassword" style={{fontSize:'12px', color:'blue',float: 'right'}}>Forgot password?</a>
-                        </tr>
-                        <tr>
-                            <button href="/home" className="btn btn-primary" onClick={this.onSubmit} style={{marginTop:'20px', marginBottom:'10px',float: 'right',width:'110px'}}>Login</button>
-                        </tr>
-                        <tr>
-                            <a href="/register" style={{fontSize:'12px', color:'blue',float: 'right'}}>Register</a>
+                            <button href="/home" className="btn btn-primary" onClick={this.onSubmit} style={{marginTop:'10px',marginBottom:'10px',float: 'right',width:'auto',alignContent:"center"}}>
+                                Login
+                            </button>
                         </tr>
                     </tbody>
                 </table>

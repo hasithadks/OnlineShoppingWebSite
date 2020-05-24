@@ -30,6 +30,7 @@ router.route('/').get((req,res) =>{
         .catch(err => res.status(400).json('Error: '+ err));
 });
 
+//User register function
 router.route('/add').post(async (req,res) =>{
 
     //checking if the user is already exist in the database
@@ -100,6 +101,7 @@ router.route('/add').post(async (req,res) =>{
 
 });
 
+//Get users using email
 router.route('/username/:email').get((req, res) => {
     User.find({"user_email" : req.params.email})
         .then(users => res.json(users))
@@ -112,6 +114,7 @@ router.route('/:id').get((req,res)=>{
         .catch(err=>res.status(400).json('Error: '+ err));
 });
 
+//Edit and save User profile
 router.route('/update/:id').post((req,res) => {
     User.findById(req.params.id)
         .then(user => {
@@ -131,11 +134,8 @@ router.route('/update/:id').post((req,res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
+//Delete function using email
 router.route('/delete/:email').delete((req,res)=> {
-    // User.findOneAndDelete(req.params.email)
-    //     .then(() => res.json('User Deleted....'))
-    //     .catch(err => res.status(401).json('Error: '+ err));
-
     let userEmail = req.params.email;
 
     User.deleteOne({user_email : userEmail}, function (err, res) {

@@ -28,7 +28,7 @@ constructor(props) {
         user_b_day:'',
 
         user_role:'',
-        users:[]
+        users:[],
     }
 }
 
@@ -106,36 +106,37 @@ constructor(props) {
             user_role: 'Customer'
         }
 
-        // console.log(`email:${this.state.user_email}`);
-        // console.log(`username:${this.state.user_username}`);
-        // console.log(`password:${this.state.user_password}`);
-        // console.log(`phone:${this.state.user_phone}`);
-        // console.log(`gender:${this.state.user_gender}`);
-        // console.log(`image:${this.state.user_image}`);
+        if (this.state.user_phone.length >= 9 && this.state.user_phone.length <= 10  ){
+            if (this.state.user_username.length > 5){
+                if (this.state.user_password.length>5){
 
-        axios.post('http://localhost:5000/users/add',user)
-            .then(response =>{
-                this.setState({
-                    users: response.data
-                });
-            });
+                    axios.post('http://localhost:5000/users/add',user)
+                        .then(response =>{
+                            this.setState({
+                                users: response.data,
+                            });
+                        });
 
-        axios.post('http://localhost:5000/userAccounts/add',account)
-            .then(response =>{
-                this.setState({
-                    users: response.data
-                });
-            })
-            .catch(function (error) {
-                console.log(error);
-             });
-
-        let temp = this.state.users;
-
-        if (temp.length > 0){
-            window.location='/register';
+                    axios.post('http://localhost:5000/userAccounts/add',account)
+                        .then(response =>{
+                            this.setState({
+                                users: response.data,
+                            });
+                            window.location='/login';
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                            alert("Email already use");
+                            window.location='/register';
+                        });
+                }else{
+                    alert("Password should at least 6 characters")
+                }
+            }else{
+                alert("User name should be at least 6 characters");
+            }
         }else{
-            window.location='/login';
+            alert("Phone number is invalid");
         }
 
     }
@@ -208,7 +209,7 @@ constructor(props) {
                                 <div className="form-group">
                                     <label htmlFor="inputEmail3" className="col-sm-2 col-form-label" style={{float: 'left'}}>Gender</label>
                                     <div className="col-sm-12">
-                                    <select className="browser-default custom-select"
+                                    <select className="browser-default custom-select" style={{height:'32px'}}
                                             value={this.state.user_gender}
                                             onChange={this.onChangeGender}>
                                         <option value="Male">Male</option>
@@ -224,7 +225,7 @@ constructor(props) {
                                         <div className="checkbox">
                                             <label style={{float: 'left',fontSize:'12px',marginTop:'10px'}}><input type="checkbox" name="remember" required/>By clicking "SIGN UP" I agree to Privacy Policy</label>
                                         </div>
-                                        <button type="submit" className="btn btn-primary" style={{width:'100%'}}>Sign Up</button>
+                                        <button type="submit" className="btn-primary" style={{width:'100%',textAlign:"center",borderRadius:"10px",height:'30px'}}>Sign Up</button>
                                     </div>
                                 </div>
                             </td>
@@ -234,9 +235,6 @@ constructor(props) {
             </form>
             </div>
             </div>
-
-
-
         )
 
     }

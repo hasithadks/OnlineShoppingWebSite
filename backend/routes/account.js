@@ -55,7 +55,7 @@ router.route('/add').post(async (req,res) =>{
             user_role
         });
         newAccount.save()
-            .then(account => res.json(newAccount))
+            .then(account => res.json(account))
             .catch(err =>res.status(400).json('Error: '+ err));
     }else{
         return res.status(400).json('Email already exit');
@@ -69,12 +69,13 @@ router.route('/username/:email').post(async (req, res) => {
 
     let password = req.body.user_password;
 
-    //email is exist
+    //check email is exist
     const user = Account.findOne({
         user_username: req.params.email
     },async function(err,obj) {
         let dbps = (obj.user_password);
 
+        //validate bcrypt password
         const validPass = await bcrypt.compare(password, dbps);
 
         if (!user){
@@ -95,6 +96,7 @@ router.route('/username/:email').post(async (req, res) => {
 
                     const user_token = token;
 
+                    //Update Token field in account table according to login email for identify user is logged in
                     Account.updateOne({"user_username": req.params.email},{user_token : user_token}, function (err, res) {
                     }).then();
 
@@ -112,7 +114,7 @@ router.route('/username/:email').post(async (req, res) => {
 //Assign token to null
 router.route('/logout/:email').post(async (req, res) => {
 
-    //email is exist
+    //check email is exist
     const user = Account.findOne({
         user_username: req.params.email
     },async function(err,obj) {
@@ -123,6 +125,7 @@ router.route('/logout/:email').post(async (req, res) => {
         else {
             const user_token = null;
 
+            //Update Token field to null, according to login user email for identify user logged out
             Account.updateOne({"user_username": req.params.email},{user_token : user_token}, function (err, res) {
             }).then(accounts => res.json(0));
 
@@ -138,16 +141,17 @@ router.route('/update/account/:email').put(async function(req, res) {
     let userPassword = req.body.user_password;
     let userNewPassword = req.body.user_Newpassword;
 
-    //hash password
+    //new password convert to hash password
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(userNewPassword,salt);
 
-    /////////////////////////////////////////////////////////////////////////
+    //check email is exist
     const user = Account.findOne({
         user_username: req.params.email
     },async function(err,obj) {
         let dbps = (obj.user_password);
 
+        //compare and validate password
         const validPass = await bcrypt.compare(userPassword, dbps);
 
         if (!user){
@@ -158,16 +162,15 @@ router.route('/update/account/:email').put(async function(req, res) {
                 return  res.status(400).json('Invalid password');
             }else{
                 Account.updateOne({user_username : userEmail}, {user_password : hashPassword}, function (err, res) {
-                }).then(console.log("successfully updated"));
+                }).then(accounts => res.json(accounts));
                 }
             }
     });
-    ///////////////////////////////////////////////////////////////////////////
 });
 
 router.route('/forgot/:email').get(async (req, res) => {
 
-    //////////////////////////////////////////////////////////
+    //check email is exist
     const user = Account.findOne({
         user_username: req.params.email
     },async function(err,obj) {
@@ -180,14 +183,7 @@ router.route('/forgot/:email').get(async (req, res) => {
             let userEmail = req.params.email;
             let userPassword = dbps;
 
-                    // // hash password
-                    // const salt = await bcrypt.genSalt(10);
-                    // const hashPassword = await bcrypt.hash(userPassword,salt,(err,encrypted)=>{
-                    //     let userPassword= encrypted;
-                    //
-                    //     console.log(userPassword);
-                    // });
-
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
             const content = `
                         Hey ${userEmail},\n
                         You forgot your password.\n\n
@@ -219,12 +215,14 @@ router.route('/forgot/:email').get(async (req, res) => {
                             })
                         }
                     });
+     ///////////////////////////////////////////////////////////////////////////////////////////////////////
             }
     });
 });
 
-router.route('/reset/:email').put(async (req, res) => {
+router.route('/reset/:email').put(async function(req, res)  {
 
+    //check email is exist
     const user = Account.findOne({
         user_username: req.params.email
     },async function(err,obj) {
@@ -237,25 +235,21 @@ router.route('/reset/:email').put(async (req, res) => {
             let userEmail = req.params.email;
             let userOldPassword = dbps;
             let userNewPassword = req.body.user_Newpassword;
-            let confirmPassword = req.body.user_confirmPassword;
 
             //hash password
             const salt = await bcrypt.genSalt(10);
             const newHashPassword = await bcrypt.hash(userNewPassword,salt);
 
-                if (userNewPassword === confirmPassword){
-                    return  res.status(400).json('Invalid password');
-                }else{
-                    Account.updateOne({user_username : userEmail}, {user_password : newHashPassword}, function (err, res) {
-                    }).then(console.log("successfully Reset Password"));
-                }
 
+            Account.updateOne({user_username : userEmail}, {user_password : newHashPassword}, function (err, res) {
+            }).then(console.log("successfully Reset Password"));
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             const content = `
                         Hey ${userEmail},\n
                         You Successfully Reset your password.\n\n
                         username : ${userEmail} \n 
-                        
+                        password: ${userNewPassword}
                         Please use your credentials to Login from here- http://localhost:3000/login \n
                         To Visit Online Shopping store- http://localhost:3000/home \n
                         Thanks,
@@ -280,19 +274,17 @@ router.route('/reset/:email').put(async (req, res) => {
                     })
                 }
             });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
     });
 });
 
 router.route('/delete/:email').delete((req,res)=> {
-    // Account.findOneAndDelete(req.params.email)
-    //     .then(() => res.json('Account Deleted....'))
-    //     .catch(err => res.status(401).json('Error: '+ err));
 
     let userEmail = req.params.email;
 
     Account.deleteOne({user_username : userEmail}, function (err, res) {
-    }).then(console.log("successfully delete from user"));
+    }).then(accounts => res.json(accounts));
 
 });
 
