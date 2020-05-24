@@ -63,7 +63,7 @@ export default class CreateManagementStaff extends Component{
             data: managementstaff,
         }).then(res => console.log(res.data));
 
-        // window.location = '/admin/mstaff';
+        window.location = '/admin/mstaff';
     }
 
     render() {

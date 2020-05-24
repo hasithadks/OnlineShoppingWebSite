@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Link} from "react-router-dom";
+// import {Link} from "react-router-dom";
 import logo from "../Images/shenosa-white.png";
-import advertisement from "../Images/advertisement.png";
+// import advertisement from "../Images/advertisement.png";
 import axios from "axios";
 import * as configs from "../../Config/config";
 import roundTo from "round-to";
@@ -53,6 +53,13 @@ export default class ItemNav extends Component{
         }
 
     }
+
+    // var loginButton;
+    // if (loggedIn) {
+    //     loginButton =  <a href="/login" className="btn btn-link text-color-default font-weight-bold order-3 d-none d-sm-block ml-auto mr-2 pt-1 text-1">Login</a>;
+    // } else {
+    //     loginButton =  <a href="#" className="btn btn-link text-color-default font-weight-bold order-3 d-none d-sm-block ml-auto mr-2 pt-1 text-1">Logout</a>;
+    // }
 
     render(){
         return(
@@ -157,7 +164,7 @@ export default class ItemNav extends Component{
                                                     </li>
                                                     <li className="dropdown">
                                                         <a className="dropdown-item dropdown-toggle" href="#">Profile</a>
-                                                        <ul className="dropdown-menu" style={{width:"100px!important"}}>
+                                                        <ul className="dropdown-menu">
                                                             <li><a className="dropdown-item" href="#">My Profile</a></li>
                                                             <li><a className="dropdown-item" href="/FavouriteList">Wish List</a></li>
                                                             <li><a className="dropdown-item" href="/ProductRatings">Purchased History</a></li>
@@ -166,7 +173,10 @@ export default class ItemNav extends Component{
                                                 </ul>
                                             </nav>
                                         </div>
-                                        <a href="/login" className="btn btn-link text-color-default font-weight-bold order-3 d-none d-sm-block ml-auto mr-2 pt-1 text-1">Login</a>
+
+                                        <a href="/login" className="btn btn-link text-color-default font-weight-bold order-3 d-none d-sm-block ml-auto mr-2 pt-1 text-1" >Login</a>
+                                        <a href="#" className="btn btn-link text-color-default font-weight-bold" style={{marginLeft:"500px"}}>Logout</a>
+
                                         <div className="mini-cart order-4">
                                             <span className="font-weight-bold font-primary">Cart / <span className="cart-total">Rs. {this.state.totalPrice}</span></span>
                                             <div className="mini-cart-icon">
