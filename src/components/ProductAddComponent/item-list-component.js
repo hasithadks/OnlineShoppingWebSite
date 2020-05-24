@@ -69,12 +69,12 @@ export default class ItemLists extends Component{
             <div>
                 <div className="App-center">
                     <div className="container">
-                        <br/>
+                        <div className="list-group-item">
                         <h3><b> Item List </b></h3>
 
 
                         <div className="col-sm-3" style={{marginLeft:"850px"}}>
-                            <Link style={{color:"black", textDecoration:"none"}} to={"/admin/product/additem"}><button style={{width:"auto"}} className="btn btn-block btn-warning">Add Item</button></Link>
+                            <Link style={{color:"black", textDecoration:"none"}} to={"/admin/product/additem"}><button style={{width:"auto" ,marginLeft:"120px"}} className="btn btn-block btn-warning">Add Item</button></Link>
                         </div>
 
                         <table className="table table-striped" style={{marginTop :20}}>
@@ -94,6 +94,7 @@ export default class ItemLists extends Component{
                             {this.productList()}
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
 

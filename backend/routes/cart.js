@@ -23,11 +23,12 @@ router.route("/add").post((req, res) => {
         item_size : item_size,
         item_color : item_color,
         requested_qty : requested_qty,
-        quantities_id : quantities_id} = req.body;
+        quantities_id : quantities_id,
+        selectedImage : selectedImage} = req.body;
 
   //  productId, userID, productPrice, discount, discountedPrice, selectedSize, selectedColor, quantity
 
-    let all = new userCart({productID , userID , item_price, item_discount, discounted_price, item_size, item_color, requested_qty,quantities_id});
+    let all = new userCart({productID , userID , item_price, item_discount, discounted_price, item_size, item_color, requested_qty,quantities_id,selectedImage});
 
     all.save()
         .then(() => res.json('Add to Cart'))

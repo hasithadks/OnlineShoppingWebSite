@@ -16,7 +16,9 @@ export default class DashboardIndex extends Component{
         return(
             <div>
                 <div className="row" id="body-row">
+
                     <div id="sidebar-container" style={{marginLeft:"10px"}}>
+                        <br/>
                         <ul className="list-group" style={{width:"300px"}}>
                             <li className="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
                                 <span style={{color:"white"}}>Management Dashboard</span>

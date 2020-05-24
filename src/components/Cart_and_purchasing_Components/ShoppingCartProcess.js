@@ -64,6 +64,7 @@ export default class ShoppingCartProcess extends Component {
             cardName: '',
             expiredate: '',
             cvv: 0,
+            selectedImage : '',
 
         };
         //Shopping Cart Functions
@@ -482,23 +483,23 @@ export default class ShoppingCartProcess extends Component {
                                             <div className="col-7" style={{marginLeft: '-5px'}}>
                                                 <div className="row">
                                                     <div className="col-3">
-                                                        <img src={ProductImage} width="80" height="90"
+                                                        <img src={require('../uploads/' + data.selectedImage)} width="80" height="90"
                                                              alt="Product Image"
                                                              style={{float: 'left'}}/>
                                                     </div>
                                                     <div className="col-9">
-                                                        <div className="row">
+                                                        <div className="row" style={{marginLeft:'10px'}}>
                                                             <span>Product name</span>
                                                         </div>
-                                                        <div className="row">
+                                                        <div className="row" style={{marginLeft:'10px'}}>
                                                             <span
                                                                 style={{fontSize: '12px'}}>Size : {data.item_size}</span>
                                                         </div>
-                                                        <div className="row">
+                                                        <div className="row" style={{marginLeft:'10px'}}>
                                                         <span
                                                             style={{fontSize: '12px'}}>Color : {data.item_color}</span>
                                                         </div>
-                                                        <div className="row">
+                                                        <div className="row" style={{marginLeft:'10px'}}>
                                                         <span
                                                             style={{fontSize: '12px'}}>Qty : {data.requested_qty}</span>
                                                         </div>
