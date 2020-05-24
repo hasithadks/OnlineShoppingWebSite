@@ -46,7 +46,8 @@ export default class ResetPassword extends Component {
             axios.put('http://localhost:5000/userAccounts/reset/'+ this.state.user_email,user)
                 .then(res => console.log((res.data)));
 
-            alert("Successfully changed");
+            alert("Check your email");
+            window.location='/ResetPassword';
         }else{
             alert("Not match");
         }
@@ -84,7 +85,7 @@ export default class ResetPassword extends Component {
                         <tr>
                             <td style={{width:'auto'}}>
                                 <div className="form-group">
-                                    <label htmlFor="inputPassword3" className="col-sm-2 col-form-label" style={{float: 'left',marginLeft:'-4%'}}>New Password</label>
+                                    <label htmlFor="inputPassword3" className="col-sm-2 col-form-label" style={{float: 'left',marginLeft:'-3%'}}>New Password</label>
                                     <div className="col-sm-5">
                                         <input type="password" className="form-control" id="inputPassword3" required placeholder="New Password"
                                                value={this.state.user_Newpassword}
@@ -96,7 +97,7 @@ export default class ResetPassword extends Component {
                         <tr>
                             <td style={{width:'auto'}}>
                                 <div className="form-group">
-                                    <label htmlFor="inputPassword3" className="col-sm-2 col-form-label" style={{float: 'left',marginLeft:'-1%'}}>Confirm password</label>
+                                    <label htmlFor="inputPassword3" className="col-sm-2 col-form-label" style={{float: 'left',marginLeft:'-2%'}}>Confirm password</label>
                                     <div className="col-sm-5">
                                         <input type="password" className="form-control" id="inputPassword3" required placeholder="Confirm password"
                                                value={this.state.user_confirmPassword}
@@ -107,9 +108,9 @@ export default class ResetPassword extends Component {
                         </tr>
 
                         <tr>
-                            <div className="form-group" style={{marginTop:'15px'}}>
+                            <div className="form-group" style={{marginTop:'15px',marginLeft:'-30%'}}>
                                 <div className="col-sm-12">
-                                    <button type="submit" className="btn btn-primary">Reset Password</button>
+                                    <button type="submit" className="btn btn-primary">Send Request</button>
                                 </div>
                             </div>
                         </tr>

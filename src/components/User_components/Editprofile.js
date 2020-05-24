@@ -170,7 +170,7 @@ export default class Editprofile extends Component {
                                         <table style={{width:'100%'}}>
                                             <tbody>
                                             <tr>
-                                                <td style={{width:'60%'}}>
+                                                <td style={{width:'50%'}}>
                                                     <div className="form-group">
                                                         <label htmlFor="inputEmail3" className="col-sm-2 col-form-label" style={{float: 'left'}}>Email</label>
                                                         <div className="col-sm-12">
@@ -196,13 +196,14 @@ export default class Editprofile extends Component {
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style={{width:'60%'}}>
+                                                <td style={{width:'50%'}}>
                                                     <div className="form-group">
-                                                        <label htmlFor="inputPassword3" className="col-sm-2 col-form-label" style={{float: 'left'}}>Password</label>
+                                                        <label htmlFor="inputUserName" className="col-sm-2 col-form-label" style={{float: 'left'}}>Name</label>
                                                         <div className="col-sm-12">
-                                                            <input type="password" className="form-control" id="inputPassword3" required placeholder="Password" disabled
-                                                                   value={this.state.user_password}
-                                                                   onChange={this.onChangePassword}/>
+                                                            <input type="Text" className="form-control" id="inputUserName" required placeholder="User Name"
+                                                                   value={this.state.user_username}
+                                                                   onChange={this.onChangeUsername}
+                                                            />
                                                         </div>
                                                     </div>
                                                 </td>
@@ -222,23 +223,11 @@ export default class Editprofile extends Component {
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style={{width:'60%'}}>
-                                                    <div className="form-group">
-                                                        <label htmlFor="inputUserName" className="col-sm-2 col-form-label" style={{float: 'left'}}>Name</label>
-                                                        <div className="col-sm-12">
-                                                            <input type="Text" className="form-control" id="inputUserName" required placeholder="User Name"
-                                                                   value={this.state.user_username}
-                                                                   onChange={this.onChangeUsername}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                <td style={{width:'40%'}}>
+                                                <td style={{width:'50%'}}>
                                                     <div className="form-group">
                                                         <label htmlFor="inputEmail3" className="col-sm-2 col-form-label" style={{float:'left'}}>Birthday</label>
                                                         <div className='row col-sm-12' style={{marginLeft:'1px'}}>
-                                                        <div style={{width:'83px'}}>
+                                                        <div style={{width:'116px'}}>
                                                             <select className="browser-default custom-select" style={{fontSize:'14px'}}
                                                                 value={this.state.user_b_year}
                                                                 onChange={this.onChangeBYear}>
@@ -249,7 +238,7 @@ export default class Editprofile extends Component {
                                                                 <option value="1997">1997</option>
                                                             </select>
                                                         </div>
-                                                        <div style={{width:'83px',marginLeft:'2px'}}>
+                                                        <div style={{width:'116px',marginLeft:'15px'}}>
                                                             <select className="browser-default custom-select" style={{fontSize:'14px'}}
                                                                 value={this.state.user_b_month}
                                                                 onChange={this.onChangeBMonth}>
@@ -268,7 +257,7 @@ export default class Editprofile extends Component {
                                                                 <option value="December">December</option>
                                                             </select>
                                                         </div>
-                                                        <div style={{width:'83px',marginLeft:'2px'}}>
+                                                        <div style={{width:'116px',marginLeft:'15px'}}>
                                                             <select className="browser-default custom-select" style={{fontSize:'14px'}}
                                                                 value={this.state.user_b_day}
                                                                 onChange={this.onChangeBDay}>
@@ -278,11 +267,47 @@ export default class Editprofile extends Component {
                                                                 <option value="3">3</option>
                                                                 <option value="4">4</option>
                                                                 <option value="5">5</option>
+                                                                <option value="6">6</option>
+                                                                <option value="7">7</option>
+                                                                <option value="8">8</option>
+                                                                <option value="9">9</option>
+                                                                <option value="10">10</option>
+                                                                <option value="11">11</option>
+                                                                <option value="12">12</option>
+                                                                <option value="13">13</option>
+                                                                <option value="14">14</option>
+                                                                <option value="15">15</option>
+                                                                <option value="16">16</option>
+                                                                <option value="17">17</option>
+                                                                <option value="18">18</option>
+                                                                <option value="19">19</option>
+                                                                <option value="20">20</option>
+                                                                <option value="21">21</option>
+                                                                <option value="22">22</option>
+                                                                <option value="23">23</option>
+                                                                <option value="24">24</option>
+                                                                <option value="25">25</option>
+                                                                <option value="26">26</option>
+                                                                <option value="27">27</option>
+                                                                <option value="28">28</option>
+                                                                <option value="29">29</option>
+                                                                <option value="30">30</option>
+                                                                <option value="31">31</option>
                                                             </select>
                                                         </div>
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td style={{width:'40%'}} >
+                                                    <div className="form-group" >
+                                                        <div className="col-sm-12">
+                                                            <button style={{width:'100%',marginTop:'30px',textAlign:'center'}} type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                                                Save changes
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
                                             </tr>
                                             </tbody>
                                         </table>
@@ -304,16 +329,11 @@ export default class Editprofile extends Component {
 
                         {/*<div className="form-group" style={{marginTop:'15px'}}>*/}
                         {/*    <div className="col-sm-12">*/}
-                        {/*        <button type="submit" className="btn btn-primary">Save changes</button>*/}
+                        {/*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">*/}
+                        {/*    Save changes*/}
+                        {/*</button>*/}
                         {/*    </div>*/}
                         {/*</div>*/}
-                        <div className="form-group" style={{marginTop:'15px'}}>
-                            <div className="col-sm-12">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                            Save changes
-                        </button>
-                            </div>
-                        </div>
 
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">

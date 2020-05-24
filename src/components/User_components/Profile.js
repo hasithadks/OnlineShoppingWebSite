@@ -20,6 +20,8 @@ export default class Profile extends Component {
     constructor(props) {
         super(props);
 
+        this.onSubmit = this.onSubmit.bind(this);
+
         this.state ={
             user_email : '',
             user_password: '',
@@ -90,6 +92,36 @@ export default class Profile extends Component {
         });
     }
 
+    onSubmit(e){
+        e.preventDefault();
+        const detail = {
+            user_email : localStorage.getItem('user_email'),
+        }
+
+        axios.delete('http://localhost:5000/users/delete/' + this.state.user_email)
+            .then(response =>{
+                this.setState({
+                    users: response.data
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        axios.delete('http://localhost:5000/userAccounts/delete/' + this.state.user_email)
+            .then(response =>{
+                this.setState({
+                    users: response.data
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        console.log(localStorage.getItem('user_email'));
+
+    }
+
 
     render() {
         return (
@@ -145,6 +177,11 @@ export default class Profile extends Component {
                                                 <div className="col-md-12 " style={{marginTop:'1px'}}>
                                                     <a href="/passwordchange" type="submit" className="btn-primary nav-link" name="edit" value="password change">
                                                         Change password
+                                                    </a>
+                                                </div>
+                                                <div className="col-md-12 " style={{marginTop:'1px'}}>
+                                                    <a onClick={this.onSubmit} type="submit" className="btn-primary nav-link" name="edit" value="password change">
+                                                        Delete account
                                                     </a>
                                                 </div>
                                             </td>

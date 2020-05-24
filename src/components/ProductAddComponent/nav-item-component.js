@@ -11,11 +11,14 @@ export default class ItemNav extends Component{
     constructor(props) {
         super(props);
 
+        this.onSubmit = this.onSubmit.bind(this);
+
         this.state = {
             totalPrice : 0,
             noOfItem : 0,
             cartList : [],
-
+            user_email:'',
+            user:[],
         };
 
     }
@@ -53,7 +56,32 @@ export default class ItemNav extends Component{
         }
 
     }
+    onSubmit(e) {
+        e.preventDefault();
 
+        this.setState({
+            user_email: localStorage.getItem('user_email'),
+        });
+
+        const user = {
+            user_email: this.state.user_email,
+        };
+
+        axios.post('http://localhost:5000/userAccounts/logout/' + localStorage.getItem('user_email'), user)
+            .then(response => {
+                this.setState({
+                    user: response.data
+                });
+            });
+        let usertemp = this.state.user;
+
+        if (usertemp.length > 0) {
+            alert("Logout fail");
+        } else {
+            window.location = '/login';
+            localStorage.clear();
+        }
+    }
     // var loginButton;
     // if (loggedIn) {
     //     loginButton =  <a href="/login" className="btn btn-link text-color-default font-weight-bold order-3 d-none d-sm-block ml-auto mr-2 pt-1 text-1">Login</a>;
@@ -150,7 +178,7 @@ export default class ItemNav extends Component{
                                 <div className="header-column justify-content-start">
                                     <div className="header-logo">
                                         <a href="/home">
-                                            <img alt="EZ" width={230} height={62} src={logo} />
+                                            <img alt="SHENOSA" width={230} height={62} src={logo} />
                                         </a>
                                     </div>
                                 </div>
@@ -165,9 +193,10 @@ export default class ItemNav extends Component{
                                                     <li className="dropdown">
                                                         <a className="dropdown-item dropdown-toggle" href="#">Profile</a>
                                                         <ul className="dropdown-menu">
-                                                            <li><a className="dropdown-item" href="#">My Profile</a></li>
+                                                            <li><a className="dropdown-item" href="/profile">My Profile</a></li>
                                                             <li><a className="dropdown-item" href="/FavouriteList">Wish List</a></li>
                                                             <li><a className="dropdown-item" href="/ProductRatings">Purchased History</a></li>
+                                                            <li><a className="dropdown-item" onClick={this.onSubmit}>Logout</a></li>
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -175,7 +204,7 @@ export default class ItemNav extends Component{
                                         </div>
 
                                         <a href="/login" className="btn btn-link text-color-default font-weight-bold order-3 d-none d-sm-block ml-auto mr-2 pt-1 text-1" >Login</a>
-                                        <a href="#" className="btn btn-link text-color-default font-weight-bold" style={{marginLeft:"500px"}}>Logout</a>
+                                        {/*<a href="#" className="btn btn-link text-color-default font-weight-bold" style={{marginLeft:"500px"}}>Logout</a>*/}
 
                                         <div className="mini-cart order-4">
                                             <span className="font-weight-bold font-primary">Cart / <span className="cart-total">Rs. {this.state.totalPrice}</span></span>
