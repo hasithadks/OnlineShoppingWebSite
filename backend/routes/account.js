@@ -174,14 +174,12 @@ router.route('/forgot/:email').get(async (req, res) => {
     const user = Account.findOne({
         user_username: req.params.email
     },async function(err,obj) {
-        let dbps = (obj.user_password);
 
         if (!user){
             return res.status(400).json('Email is not found');
         }
         else {
             let userEmail = req.params.email;
-            let userPassword = dbps;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
             const content = `

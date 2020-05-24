@@ -46,7 +46,7 @@ export default class ResetPassword extends Component {
                     .then(res => console.log((res.data)));
 
                 alert("Check your email");
-                window.location='/ResetPassword';
+                window.location='/login';
             }else{
                 alert("Password should at least 6 characters");
             }
