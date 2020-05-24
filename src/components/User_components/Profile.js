@@ -169,9 +169,9 @@ export default class Profile extends Component {
                                                     </a>
                                                 </div>
                                                 <div className="col-md-12 " style={{marginTop:'1px'}}>
-                                                    <a onClick={this.onSubmit} type="button" className="btn-primary nav-link" name="delete" value="account delete" data-toggle="modal" data-target="#exampleModal">
+                                                    <button onClick={this.onSubmit} style={{width:'275px'}} type="button" className="btn-danger nav-link" name="delete" value="account delete" data-toggle="modal" data-target="#exampleModal">
                                                         Delete account
-                                                    </a>
+                                                    </button>
                                                 </div>
                                             </td>
 

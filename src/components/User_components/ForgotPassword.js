@@ -26,9 +26,11 @@ export default class NavBar extends Component {
             user_username: this.state.user_username,
         };
 
-        if (this.state.user_username > 5){
+        if (this.state.user_username.length > 5){
             axios.get('http://localhost:5000/userAccounts/forgot/'+ this.state.user_username)
                 .then(res => console.log((res.data)));
+
+            alert("check your email");
         }else{
             alert("Invalid Email");
         }
