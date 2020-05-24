@@ -6,26 +6,33 @@ import {Link} from "react-router-dom";
 const  Product = props =>(
 
     <div className="row">
-        <br/>
-        <table>
+        <br/><br/>
+        <table style={{width:'auto',marginLeft:'56px'}}>
             <tr className="col-12">
-                <td className="card col-lg-11" style={{marginLeft:'43px', marginTop:'30px'}}>
-                    <tr>
-                        <img style={{width:'255px'}}  src="https://mdbootstrap.com/img/Photos/Others/images/43.jpg" alt="Card image cap" />
-                        <h4 >{props.product.item_name}</h4>
-                        <h4 >{props.product.item_brand}</h4>
-                        <h4 >{props.product.item_size}</h4>
-                        <h4 >{props.product.item_colour}</h4>
-                        {/*<a style={{width:'150px'}} href="#" className="btn btn-primary">Add to cart</a>*/}
-                        <Link className="btn btn-primary" to={"/productDetails/"+props.product.item_id}>View Details</Link>
+                <td className="" style={{marginTop:'30px'}}>
+                    <tr><br/>
+                        <div className="card" style={{width: "17rem"}}>
+                            <img className="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/43.jpg" alt="Card image cap"/>
+                            <div className="card-body">
+                                <h5 className="card-title">{props.product.item_name}</h5>
+                                <p className="card-text">{props.product.item_description}</p>
+                                <Link className="btn btn-primary" to={"/productDetails/"+props.product.item_id}>View Details</Link>
+                            </div>
+                        </div>
+                        {/*<img style={{width:'255px'}}  src="https://mdbootstrap.com/img/Photos/Others/images/43.jpg" alt="Card image cap" />*/}
+                        {/*<h4 >{props.product.item_name}</h4>*/}
+                        {/*<h4 >{props.product.item_brand}</h4>*/}
+                        {/*<h4 >{props.product.item_size}</h4>*/}
+                        {/*<h4 >{props.product.item_colour}</h4>*/}
+                        {/*/!*<a style={{width:'150px'}} href="#" className="btn btn-primary">Add to cart</a>*!/*/}
+                        {/*<Link className="btn btn-primary" to={"/productDetails/"+props.product.item_id}>View Details</Link>*/}
                     </tr>
                 </td>
                 <td style={{width:'80px'}}>
-
                 </td>
             </tr>
         </table>
-        <br/>
+        <br/><br/><br/>
     </div>
 
 
@@ -158,6 +165,7 @@ export default class Home extends Component {
                 {/*    {this.productsList()}*/}
                 {/*    </tbody>*/}
                 {/*</table>*/}
+                <br/><br/><br/>
             </div>
 
 

@@ -212,6 +212,7 @@ constructor(props) {
                                     <select className="browser-default custom-select" style={{height:'32px'}}
                                             value={this.state.user_gender}
                                             onChange={this.onChangeGender}>
+                                        <option value="" disabled selected>Gender</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                     </select>
