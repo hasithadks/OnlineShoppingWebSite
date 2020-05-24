@@ -7,8 +7,8 @@ const PCategory = props => (
     <tr>
         <td>{props.pcategory.categoryname}</td>
         <td>
-            <Link style={{color:"black"}} to={"/admin/pcategory/edit/"+props.pcategory._id}><button style={{paddingRight:"20px;",width:"auto"}} className="btn btn-warning mr-1">Edit</button></Link>
-            <button style={{width:"auto"}} className="btn btn-danger" onClick={() => {props.deletePcategory(props.pcategory._id)}}>Delete</button>
+            <Link style={{color:"black"}} to={"/admin/pcategory/edit/"+props.pcategory._id}><button style={{paddingRight:"20px;",width:"auto"}} className="btn btn-warning mr-1"><i className="fa fa-pencil-alt"> Edit</i></button></Link>
+            <button style={{width:"auto",color:"black"}} className="btn btn-danger" onClick={() => {props.deletePcategory(props.pcategory._id)}}><i className="fa fa-trash-alt"> Delete</i></button>
         </td>
     </tr>
 );

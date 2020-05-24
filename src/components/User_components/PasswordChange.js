@@ -69,31 +69,35 @@ export default class PasswordChange extends Component {
                 user_Newpassword: this.state.user_Newpassword,
             };
 
-            if(this.state.user_Newpassword.match(this.state.user_confirmPassword)){
-                alert("Successfully changed");
-                localStorage.setItem('user_email', this.state.user_email);
-                localStorage.setItem('user_password', this.state.user_Newpassword);
+            if(this.state.user_Newpassword === this.state.user_confirmPassword){
+                if (this.state.user_Newpassword.length > 5){
+                    localStorage.setItem('user_email', this.state.user_email);
+                    localStorage.setItem('user_password', this.state.user_Newpassword);
 
-                axios.put('http://localhost:5000/userAccounts/update/account/'+ this.state.user_email,user)
-                     .then(res => console.log((res.data)));
+                    axios.put('http://localhost:5000/userAccounts/update/account/'+ this.state.user_email,user)
+                        .then(res => {
+                            window.location='/login';
 
-                axios.post('http://localhost:5000/userAccounts/logout/'+ localStorage.getItem('user_email'),user)
-                    .then(response =>{
-                        this.setState({
-                            user: response.data
+                            axios.post('http://localhost:5000/userAccounts/logout/'+ localStorage.getItem('user_email'),user)
+                                .then(response =>{
+                                    this.setState({
+                                        user: response.data
+                                    });
+                                });
+
+                            localStorage.clear();
+                        })
+                        .catch(function (error) {
+                            alert("Wrong Password");
+                            window.location='/passwordchange';
                         });
-                    });
-                localStorage.clear();
-                window.location='/login';
+                }else{
+                    alert("Password should at least 6 characters");
+                }
             }else{
-                alert("Not match");
+                alert("Password not match");
             }
 
-            console.log(`id:${this.state.user_id}`);
-            console.log(`email:${this.state.user_email}`);
-            console.log(`password:${this.state.user_password}`);
-            console.log(`password:${this.state.user_confirmPassword}`);
-            console.log(localStorage.getItem('user_email'));
     }
 
 

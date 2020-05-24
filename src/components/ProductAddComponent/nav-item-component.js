@@ -48,9 +48,6 @@ export default class ItemNav extends Component{
                             noOfItem : temCount
                         })
                     })
-                   // console.log("inside then :")
-                   // console.log(response.data);
-                   // console.log(this.state.cartList);
                 });
 
         }
@@ -72,15 +69,12 @@ export default class ItemNav extends Component{
                 this.setState({
                     user: response.data
                 });
-            });
-        let usertemp = this.state.user;
-
-        if (usertemp.length > 0) {
+                window.location = '/login';
+                localStorage.clear();
+            }).catch(function (error) {
+            console.log(error);
             alert("Logout fail");
-        } else {
-            window.location = '/login';
-            localStorage.clear();
-        }
+        });
     }
     // var loginButton;
     // if (loggedIn) {
