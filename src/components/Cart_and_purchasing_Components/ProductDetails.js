@@ -59,7 +59,7 @@ export default class ProductDetails extends Component {
             isViewComment : true,
             userEmail : null,
             productImage :[],
-
+            selectedImage : ''
 
 
         };
@@ -190,7 +190,8 @@ export default class ProductDetails extends Component {
 
                     this.setState({
                         shirtSize: distinctSize,
-                        itemColor: distinctcolor
+                        itemColor: distinctcolor,
+                        productImage : imageList
                     }, () => {
 
                         let pID = this.state.productId;
@@ -347,6 +348,7 @@ export default class ProductDetails extends Component {
                 let item_color = this.state.selectedColor;
                 let requested_qty = this.state.quantity;
                 let quantities_id = this.state.quantitiesTableID;
+                let selectedImage = this.state.selectedImage;
 
                 let payload = {
                     productID,
@@ -357,7 +359,8 @@ export default class ProductDetails extends Component {
                     item_size,
                     item_color,
                     requested_qty,
-                    quantities_id
+                    quantities_id,
+                    selectedImage
                 };
 
 
@@ -405,8 +408,8 @@ export default class ProductDetails extends Component {
 
                     this.setState({
                         availablecount: selectedItem[0].item_quantity,
-                        quantitiesTableID: selectedItem[0]._id
-
+                        quantitiesTableID: selectedItem[0]._id,
+                        selectedImage : selectedItem[0].item_productImage,
                     });
 
                     console.log("Selected Item Id: " + JSON.stringify(selectedItem[0]._id));
@@ -464,7 +467,18 @@ export default class ProductDetails extends Component {
                 {/*</div>*/}
                 <div className="row" style={{width: '100%'}}>
                     <div className="row-cols-1">
-                        <img src={ProductImage} width="300" height="320" alt="Product Image"/>
+                        {/*{this.state.productQuantities.map((data,index)=>{*/}
+                        {/* // return  <img src={require('../uploads/'+data.item_productImage)} width="30" height="30" alt="Product Image"/>*/}
+                        {/*    return  <img height="100" src={require('../uploads/'+data.item_productImage)} alt="" width="100"/>*/}
+                        {/*})}*/}
+                        {this.state.selectedImage === '' ?
+                            <img height="320" src={ProductImage} alt=""
+                                 width="300"/>
+                            :
+                            <img height="320" src={require('../uploads/' + this.state.selectedImage)} alt=""
+                                 width="300"/>
+                        }
+
                     </div>
                     <div className="row-cols-1" style={{width: '50%', height: 'auto'}}>
                         <div>

@@ -64,6 +64,7 @@ export default class ShoppingCartProcess extends Component {
             cardName: '',
             expiredate: '',
             cvv: 0,
+            selectedImage : '',
 
         };
         //Shopping Cart Functions

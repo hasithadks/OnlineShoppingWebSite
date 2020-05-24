@@ -23,7 +23,8 @@ router.route("/add").post((req, res) => {
         item_size : item_size,
         item_color : item_color,
         requested_qty : requested_qty,
-        quantities_id : quantities_id} = req.body;
+        quantities_id : quantities_id,
+        selectedImage : selectedImage} = req.body;
 
   //  productId, userID, productPrice, discount, discountedPrice, selectedSize, selectedColor, quantity
 
