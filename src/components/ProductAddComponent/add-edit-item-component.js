@@ -631,7 +631,7 @@ export default class AddEditItem extends Component{
                                                            id="customFileLangHTML"
                                                            //value = {this.state.item_image}
                                                            onChange={this.onChangeItemImage} />
-                                                    <label className="custom-file-label" htmlFor="customFileLangHTML" data-browse="Browse" >Upload</label>
+                                                    <label className="custom-file-label " htmlFor="customFileLangHTML" data-browse="Browse" >Choose Image</label>
 
                                                 </div>
                                             </div>
