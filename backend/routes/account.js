@@ -291,7 +291,7 @@ router.route('/delete/:email').delete((req,res)=> {
 
     let userEmail = req.params.email;
 
-    Account.deleteOne({user_email : userEmail}, function (err, res) {
+    Account.deleteOne({user_username : userEmail}, function (err, res) {
     }).then(console.log("successfully delete from user"));
 
 });

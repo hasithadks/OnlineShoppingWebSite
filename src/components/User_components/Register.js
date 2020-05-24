@@ -133,9 +133,9 @@ constructor(props) {
         let temp = this.state.users;
 
         if (temp.length > 0){
-            window.location='/login';
-        }else{
             window.location='/register';
+        }else{
+            window.location='/login';
         }
 
     }
