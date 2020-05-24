@@ -58,7 +58,7 @@ export default class ProductDetails extends Component {
             SoldProducts : [],
             isViewComment : true,
             userEmail : null,
-
+            productImage :[],
 
 
 
@@ -168,11 +168,12 @@ export default class ProductDetails extends Component {
                     this.setState({productQuantities: response.data});
                     let sizeList = [];
                     let colorList = [];
+                    let imageList = [];
                     for (let i = 0; i < response.data.length; i++) {
 
                         sizeList.push(response.data[i].item_size);
                         colorList.push(response.data[i].item_colour);
-
+                        imageList.push(response.data[i].item_productImage);
                     }
 
                     const distinct = (value, index, self) => {
