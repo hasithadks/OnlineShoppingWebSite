@@ -7,7 +7,7 @@ const  Product = props =>(
 
     <div className="row">
         <br/><br/>
-        <table style={{width:'auto',marginLeft:'56px'}}>
+        <table style={{width:'auto',marginLeft:'46px'}}>
             <tr className="col-12">
                 <td className="" style={{marginTop:'30px'}}>
                     <tr><br/>
@@ -16,6 +16,7 @@ const  Product = props =>(
                             <div className="card-body">
                                 <h5 className="card-title">{props.product.item_name}</h5>
                                 <p className="card-text">{props.product.item_description}</p>
+                                <p className="card-text" style={{color:'orange' , fontSize:'20px'}}>Rs.{props.product.item_price}.00</p>
                                 <Link className="btn btn-primary" to={"/productDetails/"+props.product.item_id}>View Details</Link>
                             </div>
                         </div>
