@@ -118,6 +118,9 @@ export default class Profile extends Component {
                 console.log(error);
             });
 
+        window.location='/register';
+        localStorage.clear();
+
         console.log(localStorage.getItem('user_email'));
 
     }
