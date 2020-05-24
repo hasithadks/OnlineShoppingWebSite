@@ -7,6 +7,7 @@ import {FaStar} from "react-icons/fa";
 import StarRatingComponent from "react-star-rating-component";
 import {Link} from "react-router-dom";
 import {iconSuccessLine} from "react-bootstrap-sweetalert/dist/styles/SweetAlertStyles";
+import swal from "sweetalert";
 
 
 export default class ProductRatings extends Component {
@@ -32,7 +33,8 @@ export default class ProductRatings extends Component {
             item_color: '',
             alreadyRate: false,
             RateProductID : '',
-            userEmail : ''
+            userEmail : '',
+            selectedImage : '',
 
         };
 
@@ -48,29 +50,41 @@ export default class ProductRatings extends Component {
 
     componentDidMount() {
 
-        let userID = localStorage.getItem('user_id');
-        axios.get(configs.BASE_URL + '/soldProducts/' + userID)
-            .then(response => {
-                this.setState({
-                    broughtItem: response.data,
-                    userID : userID
+       console.log();
+        if(localStorage.length > 0) {
+
+
+            let userID = localStorage.getItem('user_id');
+
+
+            axios.get(configs.BASE_URL + '/soldProducts/' + userID)
+                .then(response => {
+                    this.setState({
+                        broughtItem: response.data,
+                        userID: userID
+                    });
+                    console.log(this.state.broughtItem);
                 });
-                console.log(this.state.broughtItem);
-            });
 //+ this.state.userID
-        let userEmail = localStorage.getItem('user_username');
-        axios.get(configs.BASE_URL + '/users/username/' + userEmail)
-            .then(response => {
-                console.log("UserAccount responce :");
-                console.log(response.data[0].user_username);
-                // if(response.data[0] > 0 || response.data[0] !== null){
+            let userEmail = localStorage.getItem('user_username');
+            axios.get(configs.BASE_URL + '/users/username/' + userEmail)
+                .then(response => {
+                    console.log("UserAccount responce :");
+                    console.log(response.data[0].user_username);
+                    // if(response.data[0] > 0 || response.data[0] !== null){
 
                     this.setState({
                         userName: response.data[0].user_username
                     });
-               // }
+                    // }
 
-            });
+                });
+        }
+        else {
+
+          // window.location = "/login";
+            swal("Error!", "Please Log to the system first!", "warning");
+        }
     }
 
     submitRating() {
@@ -161,7 +175,7 @@ export default class ProductRatings extends Component {
                         }
 
                     });
-
+                console.log("product ID before get product: " + td.productID)
                 axios.get('http://localhost:5000/products/itemId/' + td.productID)
                     .then(response => {
                         //console.log(response.data);

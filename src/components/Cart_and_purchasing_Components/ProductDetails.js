@@ -12,7 +12,7 @@ import {resolveToLocation} from "react-router-dom/modules/utils/locationUtils";
 import * as configs from "../../Config/config";
 import {FaStar} from "react-icons/fa";
 import Toast from "react-bootstrap/Toast";
-
+import defaultImage from "../Images/productdefaultimage.jpg";
 import {useState} from "react";
 import swal from "sweetalert";
 import roundTo from "round-to";
@@ -322,7 +322,7 @@ export default class ProductDetails extends Component {
                 },
                 () => {
                     axios.delete(configs.BASE_URL + '/favouriteProduct/delete/' + this.state.favo_ID)
-                        .then(() => alert("Remove from favourite List"));
+                        .then(() =>  swal("Success!", "Remove from WishList", "success"));
                 }
             )
         }
@@ -338,6 +338,8 @@ export default class ProductDetails extends Component {
 
             if (this.state.shirtSize !== "" && this.state.itemColor !== "" && this.state.quantity > 0) {
                 //  let {productId, userID, productPrice, discount, discountedPrice, selectedSize, selectedColor, quantity} = this.state;
+                console.log("add To Cart ");
+                console.log(this.state.selectedImage);
 
                 let productID = this.state.productId;
                 let userID = this.state.userID;
@@ -409,10 +411,11 @@ export default class ProductDetails extends Component {
                     this.setState({
                         availablecount: selectedItem[0].item_quantity,
                         quantitiesTableID: selectedItem[0]._id,
-                        selectedImage : selectedItem[0].item_productImage,
+                        selectedImage :selectedItem[0].item_productImage
                     });
 
                     console.log("Selected Item Id: " + JSON.stringify(selectedItem[0]._id));
+                    console.log("Selected Image: " + JSON.stringify(selectedItem[0].item_productImage));
                 } else {
                     this.setState({
                         availablecount: 0,
@@ -472,7 +475,7 @@ export default class ProductDetails extends Component {
                         {/*    return  <img height="100" src={require('../uploads/'+data.item_productImage)} alt="" width="100"/>*/}
                         {/*})}*/}
                         {this.state.selectedImage === '' ?
-                            <img height="320" src={ProductImage} alt=""
+                            <img className="" height="320" src={defaultImage} alt=""
                                  width="300"/>
                             :
                             <img height="320" src={require('../uploads/' + this.state.selectedImage)} alt=""
