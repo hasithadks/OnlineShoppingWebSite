@@ -216,6 +216,7 @@ export default class Editprofile extends Component {
                                                             <select className="browser-default custom-select" style={{height:'32px'}}
                                                                 value={this.state.user_gender}
                                                                 onChange={this.onChangeGender}>
+                                                                <option value="" disabled selected>Gender</option>
                                                                 <option value="Male">Male</option>
                                                                 <option value="Female">Female</option>
                                                             </select>
@@ -232,18 +233,30 @@ export default class Editprofile extends Component {
                                                             <select className="browser-default custom-select" style={{fontSize:'14px',height:'32px'}}
                                                                 value={this.state.user_b_year}
                                                                 onChange={this.onChangeBYear}>
-                                                                <option value="year">Year</option>
+                                                                <option value="" disabled selected>Year</option>
+                                                                <option value="2005">2005</option>
+                                                                <option value="2004">2004</option>
+                                                                <option value="2003">2003</option>
+                                                                <option value="2002">2002</option>
+                                                                <option value="2001">2001</option>
                                                                 <option value="2000">2000</option>
                                                                 <option value="1999">1999</option>
                                                                 <option value="1998">1998</option>
                                                                 <option value="1997">1997</option>
+                                                                <option value="1996">1996</option>
+                                                                <option value="1995">1995</option>
+                                                                <option value="1994">1994</option>
+                                                                <option value="1993">1993</option>
+                                                                <option value="1992">1992</option>
+                                                                <option value="1991">1991</option>
+                                                                <option value="1990">1990</option>
                                                             </select>
                                                         </div>
                                                         <div style={{width:'116px',marginLeft:'15px'}}>
                                                             <select className="browser-default custom-select" style={{fontSize:'14px',height:'32px'}}
                                                                 value={this.state.user_b_month}
                                                                 onChange={this.onChangeBMonth}>
-                                                                <option value="month">Month</option>
+                                                                <option value="" disabled selected>Month</option>
                                                                 <option value="January">January</option>
                                                                 <option value="February">February</option>
                                                                 <option value="March">March</option>
@@ -262,7 +275,7 @@ export default class Editprofile extends Component {
                                                             <select className="browser-default custom-select" style={{fontSize:'14px',height:'32px'}}
                                                                 value={this.state.user_b_day}
                                                                 onChange={this.onChangeBDay}>
-                                                                <option value="day">Day</option>
+                                                                <option value="" disabled selected>Day</option>
                                                                 <option value="1">1</option>
                                                                 <option value="2">2</option>
                                                                 <option value="3">3</option>
